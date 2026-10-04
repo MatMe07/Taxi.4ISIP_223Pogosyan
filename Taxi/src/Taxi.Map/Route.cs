@@ -13,6 +13,22 @@ namespace Taxi.src.Taxi.Map
         public double Lon { get; set; }
         public string Address { get; set; }
     }
+    public class RoutePointPICK
+    {
+        public double lat { get; set; }
+        public double lon { get; set; }
+
+    }
+
+
+    public class RouteInfoPICK
+    {
+        public double DistanceMeters { get; set; }
+        public double DurationSeconds { get; set; }
+        public List<double[]> Coordinates { get; set; } = new List<double[]>();
+    }
+
+
     public class RouteInfo
     {
         public double DistanceMeters { get; set; }
@@ -44,4 +60,6 @@ namespace Taxi.src.Taxi.Map
         [JsonPropertyName("polyline")]
         public Polyline Polyline { get; set; }
     }
+
+
 }

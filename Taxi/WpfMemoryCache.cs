@@ -32,7 +32,7 @@ namespace Taxi
 
         public bool TryGet<TItem>(string key, out TItem item)
         {
-            item = default(TItem);
+            item = default;
             JsonElement json;
             if (!_cache.TryGetValue(key, out json)) return false;
             DateTimeOffset? exp;

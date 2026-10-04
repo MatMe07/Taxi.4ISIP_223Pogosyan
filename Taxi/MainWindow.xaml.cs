@@ -33,6 +33,7 @@ namespace Taxi
         private GeocodeService geocodeService;
         private WebViewBridge webViewBridge;
         private RoutingService routingService;
+        private string TypeRoute;
 
         private HttpClient httpClient = new HttpClient();
 
@@ -46,6 +47,7 @@ namespace Taxi
             geocodeService = new GeocodeService(httpClient);
             webViewBridge = new WebViewBridge(MyWebView);
             routingService = new RoutingService(httpClient);
+            TypeRoute = Environment.GetEnvironmentVariable("TypeRoute");
             _from = new RoutePoint();
             _to = new RoutePoint();
             Loaded += MainWindow_Loaded;
@@ -122,8 +124,21 @@ namespace Taxi
                 await webViewBridge.ShowNoticeAsync("Сначала выберите обе точки");
                 return;
             }
+            RouteInfo route = new RouteInfo();
+            switch (TypeRoute)
+            {
+                case "Yandex":
+                    {
+                        route = await routingService.GetRouteAsync(_from, _to);
 
-            RouteInfo route = await routingService.GetRouteAsync(_from, _to);
+                        break;
+                    }
+                case "PickPoint":
+                    {
+                        route = await routingService.GetRouteAsync(_from, _to, usePickPoint:true);
+                        break;
+                    }
+            }
             double price = Calculate(route.DistanceMeters / 1000.0);
 
             var args = string.Join(",",
