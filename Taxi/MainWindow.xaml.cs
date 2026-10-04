@@ -1,25 +1,21 @@
 ﻿using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Security.Policy;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Windows.Devices.Geolocation;
+using Taxi.src.Taxi.Map;
+using Taxi.src.Taxi.Map.Helpers;
+using Taxi.src.Taxi.Map.Services;
+using dotenv.net;
+
 
 namespace Taxi
 {
@@ -28,131 +24,187 @@ namespace Taxi
     /// </summary>
     public partial class MainWindow : Window
     {
-        static HttpClient httpClient = new HttpClient();
-        string token = "809be99a95fa7638881e09e8f6c4220e6e9cfd43";
-        private const string URL = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address";
-        public class RoutePoint
-        {
-            public double Lat { get; set; }
-            public double Lon { get; set; }
-            public string Address { get; set; }
-        }
 
-        // В MainWindow
+        private string DefaultFromAddress = "Москва, Льва Толстого, 16";
+        private string DefaultToAddress = "Москва, Льва Толстого, 10";
+        private double DeliveryTariff = 20;
+        private double MinimumCost = 500;
+
+        private GeocodeService geocodeService;
+        private WebViewBridge webViewBridge;
+        private RoutingService routingService;
+
+        private HttpClient httpClient = new HttpClient();
+
         private RoutePoint _from;
         private RoutePoint _to;
+
         public MainWindow()
         {
+            DotEnv.Load();
             InitializeComponent();
-            Loaded += MainWindow_Loaded;
-            MyWebView.WebMessageReceived += WebView_WebMessageReceived;
+            geocodeService = new GeocodeService(httpClient);
+            webViewBridge = new WebViewBridge(MyWebView);
+            routingService = new RoutingService(httpClient);
             _from = new RoutePoint();
             _to = new RoutePoint();
-        }
-
-        private async void WebView_WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
-        {
-            // Получаем данные в формате строки или JSON
-            string messageFromWeb = e.TryGetWebMessageAsString();
-
-            await SelectKudaAsync(messageFromWeb);
-
+            Loaded += MainWindow_Loaded;
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            await AppCache.Cache.LoadAsync();
+
             await MyWebView.EnsureCoreWebView2Async(null);
+            MyWebView.WebMessageReceived += WebView_WebMessageReceived;
 
-            string htmlPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "map.html");
+            string htmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "map.html");
+            Console.WriteLine(htmlPath);
 
-            MyWebView.CoreWebView2.Navigate($"file:///{htmlPath}");
-            Console.WriteLine( htmlPath );
+            MyWebView.CoreWebView2.Navigate(new Uri(htmlPath).AbsoluteUri);
+        }
 
+        private async void WebView_WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
+        {
+            using (JsonDocument doc = JsonDocument.Parse(e.TryGetWebMessageAsString()))
+            {
+                JsonElement root = doc.RootElement;
+
+                if (!root.TryGetProperty("type", out JsonElement typeElement))
+                    return;
+
+                switch (typeElement.GetString())
+                {
+                    case "ready":
+                        await SetDefaultFromAsync();
+                        break;
+
+                    case "destinationSelected":
+                        await SelectKudaAsync(root.GetProperty("address").GetString());
+                        break;
+                }
+            }
         }
 
 
-        private async Task<Geoposition> GetLocationAsync()
+        private double Calculate(double routeLengthKm)
         {
-            var geolocator = new Geolocator();
-            geolocator.DesiredAccuracyInMeters = 50;
-            return await geolocator.GetGeopositionAsync();
+            return Math.Max(routeLengthKm * DeliveryTariff, MinimumCost);
+        }
+
+
+
+        private async Task SetDefaultFromAsync()
+        {
+            await SetDefaultPointAsync("from", DefaultFromAddress);
+            await SetDefaultPointAsync("to", DefaultToAddress);
+
+            await UpdateRouteAsync();
+        }
+
+        private async Task SetDefaultPointAsync(string which, string address)
+        {
+            RoutePoint point = await geocodeService.GeocodeAsync(address);
+            if (point == null)
+            {
+                Console.WriteLine("Точка по умолчанию не найдена: " + address);
+                return;
+            }
+
+            await webViewBridge.SetPointAsync(which, point, ref _from, ref _to);
+
+        }
+
+        private async Task UpdateRouteAsync()
+        {
+            if (!RoutingService.IsValidPoint(_from) || !RoutingService.IsValidPoint(_to))
+            {
+                await webViewBridge.ShowNoticeAsync("Сначала выберите обе точки");
+                return;
+            }
+
+            RouteInfo route = await routingService.GetRouteAsync(_from, _to);
+            double price = Calculate(route.DistanceMeters / 1000.0);
+
+            var args = string.Join(",",
+                JsonSerializer.Serialize(route.Coordinates, JsHelper.JsonOptions),
+                JsonSerializer.Serialize(new[] { _from.Lat, _from.Lon }, JsHelper.JsonOptions),
+                JsonSerializer.Serialize(new[] { _to.Lat, _to.Lon }, JsHelper.JsonOptions));
+
+            await webViewBridge.CallJsAsync("showRoute", args);
+
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            var pos = await GetLocationAsync();
-            var lat = pos.Coordinate.Point.Position.Latitude;
-            var lon = pos.Coordinate.Point.Position.Longitude;
-            await MyWebView.CoreWebView2.ExecuteScriptAsync(
-                $"setUserLocation({lat}, {lon})"
-            );
 
-            _from.Lat = lat;
-            _from.Lon = lon;
-            _from.Address = "Mine";
+            var pos = await GeolocationService.GetLocationAsync();
+            double lat = pos.Coordinate.Point.Position.Latitude;
+            double lon = pos.Coordinate.Point.Position.Longitude;
 
-        }
-
-        public async Task SelectKudaAsync(string adress)
-        {
-            string adressI = adress.Replace(", ", "").Replace(' ', '+');
-            var req = await httpClient.GetAsync($"https://geocode-maps.yandex.ru/1.x/?apikey=5a39211b-dd9d-482d-abf7-95a52bd60110&geocode={adressI}&format=json");
-            Console.WriteLine(req.StatusCode);
-            if (!req.IsSuccessStatusCode)
+            if (lat == 0 && lon == 0)
             {
-                Console.WriteLine("Error");
+                await webViewBridge.ShowNoticeAsync("Местоположение недоступно");
                 return;
             }
 
-            string responseText = await req.Content.ReadAsStringAsync();
-            var content = JsonDocument.Parse(responseText).RootElement.GetProperty("response").GetProperty("GeoObjectCollection").GetProperty("featureMember");
-            var obj = content[0].GetProperty("GeoObject");
 
-            string[] lat_lon = obj.GetProperty("Point").GetProperty("pos").ToString().Split();
-            double lon = double.Parse(lat_lon[0]);
-            double lat = double.Parse(lat_lon[1]);
 
-            //var fullAdress = obj.GetProperty("metaDataProperty").GetProperty("GeocoderMetaData").GetProperty("text");
-            //string addrEscaped = fullAdress.ToString().Replace("\\", "\\\\").Replace("'", "\\'");
-            //Console.WriteLine(fullAdress);
-            string latStr = lat.ToString();
-            string lonStr = lon.ToString();
+            await  webViewBridge.SetPointAsync("from", new RoutePoint
+            {
+                Lat = lat,
+                Lon = lon,
+                Address = "Моё местоположение"
+            }, ref _from, ref _to);
 
-            await MyWebView.CoreWebView2.ExecuteScriptAsync(
-
-                $"showMarkC({latStr}, {lonStr}, '{adress}')"
-
-            );
-            _to.Lat = lat;
-            _to.Lon = lon;
-            _to.Address = adress;
-
-            await MyWebView.CoreWebView2.ExecuteScriptAsync(
-                $"buildRoute()"
-                );
+            await UpdateRouteAsync();
         }
 
-
-        public async Task PoiskAsync()
-
+        private async Task SelectKudaAsync(string address)
         {
-            var body = new { query = "москва хабар" };
-
-            var request = new HttpRequestMessage(HttpMethod.Post, URL)
+            try
             {
-                Content = new StringContent(
-                    JsonSerializer.Serialize(body),
-                    Encoding.UTF8,
-                    "application/json")
-            };
-            request.Headers.TryAddWithoutValidation("Accept", "application/json");
-            request.Headers.TryAddWithoutValidation("Authorization", "Token " + token);
+                RoutePoint point = await geocodeService.GeocodeAsync(address);
+                if (point == null)
+                {
+                    await webViewBridge.ShowNoticeAsync("Адрес не найден");
+                    return;
+                }
 
-            var response = await httpClient.SendAsync(request);
-            string responseText = await response.Content.ReadAsStringAsync();
+                await webViewBridge.SetPointAsync("to", point, ref _from, ref _to);
+                await UpdateRouteAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ошибка геокодера: " + ex);
+            }
+        }
 
-            Console.WriteLine((int)response.StatusCode);
-            Console.WriteLine(responseText);
+        //public async Task PoiskAsync()
+        //{
+        //    var body = new { query = "москва хабар" };
+
+        //    var request = new HttpRequestMessage(HttpMethod.Post, URL)
+        //    {
+        //        Content = new StringContent(
+        //            JsonSerializer.Serialize(body),
+        //            Encoding.UTF8,
+        //            "application/json")
+        //    };
+        //    request.Headers.TryAddWithoutValidation("Accept", "application/json");
+        //    request.Headers.TryAddWithoutValidation("Authorization", "Token " + token);
+
+        //    var response = await httpClient.SendAsync(request);
+        //    string responseText = await response.Content.ReadAsStringAsync();
+
+        //    Console.WriteLine((int)response.StatusCode);
+        //    Console.WriteLine(responseText);
+        //}
+
+        private async void Window_Closed(object sender, EventArgs e)
+        {
+
+            await AppCache.Cache.SaveAsync();
         }
     }
 }

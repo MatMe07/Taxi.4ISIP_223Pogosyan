@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Taxi"
         mc:Ignorable="d"
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
-        Title="Taxi App" Height="450" Width="800">
+        Title="Taxi App" Height="450" Width="800" Closed="Window_Closed">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

@@ -6,7 +6,6 @@
     <title>Тест</title>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=60445215-6d3a-4f88-87fe-8d52b72e5bc9"
         type="text/javascript"></script>
-    <script src="https://geocode-maps.yandex.ru/1.x/?apikey=5a39211b-dd9d-482d-abf7-95a52bd60110" type="text/javascript"></script>
     <style>
         html,
         body {
@@ -56,192 +55,180 @@
             margin: 6px 0 0 4px;
             display: none;
         }
+
+        #notice.visible {
+            display: block;
+        }
     </style>
 </head>
 
 <body>
     <div id="map"></div>
     <div id="searchBox">
-        <input id="search" placeholder="Адрес или объект" autocomplete="off">
-        <p id="notice">Адрес не найден</p>
+        <input id="search" placeholder="Адрес, объект — или кликните по карте" autocomplete="off">
+        <p id="notice"></p>
     </div>
     <script type="text/javascript">
-        // var map = null;
-        var API_KEY = '5a39211b-dd9d-482d-abf7-95a52bd60110';
-        var userPlacemark = null;
-        var userPoint = null;
-        var kudaPoint = null;
-        var currentRoute = null;
-        var map, mark;
+        var map = null;
+        var suggestView = null;
+        // Нарисованный маршрут и метки точек.
+        var routeLine = null;
+        var points = { from: null, to: null };
+
         ymaps.ready(init);
+
+        function postToHost(message) {
+            if (window.chrome && window.chrome.webview) {
+                window.chrome.webview.postMessage(JSON.stringify(message));
+            } else {
+                console.log('[-> C#]', JSON.stringify(message));
+            }
+        }
+
+        function showNotice(text) {
+            var notice = document.getElementById('notice');
+            notice.textContent = text;
+            notice.classList.add('visible');
+            document.getElementById('search').classList.add('input_error');
+        }
+
+        function hideNotice() {
+            var notice = document.getElementById('notice');
+            notice.textContent = '';
+            notice.classList.remove('visible');
+            document.getElementById('search').classList.remove('input_error');
+        }
 
         function init() {
             map = new ymaps.Map('map', {
                 center: [55.75, 37.65],
-                zoom: 12,
-                controls: ['zoomControl']
+                zoom: 12
             });
-            
 
-            var suggestView = new ymaps.SuggestView('search');
+            map.controls.add('zoomControl', {
+                position: {
+                    right: 10,
+                    bottom: 10
+                }
+            });
 
+            suggestView = new ymaps.SuggestView('search');
             suggestView.events.add('select', function (e) {
-                var address = e.get('item').value;
-                console.log('Выбран адрес:', address);
-                // geocodeViaYmaps(address);
-                window.chrome.webview.postMessage(address);
+                hideNotice();
+                // Геокодирование и маршрут делает C#, он вернёт результат через setPoint/showRoute.
+                postToHost({ type: 'destinationSelected', address: e.get('item').value });
             });
 
+            // Вторую точку можно поставить кликом по карте.
+            // map.events.add('click', function (e) {
+            //     // Клик по метке или линии маршрута точку не переставляет.
+            //     if (e.get('target')) {
+            //         return;
+            //     }
 
+            //     var coords = e.get('coords');
+            //     if (!coords || coords.length < 2 ||
+            //         !isFinite(coords[0]) || !isFinite(coords[1])) {
+            //         return;
+            //     }
+
+            //     // coords из API уже в порядке [широта, долгота].
+            //     postToHost({ type: 'mapClicked', lat: coords[0], lon: coords[1] });
+            // });
+
+            // Сообщаем C#, что карта готова - он поставит точку "Откуда".
+            postToHost({ type: 'ready' });
         }
-            function geocodeViaYmaps(address) {
-                console.log('Запускаю ymaps.geocode...');
 
-                ymaps.geocode(address, { results: 1 })
-                    .then(function (res) {
-                        console.log('Геокод ответил:', res);
+        function applyPoint(which, coords, address) {
+            var pm = new ymaps.Placemark(coords, {
+                hintContent: address,
+                balloonContent: address
+            }, {
+                preset: which === 'from' ? 'islands#bluePersonIcon' : 'islands#redCircleDotIcon',
+                zIndex: which === 'from' ? 500 : 600
+            });
 
-                        var obj = res.geoObjects.get(0);
-                        if (!obj) {
-                            console.warn('Адрес не найден');
-                            return;
-                        }
+            pm.properties.set('hint', address);
 
-                        var coords = obj.geometry.getCoordinates();
-                        var fullAddress = obj.getAddressLine();
-
-                        // Проверка точности
-                        var precision = obj.properties.get(
-                            'metaDataProperty.GeocoderMetaData.precision'
-                        );
-                        console.log('Точность:', precision);
-                        console.log('Координаты:', coords);
-                        console.log('Полный адрес:', fullAddress);
-
-                        showMark(coords, fullAddress);
-                    })
-                    .catch(function (err) {
-                        console.error('Ошибка ymaps.geocode:', err);
-                    });
+            if (points[which]) {
+                map.geoObjects.remove(points[which]);
             }
-        function geocodeViaHttp(address) {
-            var url = 'https://geocode-maps.yandex.ru/1.x/'
-                + '?apikey=' + API_KEY
-                + '&geocode=' + encodeURIComponent(address)
-                + '&format=json'
-                + '&results=1';
+            points[which] = pm;
+            map.geoObjects.add(pm);
 
-            fetch(url)
-                .then(function (r) { return r.json(); })
-                .then(function (data) {
-                    var members = data.response.GeoObjectCollection.featureMember;
-                    if (!members.length) {
-                        console.warn('Адрес не найден');
-                        return;
-                    }
-
-                    var obj = members[0].GeoObject;
-                    var pos = obj.Point.pos.split(' ');
-                    var lon = parseFloat(pos[0]);
-                    var lat = parseFloat(pos[1]);
-                    var fullAddress = obj.metaDataProperty.GeocoderMetaData.text;
-
-                    console.log('Координаты:', lat, lon);
-                    showMark([lat, lon], fullAddress);
-                })
-                .catch(function (err) {
-                    console.error('Ошибка геокодера:', err);
-                });
-        }
-
-        function showMark(coords, address) {
-            console.log(coords)
-            console.log(address)
-            if (mark) map.geoObjects.remove(mark);
-            mark = new ymaps.Placemark(coords, {
-                balloonContent: address
-            }, {
-                preset: 'islands#redIcon'
-            });
-            map.geoObjects.add(mark);
-            map.setCenter(coords, 16);
-            mark.balloon.open();
+            if (!routeLine) {
+                map.setCenter(coords, 15, { duration: 300 });
+            }
         }
 
 
-        function buildRoute() {
-            console.log([userPoint, kudaPoint]);
-            ymaps.route([userPoint, kudaPoint], {
-                routingMode: 'auto',        // 'auto', 'pedestrian', 'masstransit'
-                mapStateAutoApply: true     // автоматически подгонит карту под маршрут
-            }).then(function (route) {
-                // Убираем старый маршрут, если был
-                if (currentRoute) map.geoObjects.remove(currentRoute);
-                currentRoute = route;
-                map.geoObjects.add(route);
-
-                // Получаем данные
-                var distanceMeters = route.getLength();   // метры
-                var timeSeconds = route.getTime();         // секунды
-
-                var distanceKm = (distanceMeters / 1000).toFixed(2);
-                var timeMin = Math.round(timeSeconds / 60);
-
-                console.log('Расстояние:', distanceKm, 'км');
-                console.log('Время:', timeMin, 'мин');
-
-                // Передаём дальше — расчёт стоимости
-                // calculatePrice(distanceKm, timeMin);
-            }).catch(function (err) {
-                console.error('Ошибка построения маршрута:', err);
-            });
-        }
-
-        window.showMarkC = function (lat, lon, address) {
-            console.log('showMarkC:', lat, lon, address);
-            
-            var coords = [lat, lon];
-            
-            if (mark) map.geoObjects.remove(mark);
-            mark = new ymaps.Placemark(coords, {
-                balloonContent: address
-            }, {
-                preset: 'islands#redIcon'
-            });
-            map.geoObjects.add(mark);
-            map.setCenter(coords, 16);
-            mark.balloon.open();
-            kudaPoint = coords;
-        }; 
-
-
-        window.setUserLocation = function (lat, lon) {
-            console.log('setUserLocation вызван:', lat, lon);
-
+        window.showRoute = function (coords, from, to) {
             if (!map) {
                 console.warn('Карта ещё не инициализирована');
                 return;
             }
 
-            var coords = [lat, lon];
-            userPoint = coords;
-            if (!userPlacemark) {
-                userPlacemark = new ymaps.Placemark(coords, {
-                    hintContent: 'Вы здесь',
-                    balloonContent: 'Ваше местоположение'
-                }, {
-                    preset: 'islands#bluePersonIcon'
-                });
-                map.geoObjects.add(userPlacemark);
-            } else {
-                userPlacemark.geometry.setCoordinates(coords);
+            hideNotice();
+
+            var line = [];
+
+            if (coords && coords.length) {
+                for (var i = 0; i < coords.length; i++) {
+                    var p = coords[i];
+                    if (!p || p.length < 2 || !isFinite(p[0]) || !isFinite(p[1])) {
+                        continue;
+                    }
+                    line.push(p);
+                }
             }
 
-            map.setCenter(coords, 15);
-        }
+            if (line.length < 2) {
+                console.warn('Геометрия не получена, рисуем прямую между точками');
+                line = [from, to];
+            }
 
+            if (routeLine) {
+                map.geoObjects.remove(routeLine);
+            }
 
+            routeLine = new ymaps.Polyline(line, {
+                strokeColor: '#0a7cff',
+                strokeWidth: 20,
+                // strokeOpacity: 0.85,
+                // zIndex: 400,
+                // balloonContentHeader: 'Маршрут',
+                // balloonContentBody:
+                //     '<b>Расстояние:</b> ' + formatDistance(distance) + '<br/>' +
+                //     '<b>Время в пути:</b> ' + formatDuration(duration) + '<br/>' +
+                //     '<span style="font-weight: bold; font-style: italic">Стоимость поездки: ' + price + ' р.</span>'
+            });
 
+            map.geoObjects.add(routeLine);
+            map.setBounds(ymaps.geometry.bounds.fromCoordinates(line), {
+                checkZoomRange: true,
+                duration: 300
+            });
+
+            routeLine.balloon.open();
+        };
+
+        window.setPoint = function (which, lat, lon, address) {
+            hideNotice();
+            if (!map) {
+                console.warn('Карта ещё не инициализирована');
+                return;
+            }
+            if (which !== 'from' && which !== 'to') {
+                console.warn('Неизвестная точка:', which);
+                return;
+            }
+            applyPoint(which, [lat, lon], address);
+        };
+
+        window.showNotice = function (text) {
+            showNotice(text);
+        };
     </script>
 
 </body>
