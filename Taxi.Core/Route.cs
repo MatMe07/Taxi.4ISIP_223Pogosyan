@@ -9,25 +9,18 @@ namespace Taxi.src.Taxi.Map
 {
     public class RoutePoint
     {
+        [JsonRequired]
+        [JsonPropertyName("lat")]
         public double Lat { get; set; }
+
+        [JsonRequired]
+        [JsonPropertyName("lon")]
         public double Lon { get; set; }
+
+        [JsonIgnore]
+        [JsonPropertyName("address")]
         public string Address { get; set; }
     }
-    public class RoutePointPICK
-    {
-        public double lat { get; set; }
-        public double lon { get; set; }
-
-    }
-
-
-    public class RouteInfoPICK
-    {
-        public double DistanceMeters { get; set; }
-        public double DurationSeconds { get; set; }
-        public List<double[]> Coordinates { get; set; } = new List<double[]>();
-    }
-
 
     public class RouteInfo
     {

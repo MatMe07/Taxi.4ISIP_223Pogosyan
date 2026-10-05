@@ -1,6 +1,7 @@
 ﻿using dotenv.net;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -43,7 +44,7 @@ namespace Taxi.src.Taxi.Map.Services
 
         public class LOC
         {
-            public List<RoutePointPICK> locations {  get; set; }
+            public List<RoutePoint> locations {  get; set; }
             public string language { get; set; }
             public string units { get; set; }
             public string costing { get; set; }
@@ -62,7 +63,7 @@ namespace Taxi.src.Taxi.Map.Services
 
             if (_cache.TryGet(cacheKey, out RouteInfo cachedResult))
             {
-                Console.WriteLine($"Использовал кэш {cacheKey}");
+                Debug.WriteLine($"Использовал кэш {cacheKey}");
                 return cachedResult;
             }
 
@@ -76,8 +77,8 @@ namespace Taxi.src.Taxi.Map.Services
                 CacheExpiration
             );
 
-            Console.WriteLine($"Кэшировал - {info}");
-            Console.WriteLine(
+            Debug.WriteLine($"Кэшировал - {info}");
+            Debug.WriteLine(
                 $"Маршрут: {info.DistanceMeters} м, {info.DurationSeconds} с, точек геометрии: {info.Coordinates.Count}");
 
             return info;
@@ -87,11 +88,11 @@ namespace Taxi.src.Taxi.Map.Services
         {
             var loc = new LOC
             {
-                locations = new List<RoutePointPICK>
+                locations = new List<RoutePoint>
         {
-            new RoutePointPICK { lat = from.Lat, lon = from.Lon },
-            new RoutePointPICK { lat = to.Lat,   lon = to.Lon   }
-        },
+            new RoutePoint { Lat = from.Lat, Lon = from.Lon },
+            new RoutePoint { Lat = to.Lat,   Lon = to.Lon   }
+                },
                 language = "ru",
                 units = "km",
                 costing = "auto"
@@ -99,65 +100,89 @@ namespace Taxi.src.Taxi.Map.Services
 
             var jsonLOC = JsonSerializer.Serialize(loc);
 
-            using (var httpRequest = new HttpRequestMessage
+            using var httpRequest = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri(RoutingPickPointUrl),
                 Content = new StringContent(jsonLOC, System.Text.Encoding.UTF8, "application/json")
-            })
-            {
+            };
+
 
             httpRequest.Headers.Add("X-API-KEY", RoutingPickPointApiKey);
             httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 
-                Console.WriteLine(jsonLOC);
-
-                var response = await httpClient.SendAsync(httpRequest);
-                var result = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-
-                if (!response.IsSuccessStatusCode)
-                    throw new InvalidOperationException($"HTTP {(int)response.StatusCode}");
-
-                JsonElement root = result.RootElement;
-
-                if (!root.TryGetProperty("trip", out var route) ||
-                    !route.TryGetProperty("legs", out var legs) ||
-                    !legs[0].TryGetProperty("shape", out var shapes) ||
-                    !legs[0].TryGetProperty("summary", out var summary))
-                    throw new InvalidOperationException("Маршрут не найден");
-
-                if (!double.TryParse(summary.GetProperty("time").ToString(), out double durSec))
-                    throw new InvalidOperationException("time Error");
-
-                if (!double.TryParse(summary.GetProperty("cost").ToString(), out double durMet))
-                    throw new InvalidOperationException("cost Error");
-
-                Console.WriteLine("cost = " + durSec);
-                Console.WriteLine("time = " + durMet);
-
-                var info = new RouteInfo
-                {
-                    DurationSeconds = durSec,
-                    DistanceMeters = durMet
-                };
-
-                var shapesToList = JsonSerializer.Deserialize<List<double[]>>(shapes);
-                //foreach (List<double> point in shapesToList)
-                //{
-                //    double lat = point[0];
-                //    double lon = point[1];
-
-                //    int last = info.Coordinates.Count - 1;
-                //    if (last >= 0 && info.Coordinates[last][0] == lat && info.Coordinates[last][1] == lon)
-                //        continue;
-
-                //    info.Coordinates.Add(new[] { lat, lon });
-                //}
-                info.Coordinates = shapesToList;
-
-                return info;
+            Debug.WriteLine(jsonLOC);
+            HttpResponseMessage response = new HttpResponseMessage();
+            try
+            {
+                response = await httpClient.SendAsync(httpRequest);
+                Debug.WriteLine($"Status: {response.StatusCode}");
             }
+            catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
+            {
+                // Таймаут HttpClient
+                Debug.WriteLine($"TIMEOUT: {ex}");
+            }
+            catch (TaskCanceledException ex)
+            {
+                // Отмена через CancellationToken
+                Debug.WriteLine($"CANCELLED: {ex}");
+            }
+            catch (HttpRequestException ex)
+            {
+                Debug.WriteLine($"HTTP ERROR: {ex.Message}");
+                Debug.WriteLine($"Inner: {ex.InnerException}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"OTHER: {ex}");
+            }
+
+
+            if (!response.IsSuccessStatusCode)
+                throw new InvalidOperationException($"HTTP {(int)response.StatusCode}");
+
+            var result = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            JsonElement root = result.RootElement;
+
+            if (!root.TryGetProperty("trip", out var route) ||
+                !route.TryGetProperty("legs", out var legs) ||
+                !legs[0].TryGetProperty("shape", out var shapes) ||
+                !legs[0].TryGetProperty("summary", out var summary))
+                throw new InvalidOperationException("Маршрут не найден");
+
+            if (!double.TryParse(summary.GetProperty("time").ToString(), out double durSec))
+                throw new InvalidOperationException("time Error");
+
+            if (!double.TryParse(summary.GetProperty("cost").ToString(), out double durMet))
+                throw new InvalidOperationException("cost Error");
+
+            Debug.WriteLine("cost = " + durSec);
+            Debug.WriteLine("time = " + durMet);
+
+            var info = new RouteInfo
+            {
+                DurationSeconds = durSec,
+                DistanceMeters = durMet
+            };
+
+            var shapesToList = JsonSerializer.Deserialize<List<double[]>>(shapes);
+            //foreach (List<double> point in shapesToList)
+            //{
+            //    double lat = point[0];
+            //    double lon = point[1];
+
+            //    int last = info.Coordinates.Count - 1;
+            //    if (last >= 0 && info.Coordinates[last][0] == lat && info.Coordinates[last][1] == lon)
+            //        continue;
+
+            //    info.Coordinates.Add(new[] { lat, lon });
+            //}
+            info.Coordinates = shapesToList;
+
+            return info;
+
         }
 
         private async Task<RouteInfo> BuildRouteViaStandardApiAsync(string waypoints, string mode)
@@ -182,7 +207,7 @@ namespace Taxi.src.Taxi.Map.Services
                     throw new InvalidOperationException("Маршрут не найден");
 
                 if (root.TryGetProperty("traffic_type", out var traffic))
-                    Console.WriteLine($"traffic_type: {traffic.GetString()}");
+                    Debug.WriteLine($"traffic_type: {traffic.GetString()}");
 
                 var info = new RouteInfo();
                 var list_arr = legs[0];

@@ -1,6 +1,7 @@
 ﻿using dotenv.net;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
@@ -34,7 +35,7 @@ namespace Taxi.src.Taxi.Map.Services
 
             if (_cache.TryGet(address.ToLowerInvariant(), out RoutePoint cachedResult))
             {
-                Console.WriteLine("Использовал кэш");
+                Debug.WriteLine("Использовал кэш");
                 return cachedResult;
             }
 
@@ -42,7 +43,7 @@ namespace Taxi.src.Taxi.Map.Services
             using (HttpResponseMessage response = await _http.GetAsync(url))
             using (JsonDocument doc = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
             {
-                Console.WriteLine((int)response.StatusCode);
+                Debug.WriteLine((int)response.StatusCode);
 
                 if (!response.IsSuccessStatusCode)
                     throw new InvalidOperationException("Геокодер: HTTP " + (int)response.StatusCode);
@@ -65,7 +66,7 @@ namespace Taxi.src.Taxi.Map.Services
                     value: result,
                     CacheExpiration
                 );
-                Console.WriteLine($"Кэшировал - {result}");
+                Debug.WriteLine($"Кэшировал - {result}");
 
                 return result;
             }

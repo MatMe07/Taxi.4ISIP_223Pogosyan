@@ -1,26 +1,26 @@
-﻿using Microsoft.Web.WebView2.Core;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
+﻿using dotenv.net;
+using Microsoft.Web.WebView2.Core;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
-using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 using Taxi.src.Taxi.Map;
 using Taxi.src.Taxi.Map.Helpers;
 using Taxi.src.Taxi.Map.Services;
-using dotenv.net;
 
-
-namespace Taxi
+namespace Taxi.WPF
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -60,8 +60,8 @@ namespace Taxi
             await MyWebView.EnsureCoreWebView2Async(null);
             MyWebView.WebMessageReceived += WebView_WebMessageReceived;
 
-            string htmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "map.html");
-            Console.WriteLine(htmlPath);
+            string htmlPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "map.html");
+            Debug.WriteLine(htmlPath);
 
             MyWebView.CoreWebView2.Navigate(new Uri(htmlPath).AbsoluteUri);
         }
@@ -109,7 +109,7 @@ namespace Taxi
             RoutePoint point = await geocodeService.GeocodeAsync(address);
             if (point == null)
             {
-                Console.WriteLine("Точка по умолчанию не найдена: " + address);
+                Debug.WriteLine("Точка по умолчанию не найдена: " + address);
                 return;
             }
 
@@ -135,7 +135,7 @@ namespace Taxi
                     }
                 case "PickPoint":
                     {
-                        route = await routingService.GetRouteAsync(_from, _to, usePickPoint:true);
+                        route = await routingService.GetRouteAsync(_from, _to, usePickPoint: true);
                         break;
                     }
             }
@@ -152,7 +152,7 @@ namespace Taxi
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            Debug.WriteLine("hello________________________________");
             var pos = await GeolocationService.GetLocationAsync();
             double lat = pos.Coordinate.Point.Position.Latitude;
             double lon = pos.Coordinate.Point.Position.Longitude;
@@ -165,7 +165,7 @@ namespace Taxi
 
 
 
-            await  webViewBridge.SetPointAsync("from", new RoutePoint
+            await webViewBridge.SetPointAsync("from", new RoutePoint
             {
                 Lat = lat,
                 Lon = lon,
@@ -191,7 +191,7 @@ namespace Taxi
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Ошибка геокодера: " + ex);
+                Debug.WriteLine("Ошибка геокодера: " + ex);
             }
         }
 
@@ -212,14 +212,15 @@ namespace Taxi
         //    var response = await httpClient.SendAsync(request);
         //    string responseText = await response.Content.ReadAsStringAsync();
 
-        //    Console.WriteLine((int)response.StatusCode);
-        //    Console.WriteLine(responseText);
+        //    Debug.WriteLine((int)response.StatusCode);
+        //    Debug.WriteLine(responseText);
         //}
 
         private async void Window_Closed(object sender, EventArgs e)
         {
-
+            
             await AppCache.Cache.SaveAsync();
         }
     }
+
 }
