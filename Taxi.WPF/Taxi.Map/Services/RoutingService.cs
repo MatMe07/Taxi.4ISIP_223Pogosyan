@@ -23,8 +23,10 @@ namespace Taxi.src.Taxi.Map.Services
 
         private string RoutingApiKey = "";
         private string RoutingPickPointApiKey = "";
+        private string RoutingMapboxToken = "";
         private const string RoutingUrl = "https://api.routing.yandex.net/v1/route/";
-        private const string RoutingPickPointUrl = "https://api.pickpoint.io/v2/route/";
+        private const string RoutingPickPointUrl = "https://api.pickpoint.io/v2/route";
+        private const string RoutingMapboxUrl = "https://api.mapbox.com/directions/v5/mapbox/cycling/";
         private const string RoutingMode = "driving";
         private readonly WpfMemoryCache _cache;
         private static readonly TimeSpan CacheExpiration = TimeSpan.FromHours(24);
@@ -38,6 +40,7 @@ namespace Taxi.src.Taxi.Map.Services
 
             RoutingApiKey = Environment.GetEnvironmentVariable("RoutingApiKey");
             RoutingPickPointApiKey = Environment.GetEnvironmentVariable("RoutingPickPointApiKey");
+            RoutingMapboxToken = Environment.GetEnvironmentVariable("RoutingMapboxToken");
         }
 
         
@@ -86,59 +89,14 @@ namespace Taxi.src.Taxi.Map.Services
 
         private async Task<RouteInfo> BuildRouteViaPickPointAsync(RoutePoint from, RoutePoint to)
         {
-            var loc = new LOC
-            {
-                locations = new List<RoutePoint>
-        {
-            new RoutePoint { Lat = from.Lat, Lon = from.Lon },
-            new RoutePoint { Lat = to.Lat,   Lon = to.Lon   }
-                },
-                language = "ru",
-                units = "km",
-                costing = "auto"
-            };
 
-            var jsonLOC = JsonSerializer.Serialize(loc);
+            
+            string coords = $"{ from.Lon.ToString(CultureInfo.InvariantCulture)},{from.Lat.ToString(CultureInfo.InvariantCulture)};" +
+                    $"{to.Lon.ToString(CultureInfo.InvariantCulture)},{to.Lat.ToString(CultureInfo.InvariantCulture)}";
 
-            using var httpRequest = new HttpRequestMessage
-            {
-                Method = HttpMethod.Post,
-                RequestUri = new Uri(RoutingPickPointUrl),
-                Content = new StringContent(jsonLOC, System.Text.Encoding.UTF8, "application/json")
-            };
+            string url = $"{RoutingMapboxUrl}{coords}?geometries=geojson&access_token={RoutingMapboxToken}";
 
-
-            httpRequest.Headers.Add("X-API-KEY", RoutingPickPointApiKey);
-            httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-
-            Debug.WriteLine(jsonLOC);
-            HttpResponseMessage response = new HttpResponseMessage();
-            try
-            {
-                response = await httpClient.SendAsync(httpRequest);
-                Debug.WriteLine($"Status: {response.StatusCode}");
-            }
-            catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
-            {
-                // Таймаут HttpClient
-                Debug.WriteLine($"TIMEOUT: {ex}");
-            }
-            catch (TaskCanceledException ex)
-            {
-                // Отмена через CancellationToken
-                Debug.WriteLine($"CANCELLED: {ex}");
-            }
-            catch (HttpRequestException ex)
-            {
-                Debug.WriteLine($"HTTP ERROR: {ex.Message}");
-                Debug.WriteLine($"Inner: {ex.InnerException}");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"OTHER: {ex}");
-            }
-
+            using var response = await httpClient.GetAsync(url);
 
             if (!response.IsSuccessStatusCode)
                 throw new InvalidOperationException($"HTTP {(int)response.StatusCode}");
@@ -146,16 +104,19 @@ namespace Taxi.src.Taxi.Map.Services
             var result = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
             JsonElement root = result.RootElement;
 
-            if (!root.TryGetProperty("trip", out var route) ||
-                !route.TryGetProperty("legs", out var legs) ||
-                !legs[0].TryGetProperty("shape", out var shapes) ||
-                !legs[0].TryGetProperty("summary", out var summary))
+            //if (!root.TryGetProperty("trip", out var route) ||
+            //    !route.TryGetProperty("legs", out var legs) ||
+            //    !legs[0].TryGetProperty("shape", out var shapes) ||
+            //    !legs[0].TryGetProperty("summary", out var summary))
+            if (!root.TryGetProperty("routes", out var route) ||
+                !route[0].TryGetProperty("geometry", out var geometry) ||
+                !geometry.TryGetProperty("coordinates", out var coordinates))
                 throw new InvalidOperationException("Маршрут не найден");
 
-            if (!double.TryParse(summary.GetProperty("time").ToString(), out double durSec))
+            if (!double.TryParse(route[0].GetProperty("duration").ToString(), out double durSec))
                 throw new InvalidOperationException("time Error");
 
-            if (!double.TryParse(summary.GetProperty("cost").ToString(), out double durMet))
+            if (!double.TryParse(route[0].GetProperty("distance").ToString(), out double durMet))
                 throw new InvalidOperationException("cost Error");
 
             Debug.WriteLine("cost = " + durSec);
@@ -167,19 +128,19 @@ namespace Taxi.src.Taxi.Map.Services
                 DistanceMeters = durMet
             };
 
-            var shapesToList = JsonSerializer.Deserialize<List<double[]>>(shapes);
-            //foreach (List<double> point in shapesToList)
-            //{
-            //    double lat = point[0];
-            //    double lon = point[1];
+            var shapesToList = JsonSerializer.Deserialize<List<List<double>>>(coordinates);
+            foreach (List<double> point in shapesToList)
+            {
+                double lat = point[1];
+                double lon = point[0];
 
-            //    int last = info.Coordinates.Count - 1;
-            //    if (last >= 0 && info.Coordinates[last][0] == lat && info.Coordinates[last][1] == lon)
-            //        continue;
+                int last = info.Coordinates.Count - 1;
+                if (last >= 0 && info.Coordinates[last][0] == lat && info.Coordinates[last][1] == lon)
+                    continue;
 
-            //    info.Coordinates.Add(new[] { lat, lon });
-            //}
-            info.Coordinates = shapesToList;
+                info.Coordinates.Add(new[] { lat, lon });
+            }
+            //info.Coordinates = shapesToList;
 
             return info;
 

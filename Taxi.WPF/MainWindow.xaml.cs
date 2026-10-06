@@ -34,8 +34,13 @@ namespace Taxi.WPF
         private WebViewBridge webViewBridge;
         private RoutingService routingService;
         private string TypeRoute;
-
-        private HttpClient httpClient = new HttpClient();
+        private WinHttpHandler handler = new WinHttpHandler
+        {
+            // по желанию:
+            // ReceiveDataTimeout = TimeSpan.FromSeconds(30),
+            // SendTimeout = TimeSpan.FromSeconds(30),
+        };
+        private HttpClient httpClient;
 
         private RoutePoint _from;
         private RoutePoint _to;
@@ -44,6 +49,9 @@ namespace Taxi.WPF
         {
             DotEnv.Load();
             InitializeComponent();
+            httpClient = new HttpClient(handler: handler) {
+                Timeout = TimeSpan.FromSeconds(30)
+            }; 
             geocodeService = new GeocodeService(httpClient);
             webViewBridge = new WebViewBridge(MyWebView);
             routingService = new RoutingService(httpClient);
