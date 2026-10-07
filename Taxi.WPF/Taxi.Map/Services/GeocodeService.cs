@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -13,9 +14,6 @@ namespace Taxi.src.Taxi.Map.Services
 {
     public class GeocodeService
     {
-        private string GeocodeApiKey = "";
-
-        private const string GeocodeUrl = "https://geocode-maps.yandex.ru/1.x/";
         private static readonly TimeSpan CacheExpiration = TimeSpan.FromHours(24);
 
 
@@ -26,8 +24,15 @@ namespace Taxi.src.Taxi.Map.Services
         {
             _http = http;
             _cache = AppCache.Cache;
-            GeocodeApiKey = Environment.GetEnvironmentVariable("GeocodeApiKey");
         }
+
+        private async Task<RoutePoint> GetRoutePointAsync(string address)
+        {
+            string url = $"/geocode?address={address}";
+            var point = await _http.GetFromJsonAsync<RoutePoint>(url);
+            return point;
+        }
+
         public async Task<RoutePoint> GeocodeAsync(string address)
         {
             if (string.IsNullOrWhiteSpace(address))
@@ -39,37 +44,17 @@ namespace Taxi.src.Taxi.Map.Services
                 return cachedResult;
             }
 
-            string url = GeocodeUrl + "?apikey=" + GeocodeApiKey + "&geocode=" + Uri.EscapeDataString(address) + "&format=json&results=1";
-            using (HttpResponseMessage response = await _http.GetAsync(url))
-            using (JsonDocument doc = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
-            {
-                Debug.WriteLine((int)response.StatusCode);
+            var result = await GetRoutePointAsync(address);
 
-                if (!response.IsSuccessStatusCode)
-                    throw new InvalidOperationException("Геокодер: HTTP " + (int)response.StatusCode);
+            _cache.Set(
+                key: address.ToLowerInvariant(),
+                value: result,
+                CacheExpiration
+            );
+            Debug.WriteLine($"Кэшировал - {result}");
 
-                JsonElement members = doc.RootElement.GetProperty("response").GetProperty("GeoObjectCollection").GetProperty("featureMember");
-                if (members.GetArrayLength() == 0)
-                    return null;
+            return result;
 
-                JsonElement obj = members[0].GetProperty("GeoObject");
-                string[] pos = obj.GetProperty("Point").GetProperty("pos").GetString().Split(' ');
-
-                var result = new RoutePoint
-                {
-                    Lat = double.Parse(pos[1], CultureInfo.InvariantCulture),
-                    Lon = double.Parse(pos[0], CultureInfo.InvariantCulture),
-                    Address = address
-                };
-                _cache.Set(
-                    key: address.ToLowerInvariant(),
-                    value: result,
-                    CacheExpiration
-                );
-                Debug.WriteLine($"Кэшировал - {result}");
-
-                return result;
-            }
         }
 
     }

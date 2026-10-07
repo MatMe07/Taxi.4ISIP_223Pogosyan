@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Taxi.src.Taxi.Map
+namespace Taxi
 {
     public class RoutePoint
     {
@@ -24,8 +24,12 @@ namespace Taxi.src.Taxi.Map
 
     public class RouteInfo
     {
+        [JsonPropertyName("distanceMeters")]
         public double DistanceMeters { get; set; }
+        [JsonPropertyName("durationSeconds")]
         public double DurationSeconds { get; set; }
+
+        [JsonPropertyName("coordinates")]
         public List<double[]> Coordinates { get; set; } = new List<double[]>();
     }
 

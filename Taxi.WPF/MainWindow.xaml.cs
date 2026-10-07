@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Taxi.Core.ViewModels;
 using Taxi.src.Taxi.Map;
 using Taxi.src.Taxi.Map.Helpers;
 using Taxi.src.Taxi.Map.Services;
@@ -25,39 +26,13 @@ namespace Taxi.WPF
     public partial class MainWindow : Window
     {
 
-        private string DefaultFromAddress = "Москва, Льва Толстого, 16";
-        private string DefaultToAddress = "Москва, Льва Толстого, 10";
-        private double DeliveryTariff = 20;
-        private double MinimumCost = 500;
-
-        private GeocodeService geocodeService;
-        private WebViewBridge webViewBridge;
-        private RoutingService routingService;
-        private string TypeRoute;
-        private WinHttpHandler handler = new WinHttpHandler
-        {
-            // по желанию:
-            // ReceiveDataTimeout = TimeSpan.FromSeconds(30),
-            // SendTimeout = TimeSpan.FromSeconds(30),
-        };
-        private HttpClient httpClient;
-
-        private RoutePoint _from;
-        private RoutePoint _to;
+        private MainViewModel viewModel;
 
         public MainWindow()
         {
             DotEnv.Load();
             InitializeComponent();
-            httpClient = new HttpClient(handler: handler) {
-                Timeout = TimeSpan.FromSeconds(30)
-            }; 
-            geocodeService = new GeocodeService(httpClient);
-            webViewBridge = new WebViewBridge(MyWebView);
-            routingService = new RoutingService(httpClient);
-            TypeRoute = Environment.GetEnvironmentVariable("TypeRoute");
-            _from = new RoutePoint();
-            _to = new RoutePoint();
+            viewModel = new MainViewModel(MyWebView);
             Loaded += MainWindow_Loaded;
         }
 
@@ -86,120 +61,13 @@ namespace Taxi.WPF
                 switch (typeElement.GetString())
                 {
                     case "ready":
-                        await SetDefaultFromAsync();
+                        await viewModel.SetDefaultFromAsync();
                         break;
 
                     case "destinationSelected":
-                        await SelectKudaAsync(root.GetProperty("address").GetString());
+                        await viewModel.SelectKudaAsync(root.GetProperty("address").GetString());
                         break;
                 }
-            }
-        }
-
-
-        private double Calculate(double routeLengthKm)
-        {
-            return Math.Max(routeLengthKm * DeliveryTariff, MinimumCost);
-        }
-
-
-
-        private async Task SetDefaultFromAsync()
-        {
-            await SetDefaultPointAsync("from", DefaultFromAddress);
-            await SetDefaultPointAsync("to", DefaultToAddress);
-
-            await UpdateRouteAsync();
-        }
-
-        private async Task SetDefaultPointAsync(string which, string address)
-        {
-            RoutePoint point = await geocodeService.GeocodeAsync(address);
-            if (point == null)
-            {
-                Debug.WriteLine("Точка по умолчанию не найдена: " + address);
-                return;
-            }
-
-            await webViewBridge.SetPointAsync(which, point, ref _from, ref _to);
-
-        }
-
-        private async Task UpdateRouteAsync()
-        {
-            if (!RoutingService.IsValidPoint(_from) || !RoutingService.IsValidPoint(_to))
-            {
-                await webViewBridge.ShowNoticeAsync("Сначала выберите обе точки");
-                return;
-            }
-            RouteInfo route = new RouteInfo();
-            switch (TypeRoute)
-            {
-                case "Yandex":
-                    {
-                        route = await routingService.GetRouteAsync(_from, _to);
-
-                        break;
-                    }
-                case "PickPoint":
-                    {
-                        route = await routingService.GetRouteAsync(_from, _to, usePickPoint: true);
-                        break;
-                    }
-            }
-            double price = Calculate(route.DistanceMeters / 1000.0);
-
-            var args = string.Join(",",
-                JsonSerializer.Serialize(route.Coordinates, JsHelper.JsonOptions),
-                JsonSerializer.Serialize(new[] { _from.Lat, _from.Lon }, JsHelper.JsonOptions),
-                JsonSerializer.Serialize(new[] { _to.Lat, _to.Lon }, JsHelper.JsonOptions));
-
-            await webViewBridge.CallJsAsync("showRoute", args);
-
-        }
-
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Debug.WriteLine("hello________________________________");
-            var pos = await GeolocationService.GetLocationAsync();
-            double lat = pos.Coordinate.Point.Position.Latitude;
-            double lon = pos.Coordinate.Point.Position.Longitude;
-
-            if (lat == 0 && lon == 0)
-            {
-                await webViewBridge.ShowNoticeAsync("Местоположение недоступно");
-                return;
-            }
-
-
-
-            await webViewBridge.SetPointAsync("from", new RoutePoint
-            {
-                Lat = lat,
-                Lon = lon,
-                Address = "Моё местоположение"
-            }, ref _from, ref _to);
-
-            await UpdateRouteAsync();
-        }
-
-        private async Task SelectKudaAsync(string address)
-        {
-            try
-            {
-                RoutePoint point = await geocodeService.GeocodeAsync(address);
-                if (point == null)
-                {
-                    await webViewBridge.ShowNoticeAsync("Адрес не найден");
-                    return;
-                }
-
-                await webViewBridge.SetPointAsync("to", point, ref _from, ref _to);
-                await UpdateRouteAsync();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Ошибка геокодера: " + ex);
             }
         }
 
@@ -224,9 +92,16 @@ namespace Taxi.WPF
         //    Debug.WriteLine(responseText);
         //}
 
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.ButtonClickAsync();
+
+        }
+
+
         private async void Window_Closed(object sender, EventArgs e)
         {
-            
+
             await AppCache.Cache.SaveAsync();
         }
     }

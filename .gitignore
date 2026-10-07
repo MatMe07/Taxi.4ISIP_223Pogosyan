@@ -362,3 +362,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Taxi.WPF/.env
+/Taxi.API.Server/.env
+/Taxi.API.Server/.env
