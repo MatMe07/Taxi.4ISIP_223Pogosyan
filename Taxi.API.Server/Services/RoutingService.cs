@@ -85,8 +85,8 @@ namespace Taxi.API.Server.Services
 
         private async Task<RouteInfo> BuildRouteViaMapboxAsync(RoutePoint from, RoutePoint to)
         {
-            from = new RoutePoint { Lat = from.Lon, Lon = from.Lat, Address = from.Address };
-            to = new RoutePoint { Lat = to.Lon, Lon = to.Lat, Address = to.Address };
+            from = new RoutePoint { Lat = from.Lat, Lon = from.Lon, Address = from.Address };
+            to = new RoutePoint { Lat = to.Lat, Lon = to.Lon, Address = to.Address };
             //string coords = $"{ from.Lon.ToString(CultureInfo.InvariantCulture)},{from.Lat.ToString(CultureInfo.InvariantCulture)};" +
             //        $"{to.Lon.ToString(CultureInfo.InvariantCulture)},{to.Lat.ToString(CultureInfo.InvariantCulture)}";
             string coords = $"{FormatCoord(from)};{FormatCoord(to)}";
@@ -104,11 +104,11 @@ namespace Taxi.API.Server.Services
                 !route[0].TryGetProperty("geometry", out var geometry) ||
                 !geometry.TryGetProperty("coordinates", out var coordinates))
                 throw new InvalidOperationException("Маршрут не найден");
-
-            if (!double.TryParse(route[0].GetProperty("duration").ToString(), out double durSec))
+            var dur = route[0].GetProperty("duration").ToString();
+            if (!double.TryParse(dur, CultureInfo.InvariantCulture, out double durSec))
                 throw new InvalidOperationException("time Error");
 
-            if (!double.TryParse(route[0].GetProperty("distance").ToString(), out double durMet))
+            if (!double.TryParse(route[0].GetProperty("distance").ToString(), CultureInfo.InvariantCulture, out double durMet))
                 throw new InvalidOperationException("cost Error");
 
             Debug.WriteLine("cost = " + durSec);

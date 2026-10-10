@@ -38,8 +38,8 @@ namespace Taxi.src.Taxi.Map.Services
             string mode = RoutingMode,
             bool useMapbox = false)
         {
-            string url = $"/getRoute?from_Lat={from.Lat}&from_Lon={from.Lon}&from_Address={from.Address}&" +
-                $"to_Lat={to.Lat}&to_Lon={to.Lon}&to_Address={to.Address}&mode={mode}&useMapbox={useMapbox}";
+            string url = $"/getRoute?from_Lat={from.Lon.ToString(CultureInfo.InvariantCulture)}&from_Lon={from.Lat.ToString(CultureInfo.InvariantCulture)}&from_Address={from.Address}&" +
+                $"to_Lat={to.Lon.ToString(CultureInfo.InvariantCulture)}&to_Lon={to.Lat.ToString(CultureInfo.InvariantCulture)}&to_Address={to.Address}&mode={mode}&useMapbox={useMapbox}";
             var pointInfo = await httpClient.GetFromJsonAsync<RouteInfo>(url);
             return pointInfo;
         }

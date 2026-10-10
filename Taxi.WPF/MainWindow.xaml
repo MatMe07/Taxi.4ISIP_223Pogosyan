@@ -5,16 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Taxi.WPF"
         mc:Ignorable="d"
-        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        Background="WhiteSmoke"
         Title="Taxi App" Height="450" Width="800" Closed="Window_Closed">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Button  Content="Click" Margin="5" Padding="5" HorizontalAlignment="Left" Click="Button_Click">
 
-        </Button>
-        <wv2:WebView2 Name="MyWebView" Grid.Row="1" />
+        <Frame  x:Name="frameMain"/>
+
     </Grid>
 </Window>

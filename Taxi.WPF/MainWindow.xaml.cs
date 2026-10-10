@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 using Taxi.Core.ViewModels;
 using Taxi.src.Taxi.Map;
 using Taxi.src.Taxi.Map.Helpers;
-using Taxi.src.Taxi.Map.Services;
+using Taxi.WPF.Views;
 
 namespace Taxi.WPF
 {
@@ -26,50 +26,22 @@ namespace Taxi.WPF
     public partial class MainWindow : Window
     {
 
-        private MainViewModel viewModel;
+        //private MainViewModel viewModel;
 
         public MainWindow()
         {
             DotEnv.Load();
             InitializeComponent();
-            viewModel = new MainViewModel(MyWebView);
-            Loaded += MainWindow_Loaded;
+            //viewModel = new MainViewModel(MyWebView);
+            //frameMain.Navigate(new MapPage());
+            frameMain.Navigate(new AuthorizationPage());
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            await AppCache.Cache.LoadAsync();
-
-            await MyWebView.EnsureCoreWebView2Async(null);
-            MyWebView.WebMessageReceived += WebView_WebMessageReceived;
-
-            string htmlPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "map.html");
-            Debug.WriteLine(htmlPath);
-
-            MyWebView.CoreWebView2.Navigate(new Uri(htmlPath).AbsoluteUri);
+            //MainWindow_Loaded()
         }
 
-        private async void WebView_WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
-        {
-            using (JsonDocument doc = JsonDocument.Parse(e.TryGetWebMessageAsString()))
-            {
-                JsonElement root = doc.RootElement;
-
-                if (!root.TryGetProperty("type", out JsonElement typeElement))
-                    return;
-
-                switch (typeElement.GetString())
-                {
-                    case "ready":
-                        await viewModel.SetDefaultFromAsync();
-                        break;
-
-                    case "destinationSelected":
-                        await viewModel.SelectKudaAsync(root.GetProperty("address").GetString());
-                        break;
-                }
-            }
-        }
 
         //public async Task PoiskAsync()
         //{
@@ -91,13 +63,6 @@ namespace Taxi.WPF
         //    Debug.WriteLine((int)response.StatusCode);
         //    Debug.WriteLine(responseText);
         //}
-
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            viewModel.ButtonClickAsync();
-
-        }
-
 
         private async void Window_Closed(object sender, EventArgs e)
         {

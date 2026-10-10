@@ -6,9 +6,17 @@
       xmlns:local="clr-namespace:Taxi.src.Taxi.Map"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+              xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+      d:Background="White"
       Title="MapPage">
 
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button  Content="Click" Margin="5" Padding="5" HorizontalAlignment="Left" Click="Button_Click"/>
+        <wv2:WebView2 Name="MyWebView" Grid.Row="1" />
+
     </Grid>
 </Page>

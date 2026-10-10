@@ -1,0 +1,136 @@
+﻿{
+   "CodeGenerationMode": 4,
+   "ContextClassName": "TaxiBaseContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": true,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "Taxi.API.Server",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[client_profile]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[complaint]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[complaint_status]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[complaint_type]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[driver_document]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[driver_document_type]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[driver_payout]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[driver_profile]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[maintenance]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[order]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[order_status]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[payment_method]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[poezdka]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[poezdka_rating]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[role]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[shift]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tariff]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[user]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[vehicle]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[vehicle_class]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[vehicle_document]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[vehicle_document_type]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[waybill]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDatabaseNamesForRoutines": true,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false,
+   "UseT4Split": false
+}
