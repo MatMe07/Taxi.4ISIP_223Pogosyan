@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
+using Taxi.Core.Models.Map;
 using Taxi.src.Taxi.Map.Helpers;
 using Taxi.src.Taxi.Map.Services;
 

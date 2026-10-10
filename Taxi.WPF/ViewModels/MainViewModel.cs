@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
+using Taxi.Core.Models.Map;
 using Taxi.src.Taxi.Map.Helpers;
 using Taxi.src.Taxi.Map.Services;
 
@@ -30,6 +31,7 @@ namespace Taxi.Core.ViewModels
         private RoutePoint _from;
         private RoutePoint _to;
         private WebView2 MyWebView;
+
         public MainViewModel(WebView2 webView)
         {
             MyWebView = webView;
@@ -37,10 +39,13 @@ namespace Taxi.Core.ViewModels
             {
                 BaseAddress = new Uri("http://localhost:5274")
             };
+
             geocodeService = new GeocodeService(httpClient);
             webViewBridge = new WebViewBridge(MyWebView);
             routingService = new RoutingService(httpClient);
+
             TypeRoute = Environment.GetEnvironmentVariable("TypeRoute");
+
             _from = new RoutePoint();
             _to = new RoutePoint();
         }
@@ -83,12 +88,12 @@ namespace Taxi.Core.ViewModels
                 return;
             }
             RouteInfo route = new RouteInfo();
+
             switch (TypeRoute)
             {
                 case "Yandex":
                     {
                         route = await routingService.GetRouteAsync(_from, _to);
-
                         break;
                     }
                 case "Mapbox":
@@ -96,6 +101,7 @@ namespace Taxi.Core.ViewModels
                         route = await routingService.GetRouteAsync(_from, _to, useMapbox: true);
                         break;
                     }
+
             }
             double price = Calculate(route.DistanceMeters / 1000.0);
 

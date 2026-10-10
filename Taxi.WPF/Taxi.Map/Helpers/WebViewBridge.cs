@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 //using Windows.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Wpf;
+using Taxi.Core.Models.Map;
 
 namespace Taxi.src.Taxi.Map.Helpers
 

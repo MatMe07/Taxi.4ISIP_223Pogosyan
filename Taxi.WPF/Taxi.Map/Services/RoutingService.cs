@@ -12,6 +12,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Taxi.Core.Models.Map;
 using Windows.Media.Protection.PlayReady;
 using static System.Net.WebRequestMethods;
 

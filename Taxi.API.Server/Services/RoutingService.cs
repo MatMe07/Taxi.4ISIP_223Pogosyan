@@ -13,7 +13,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Taxi;
+using Taxi.Core.Models.Map;
 using static System.Net.WebRequestMethods;
 
 namespace Taxi.API.Server.Services

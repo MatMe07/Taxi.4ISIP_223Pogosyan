@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Taxi.Core.Models.Map;
 
 namespace Taxi.API.Server.Services
 {

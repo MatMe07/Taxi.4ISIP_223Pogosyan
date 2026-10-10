@@ -77,9 +77,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.HasIndex(e => e.UserId, "UQ__client_p__B9BE370EA48A311D").IsUnique();
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
@@ -105,9 +103,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("complaint");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.AuthorUserId).HasColumnName("author_user_id");
             entity.Property(e => e.ComplaintTypeId).HasColumnName("complaint_type_id");
             entity.Property(e => e.CreatedAt)
@@ -115,12 +111,10 @@ public partial class TaxiBaseContext : DbContext
                 .HasColumnName("created_at");
             entity.Property(e => e.Description)
                 .IsRequired()
-                .HasColumnType("text")
                 .HasColumnName("description");
             entity.Property(e => e.OrderId).HasColumnName("order_id");
             entity.Property(e => e.Resolution)
                 .IsRequired()
-                .HasColumnType("text")
                 .HasColumnName("resolution");
             entity.Property(e => e.ResolvedAt)
                 .HasColumnType("datetime")
@@ -166,9 +160,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("complaint_status");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(255)
@@ -181,9 +173,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("complaint_type");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(255)
@@ -196,9 +186,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("driver_document");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DocNumber)
                 .IsRequired()
                 .HasMaxLength(255)
@@ -238,9 +226,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("driver_document_type");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(255)
@@ -253,9 +239,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("driver_payout");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Amount)
                 .HasColumnType("decimal(18, 0)")
                 .HasColumnName("amount");
@@ -283,9 +267,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.HasIndex(e => e.UserId, "UQ__driver_p__B9BE370E68802EA4").IsUnique();
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DateNaima).HasColumnName("date_naima");
             entity.Property(e => e.ExperienceYears).HasColumnName("experience_years");
             entity.Property(e => e.IsActive).HasColumnName("is_active");
@@ -325,15 +307,12 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("maintenance");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Cost)
                 .HasColumnType("decimal(18, 0)")
                 .HasColumnName("cost");
             entity.Property(e => e.Description)
                 .IsRequired()
-                .HasColumnType("text")
                 .HasColumnName("description");
             entity.Property(e => e.FinishedAt).HasColumnName("finished_at");
             entity.Property(e => e.IsDone).HasColumnName("is_done");
@@ -364,9 +343,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("order");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CancelReason)
                 .HasMaxLength(255)
                 .HasColumnName("cancel_reason");
@@ -377,7 +354,6 @@ public partial class TaxiBaseContext : DbContext
             entity.Property(e => e.ClientId).HasColumnName("client_id");
             entity.Property(e => e.Comment)
                 .IsRequired()
-                .HasColumnType("text")
                 .HasColumnName("comment");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
@@ -443,9 +419,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("order_status");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(255)
@@ -458,9 +432,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("payment_method");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(255)
@@ -473,9 +445,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("poezdka");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DriverEarning)
                 .HasColumnType("decimal(16, 2)")
                 .HasColumnName("driver_earning");
@@ -511,12 +481,9 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("poezdka_rating");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Comment)
                 .IsRequired()
-                .HasColumnType("text")
                 .HasColumnName("comment");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
@@ -548,9 +515,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("role");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(255)
@@ -563,9 +528,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("shift");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ClosedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("closed_at");
@@ -595,9 +558,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("tariff");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BasePrice)
                 .HasColumnType("decimal(16, 2)")
                 .HasColumnName("base_price");
@@ -624,9 +585,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("user");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
@@ -667,9 +626,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("vehicle");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Brand)
                 .IsRequired()
                 .HasMaxLength(255)
@@ -698,9 +655,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("vehicle_class");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(255)
@@ -713,9 +668,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("vehicle_document");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DocNumber)
                 .IsRequired()
                 .HasMaxLength(255)
@@ -756,9 +709,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("vehicle_document_type");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(255)
@@ -771,9 +722,7 @@ public partial class TaxiBaseContext : DbContext
 
             entity.ToTable("waybill");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DepartureTime)
                 .HasColumnType("datetime")
                 .HasColumnName("departure_time");
@@ -782,7 +731,7 @@ public partial class TaxiBaseContext : DbContext
                 .HasColumnName("medcheck_at");
             entity.Property(e => e.MedcheckComment)
                 .IsRequired()
-                .HasColumnType("text")
+                .HasMaxLength(255)
                 .HasColumnName("medcheck_comment");
             entity.Property(e => e.MedcheckResult)
                 .IsRequired()
@@ -799,7 +748,7 @@ public partial class TaxiBaseContext : DbContext
             entity.Property(e => e.StartedAt).HasColumnName("started_at");
             entity.Property(e => e.TechComment)
                 .IsRequired()
-                .HasColumnType("text")
+                .HasMaxLength(255)
                 .HasColumnName("tech_comment");
             entity.Property(e => e.TechStateOk).HasColumnName("tech_state_ok");
 

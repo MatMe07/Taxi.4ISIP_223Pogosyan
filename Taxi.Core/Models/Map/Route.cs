@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Taxi
+namespace Taxi.Core.Models.Map
 {
     public class RoutePoint
     {
