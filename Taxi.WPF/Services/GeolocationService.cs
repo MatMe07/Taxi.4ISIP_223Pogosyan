@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Taxi.WPF.Services;
 using Windows.Devices.Geolocation;
 
-namespace Taxi.src.Taxi.Map.Services
+namespace Taxi.src.Services
 {
     public class GeolocationService
     {

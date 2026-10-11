@@ -13,10 +13,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Taxi.Core.ViewModels;
+using Taxi.WPF.ViewModels;
 using Taxi.src.Taxi.Map;
 using Taxi.src.Taxi.Map.Helpers;
 using Taxi.WPF.Views;
+using Taxi.WPF;
+
 
 namespace Taxi.WPF
 {
@@ -28,13 +30,14 @@ namespace Taxi.WPF
 
         //private MainViewModel viewModel;
 
-        public MainWindow()
+        public MainWindow(AuthorizationPage authorizationPage)
         {
-            DotEnv.Load();
+            //DotEnv.Load();
             InitializeComponent();
             //viewModel = new MainViewModel(MyWebView);
             //frameMain.Navigate(new MapPage());
-            frameMain.Navigate(new AuthorizationPage());
+            frameMain.Navigate(authorizationPage);
+
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -68,6 +71,11 @@ namespace Taxi.WPF
         {
 
             await AppCache.Cache.SaveAsync();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 

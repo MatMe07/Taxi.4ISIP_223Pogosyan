@@ -13,12 +13,11 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Taxi.Core.Models.Map;
-using Windows.Media.Protection.PlayReady;
-using static System.Net.WebRequestMethods;
+using Taxi.WPF.Services.Interfaces;
 
-namespace Taxi.src.Taxi.Map.Services
+namespace Taxi.src.Services
 {
-    internal class RoutingService
+    internal class RoutingService : IRoutingService
     {
         static HttpClient httpClient;
 

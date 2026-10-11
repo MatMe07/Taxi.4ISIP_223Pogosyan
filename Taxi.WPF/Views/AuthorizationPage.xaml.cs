@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Taxi.WPF.ViewModels;
 
 namespace Taxi.WPF.Views
 {
@@ -20,9 +21,10 @@ namespace Taxi.WPF.Views
     /// </summary>
     public partial class AuthorizationPage : Page
     {
-        public AuthorizationPage()
+        public AuthorizationPage(AuthorizationViewModel viewModel)
         {
             InitializeComponent();
+            this.DataContext = viewModel;
         }
     }
 }

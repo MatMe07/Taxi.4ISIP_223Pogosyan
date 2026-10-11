@@ -1,6 +1,7 @@
 ﻿using Microsoft.Web.WebView2.Wpf;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
@@ -8,153 +9,69 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using Taxi.Core.Models.Map;
 using Taxi.src.Taxi.Map.Helpers;
-using Taxi.src.Taxi.Map.Services;
+using Taxi.src.Services;
+using Taxi.WPF.Commands;
 
-namespace Taxi.Core.ViewModels
+namespace Taxi.WPF.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
-
-        private string DefaultFromAddress = "Москва, Льва Толстого, 16";
-        private string DefaultToAddress = "Москва, Льва Толстого, 10";
-        private double DeliveryTariff = 20;
-        private double MinimumCost = 500;
-
-        private GeocodeService geocodeService;
-        private WebViewBridge webViewBridge;
-        private RoutingService routingService;
-        private string TypeRoute;
-        private HttpClient httpClient;
-
-        private RoutePoint _from;
-        private RoutePoint _to;
-        private WebView2 MyWebView;
-
-        public MainViewModel(WebView2 webView)
+        private string btnContent;
+        public string BtnContent
         {
-            MyWebView = webView;
-            httpClient = new HttpClient()
+            get
             {
-                BaseAddress = new Uri("http://localhost:5274")
-            };
-
-            geocodeService = new GeocodeService(httpClient);
-            webViewBridge = new WebViewBridge(MyWebView);
-            routingService = new RoutingService(httpClient);
-
-            TypeRoute = Environment.GetEnvironmentVariable("TypeRoute");
-
-            _from = new RoutePoint();
-            _to = new RoutePoint();
-        }
-
-
-
-        private double Calculate(double routeLengthKm)
-        {
-            return Math.Max(routeLengthKm * DeliveryTariff, MinimumCost);
-        }
-
-
-
-        public async Task SetDefaultFromAsync()
-        {
-            await SetDefaultPointAsync("from", DefaultFromAddress);
-            await SetDefaultPointAsync("to", DefaultToAddress);
-
-            await UpdateRouteAsync();
-        }
-
-        public async Task SetDefaultPointAsync(string which, string address)
-        {
-            RoutePoint point = await geocodeService.GeocodeAsync(address);
-            if (point == null)
-            {
-                Debug.WriteLine("Точка по умолчанию не найдена: " + address);
-                return;
+                return btnContent;
             }
-
-            await webViewBridge.SetPointAsync(which, point, ref _from, ref _to);
-
+            set
+            {
+                btnContent = value;
+                OnPropertyChanged(nameof(BtnContent));
+            }
         }
 
-        private async Task UpdateRouteAsync()
-        {
-            if (!RoutingService.IsValidPoint(_from) || !RoutingService.IsValidPoint(_to))
-            {
-                await webViewBridge.ShowNoticeAsync("Сначала выберите обе точки");
-                return;
-            }
-            RouteInfo route = new RouteInfo();
+        private string thems { get; set; }
+        private List<string> styles { get; set; }
 
-            switch (TypeRoute)
+        private RelayCommand _btnThemsCommand;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public RelayCommand BtnThemsCommand
+        {
+            get
             {
-                case "Yandex":
+                return _btnThemsCommand ??
+                    (_btnThemsCommand = new RelayCommand(obj =>
                     {
-                        route = await routingService.GetRouteAsync(_from, _to);
-                        break;
-                    }
-                case "Mapbox":
-                    {
-                        route = await routingService.GetRouteAsync(_from, _to, useMapbox: true);
-                        break;
-                    }
+                        string style = thems == "light" ? "dark" : "light";
 
-            }
-            double price = Calculate(route.DistanceMeters / 1000.0);
+                        var uri = new Uri("Thems/" + style + ".xaml", UriKind.Relative);
 
-            var args = string.Join(",",
-                JsonSerializer.Serialize(route.Coordinates, JsHelper.JsonOptions),
-                JsonSerializer.Serialize(new[] { _from.Lat, _from.Lon }, JsHelper.JsonOptions),
-                JsonSerializer.Serialize(new[] { _to.Lat, _to.Lon }, JsHelper.JsonOptions));
+                        ResourceDictionary resourceDict = Application.LoadComponent(uri) as ResourceDictionary;
 
-            await webViewBridge.CallJsAsync("showRoute", args);
+                        Application.Current.Resources.Clear();
 
-        }
+                        Application.Current.Resources.MergedDictionaries.Add(resourceDict);
 
-        public async void ButtonClickAsync()
-        {
-            Debug.WriteLine("hello________________________________");
-            var pos = await GeolocationService.GetLocationAsync();
-            double lat = pos.Coordinate.Point.Position.Latitude;
-            double lon = pos.Coordinate.Point.Position.Longitude;
-
-            if (lat == 0 && lon == 0)
-            {
-                await webViewBridge.ShowNoticeAsync("Местоположение недоступно");
-                return;
-            }
-
-            await webViewBridge.SetPointAsync("from", new RoutePoint
-            {
-                Lat = lat,
-                Lon = lon,
-                Address = "Моё местоположение"
-            }, ref _from, ref _to);
-
-            await UpdateRouteAsync();
-        }
-        public async Task SelectKudaAsync(string address)
-        {
-            try
-            {
-                RoutePoint point = await geocodeService.GeocodeAsync(address);
-                if (point == null)
-                {
-                    await webViewBridge.ShowNoticeAsync("Адрес не найден");
-                    return;
-                }
-
-                await webViewBridge.SetPointAsync("to", point, ref _from, ref _to);
-                await UpdateRouteAsync();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Ошибка геокодера: " + ex);
+                        thems = style;
+                        BtnContent = style;
+                    }));
             }
         }
-
+        public MainViewModel() {
+            styles = new List<string> { "light", "dark" };
+            thems = styles[0];
+            BtnContent = styles[0];
+        }
     }
 }

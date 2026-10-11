@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using Taxi.Core.Models.Map;
 using Taxi.src.Taxi.Map.Helpers;
-using Taxi.src.Taxi.Map.Services;
+using Taxi.src.Services;
 
 namespace Taxi.WPF.ViewModels
 {
-    internal class MapViewModel
+    public class MapViewModel
     {
         private string DefaultFromAddress = "Москва, Льва Толстого, 16";
         private string DefaultToAddress = "Москва, Льва Толстого, 10";
@@ -29,14 +29,12 @@ namespace Taxi.WPF.ViewModels
 
         private RoutePoint _from;
         private RoutePoint _to;
-        private WebView2 MyWebView;
-        public MapViewModel(WebView2 webView)
+        private WebView2 MyWebView {  get; set; }
+        public MapViewModel(HttpClient http)
         {
-            MyWebView = webView;
-            httpClient = new HttpClient()
-            {
-                BaseAddress = new Uri("http://localhost:5274")
-            };
+            //MyWebView = webView;
+            var baseAddress = Environment.GetEnvironmentVariable("BaseAddress");
+            httpClient = http;
             geocodeService = new GeocodeService(httpClient);
             webViewBridge = new WebViewBridge(MyWebView);
             routingService = new RoutingService(httpClient);

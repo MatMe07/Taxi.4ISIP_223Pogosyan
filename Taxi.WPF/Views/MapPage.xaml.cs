@@ -15,7 +15,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Taxi.Core.ViewModels;
 using Taxi.WPF.ViewModels;
 
 namespace Taxi.src.Taxi.Map
@@ -30,7 +29,7 @@ namespace Taxi.src.Taxi.Map
         public MapPage()
         {
             InitializeComponent();
-            viewModel = new MapViewModel(MyWebView);
+            //viewModel = new MapViewModel();
             MainWindow_Loaded();
         }
         private async void MainWindow_Loaded()

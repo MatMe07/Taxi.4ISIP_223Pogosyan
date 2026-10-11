@@ -10,10 +10,11 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Taxi.Core.Models.Map;
+using Taxi.WPF.Services.Interfaces;
 
-namespace Taxi.src.Taxi.Map.Services
+namespace Taxi.src.Services
 {
-    public class GeocodeService
+    public class GeocodeService : IGeocodeService
     {
         private static readonly TimeSpan CacheExpiration = TimeSpan.FromHours(24);
 

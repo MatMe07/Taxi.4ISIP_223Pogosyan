@@ -5,26 +5,39 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Taxi.WPF.ViewModels"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      d:Background="WhiteSmoke"
+      d:DesignHeight="450" d:DesignWidth="250" Width="250"
       Title="AuthorizationPage">
-    <Page.DataContext>
+    <!--<Page.DataContext>
         <local:AuthorizationViewModel/>
-    </Page.DataContext>
-    <Grid Width="250">
-        <Border Background="White">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Email" Grid.Row="0"/>
-                <TextBox Text="{Binding txtEmailLogin}" Grid.Row="1"/>
-                <TextBlock Text="Пароль" Grid.Row="2"/>
-                <TextBox Text="{Binding txtEmailLogin}" Grid.Row="3"/>
-            </Grid>
-        </Border>
+    </Page.DataContext>-->
+    <Grid>
+        <TabControl>
+            <TabItem Header="Войти">
+
+                <Border Background="White">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Login" Grid.Row="0"/>
+                        <TextBox Text="{Binding txtLoginLogin}" Grid.Row="1"/>
+
+                        <TextBlock Text="Пароль" Grid.Row="2" Margin="0 15 0 0"/>
+                        <TextBox Text="{Binding txtPasswordLogin}" Grid.Row="3"/>
+
+
+                        <Button Command="{Binding BtnSendLogin}" Content="Войти" Grid.Row="4"
+                        HorizontalAlignment="Center" Padding="5" Width="100" Margin="15"/>
+                    </Grid>
+                </Border>
+            </TabItem>
+            <TabItem Header="Регистрация">
+                
+            </TabItem>
+        </TabControl>
     </Grid>
 </Page>

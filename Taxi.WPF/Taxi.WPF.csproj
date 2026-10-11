@@ -17,6 +17,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="dotenv.net" Version="4.2.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.20" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.20" />
 		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4258.31" />
 		<PackageReference Include="System.Net.Http.WinHttpHandler" Version="10.0.12" />
 	</ItemGroup>

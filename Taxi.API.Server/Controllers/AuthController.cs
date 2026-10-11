@@ -67,11 +67,10 @@ namespace Taxi.API.Server.Controllers
             if (token == null)
                 return Challenge();
 
-            return Ok(new
-            {
-                access_token = token,
-                token_type = "Bearer"
-            });
+            return Ok(new LoginResponse(
+                access_token:token,
+                token_type:"Bearer"
+            ));
         }
 
     }
