@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -26,10 +27,11 @@ namespace Taxi.src.Taxi.Map
     {
         private MapViewModel viewModel;
 
-        public MapPage()
+        public MapPage(MapViewModel viewModel)
         {
             InitializeComponent();
-            //viewModel = new MapViewModel();
+            this.viewModel = viewModel;
+            this.viewModel.CallJsAsync = CallJsAsync;
             MainWindow_Loaded();
         }
         private async void MainWindow_Loaded()
@@ -43,6 +45,14 @@ namespace Taxi.src.Taxi.Map
             Debug.WriteLine(htmlPath);
 
             MyWebView.CoreWebView2.Navigate(new Uri(htmlPath).AbsoluteUri);
+        }
+
+        public Task<string> CallJsAsync(string function, string args = "")
+        {
+            if (MyWebView?.CoreWebView2 == null)
+                return null;
+
+            return MyWebView.CoreWebView2.ExecuteScriptAsync($"{function}({args})");
         }
 
         private async void WebView_WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)

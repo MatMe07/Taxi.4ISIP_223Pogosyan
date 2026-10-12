@@ -22,25 +22,40 @@ namespace Taxi.WPF.ViewModels
         private double MinimumCost = 500;
 
         private GeocodeService geocodeService;
-        private WebViewBridge webViewBridge;
         private RoutingService routingService;
         private string TypeRoute;
         private HttpClient httpClient;
 
+        public Func<string, string, Task<string>> CallJsAsync {  get; set; }
+
         private RoutePoint _from;
         private RoutePoint _to;
-        private WebView2 MyWebView {  get; set; }
+        public WebView2 MyWebView {  get; set; }
         public MapViewModel(HttpClient http)
         {
             //MyWebView = webView;
             var baseAddress = Environment.GetEnvironmentVariable("BaseAddress");
             httpClient = http;
             geocodeService = new GeocodeService(httpClient);
-            webViewBridge = new WebViewBridge(MyWebView);
             routingService = new RoutingService(httpClient);
             TypeRoute = Environment.GetEnvironmentVariable("TypeRoute");
             _from = new RoutePoint();
             _to = new RoutePoint();
+        }
+
+        public async Task ShowNoticeAsync(string message)
+        {
+            await CallJsAsync("showNotice", JsHelper.JsStr(message));
+        }
+
+        public Task SetPointAsync(string which, RoutePoint point, ref RoutePoint _from, ref RoutePoint _to)
+        {
+            if (which == "from")
+                _from = point;
+            else
+                _to = point;
+            var jsArgs = $"{JsHelper.JsStr(which)},{JsHelper.JsNum(point.Lat)},{JsHelper.JsNum(point.Lon)},{JsHelper.JsStr(point.Address)}";
+            return CallJsAsync("setPoint", jsArgs);
         }
 
 
@@ -69,7 +84,7 @@ namespace Taxi.WPF.ViewModels
                 return;
             }
 
-            await webViewBridge.SetPointAsync(which, point, ref _from, ref _to);
+            await SetPointAsync(which, point, ref _from, ref _to);
 
         }
 
@@ -77,7 +92,7 @@ namespace Taxi.WPF.ViewModels
         {
             if (!RoutingService.IsValidPoint(_from) || !RoutingService.IsValidPoint(_to))
             {
-                await webViewBridge.ShowNoticeAsync("Сначала выберите обе точки");
+                await ShowNoticeAsync("Сначала выберите обе точки");
                 return;
             }
             RouteInfo route = new RouteInfo();
@@ -102,7 +117,7 @@ namespace Taxi.WPF.ViewModels
                 JsonSerializer.Serialize(new[] { _from.Lat, _from.Lon }, JsHelper.JsonOptions),
                 JsonSerializer.Serialize(new[] { _to.Lat, _to.Lon }, JsHelper.JsonOptions));
 
-            await webViewBridge.CallJsAsync("showRoute", args);
+            await CallJsAsync("showRoute", args);
 
         }
 
@@ -115,11 +130,11 @@ namespace Taxi.WPF.ViewModels
 
             if (lat == 0 && lon == 0)
             {
-                await webViewBridge.ShowNoticeAsync("Местоположение недоступно");
+                await ShowNoticeAsync("Местоположение недоступно");
                 return;
             }
 
-            await webViewBridge.SetPointAsync("from", new RoutePoint
+            await SetPointAsync("from", new RoutePoint
             {
                 Lat = lat,
                 Lon = lon,
@@ -135,11 +150,11 @@ namespace Taxi.WPF.ViewModels
                 RoutePoint point = await geocodeService.GeocodeAsync(address);
                 if (point == null)
                 {
-                    await webViewBridge.ShowNoticeAsync("Адрес не найден");
+                    await ShowNoticeAsync("Адрес не найден");
                     return;
                 }
 
-                await webViewBridge.SetPointAsync("to", point, ref _from, ref _to);
+                await SetPointAsync("to", point, ref _from, ref _to);
                 await UpdateRouteAsync();
             }
             catch (Exception ex)

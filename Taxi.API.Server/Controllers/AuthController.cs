@@ -45,15 +45,9 @@ namespace Taxi.API.Server.Controllers
             {
                 return Conflict(new { message = "Логин уже занят" });
             }
-            string fio = $"{user.FirstName}{user.MiddleName}{user.LastName}";
+            string fio = $"{user.FirstName} {user.MiddleName} {user.LastName}";
 
-            return Created($"/api/users/{user.Id}", new
-            {
-                user.Id,
-                user.Login,
-                fio,
-                user.RoleId
-            });
+            return Ok(new RegisterResponse(user.Login, fio));
         }
 
 

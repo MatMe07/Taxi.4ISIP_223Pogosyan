@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using Taxi.Core.Models.Auth;
+using Taxi.src.Services;
+using Taxi.src.Taxi.Map;
 using Taxi.WPF.Services;
 using Taxi.WPF.Services.Interfaces;
 using Taxi.WPF.ViewModels;
@@ -34,12 +36,18 @@ namespace Taxi.WPF
             });
 
             services.AddHttpClient<IAuthService, AuthService>();
+            services.AddHttpClient<IGeocodeService, GeocodeService>();
+            services.AddHttpClient<IRoutingService, RoutingService>();
 
 
 
 
             services.AddTransient<AuthorizationViewModel>();
             services.AddTransient<AuthorizationPage>();
+
+            services.AddTransient<MapViewModel>();
+            services.AddTransient<MapPage>();
+            
 
 
 

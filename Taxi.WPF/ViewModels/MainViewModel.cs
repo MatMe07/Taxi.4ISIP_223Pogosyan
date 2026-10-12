@@ -55,7 +55,7 @@ namespace Taxi.WPF.ViewModels
                     {
                         string style = thems == "light" ? "dark" : "light";
 
-                        var uri = new Uri("Thems/" + style + ".xaml", UriKind.Relative);
+                        var uri = new Uri("Styles/Thems/" + style + ".xaml", UriKind.Relative);
 
                         ResourceDictionary resourceDict = Application.LoadComponent(uri) as ResourceDictionary;
 

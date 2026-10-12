@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Accessibility;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,16 @@ namespace Taxi.WPF.Services
             var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
             if (result == null)
                 throw new InvalidCastException("LoginResponse error");
+            return result;
+        }
+
+        public async Task<RegisterResponse> RegisterNewUserAsync(RegisterRequest registerRequest)
+        {
+            var response = await _http.PostAsJsonAsync("api/auth/register", registerRequest);
+            response.EnsureSuccessStatusCode();
+            var result = await response.Content.ReadFromJsonAsync<RegisterResponse>();
+            if (result == null)
+                throw new InvalidCastException("RegisterNewUser error");
             return result;
         }
 

@@ -30,19 +30,14 @@ namespace Taxi.WPF
 
         //private MainViewModel viewModel;
 
-        public MainWindow(AuthorizationPage authorizationPage)
+        public MainWindow(AuthorizationPage authorizationPage, MapPage mapPage)
         {
             //DotEnv.Load();
             InitializeComponent();
             //viewModel = new MainViewModel(MyWebView);
-            //frameMain.Navigate(new MapPage());
+            //frameMain.Navigate(mapPage);
             frameMain.Navigate(authorizationPage);
 
-        }
-
-        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            //MainWindow_Loaded()
         }
 
 

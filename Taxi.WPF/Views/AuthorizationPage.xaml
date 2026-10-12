@@ -23,20 +23,65 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Login" Grid.Row="0"/>
-                        <TextBox Text="{Binding txtLoginLogin}" Grid.Row="1"/>
+                        <TextBlock Text="Логин" Style="{DynamicResource TextBlockStyle}" Grid.Row="0"/>
+                        <TextBox Text="{Binding txtLoginLogin}" Style="{DynamicResource TextBoxStyle}" Grid.Row="1"/>
 
-                        <TextBlock Text="Пароль" Grid.Row="2" Margin="0 15 0 0"/>
-                        <TextBox Text="{Binding txtPasswordLogin}" Grid.Row="3"/>
+                        <TextBlock Text="Пароль" Style="{DynamicResource TextBlockStyle}" Grid.Row="2" Margin="0 15 0 0"/>
+                        <PasswordBox PasswordChar="{Binding txtPasswordLogin}"  Style="{DynamicResource PasswordBoxStyle}" Grid.Row="3"/>
 
 
-                        <Button Command="{Binding BtnSendLogin}" Content="Войти" Grid.Row="4"
+                        <Button Command="{Binding BtnSendLogin}"  Style="{DynamicResource ButtonStyle}" Content="Войти" Grid.Row="4"
                         HorizontalAlignment="Center" Padding="5" Width="100" Margin="15"/>
                     </Grid>
                 </Border>
             </TabItem>
             <TabItem Header="Регистрация">
-                
+
+                <Border Background="White">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Логин" Grid.Row="0"/>
+                        <TextBox Text="{Binding txtLoginRegister}" Grid.Row="1"/>
+
+                        <TextBlock Text="Имя" Grid.Row="2" Margin="0 15 0 0"/>
+                        <TextBox Text="{Binding txtFirstNameRegister}" Grid.Row="3"/>
+
+                        <TextBlock Text="Фамилия" Grid.Row="4" Margin="0 15 0 0"/>
+                        <TextBox Text="{Binding txtLastNameRegister}" Grid.Row="5"/>
+
+                        <TextBlock Text="Отчество" Grid.Row="6" Margin="0 15 0 0"/>
+                        <TextBox Text="{Binding txtMiddleRegister}" Grid.Row="7"/>
+
+                        <TextBlock Text="Почта" Grid.Row="8" Margin="0 15 0 0"/>
+                        <TextBox Text="{Binding txtEmailRegister}" Grid.Row="9"/>
+
+                        <TextBlock Text="Пароль" Grid.Row="10" Margin="0 15 0 0"/>
+                        <TextBox Text="{Binding txtPasswordRegister}" Grid.Row="11"/>
+                        
+                        <TextBlock Text="Подтвердите пароль" Grid.Row="12" Margin="0 15 0 0"/>
+                        <TextBox Text="{Binding txtConfirmPasswordRegister}" Grid.Row="13"/>
+
+
+                        <Button Command="{Binding BtnSendRegister}" Style="{DynamicResource ButtonStyle}" Content="Зарегистрироваться" Grid.Row="14"
+                        HorizontalAlignment="Center" Padding="5" Width="125" Margin="15"/>
+                    </Grid>
+                </Border>
             </TabItem>
         </TabControl>
     </Grid>
