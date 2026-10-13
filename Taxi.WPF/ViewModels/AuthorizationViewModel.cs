@@ -9,6 +9,7 @@ using System.Windows;
 using Taxi.Core.Models.Auth;
 using Taxi.WPF.Commands;
 using Taxi.WPF.Helpers;
+using Taxi.WPF.Models;
 using Taxi.WPF.Services;
 using Taxi.WPF.Services.Interfaces;
 
@@ -33,7 +34,7 @@ namespace Taxi.WPF.ViewModels
         public string txtFirstNameRegister { get; set; }
         public string txtLastNameRegister { get; set; }
         public string txtMiddleRegister { get; set; }
-        public string txtEmailRegister { get; set; }
+        public string txtPhoneRegister { get; set; }
         public string txtPasswordRegister { get; set; }
         public string txtConfirmPasswordRegister { get; set; }
 
@@ -48,7 +49,7 @@ namespace Taxi.WPF.ViewModels
                     {
                         if (!StrHelper.CheckTxt(txtLoginLogin) || !StrHelper.CheckTxt(txtPasswordLogin))
                         {
-                            MessageBox.Show("Необходимо ввести к");
+                            MessageBox.Show("Необходимо заполнить все поля");
                             return;
                         }
                         var userRequest = new LoginRequest(txtLoginLogin, txtPasswordLogin);
@@ -58,9 +59,13 @@ namespace Taxi.WPF.ViewModels
                             MessageBox.Show("Такого пользователя нет");
                             return;
                         }
+                        AppSettings.Instance.LoginUser = txtLoginRegister;
+                        AppSettings.Instance.LoginResponse = result;
                     }));
             }
         }
+
+
         public RelayCommand BtnSendRegister
         {
             get
@@ -73,26 +78,34 @@ namespace Taxi.WPF.ViewModels
                             || !StrHelper.CheckTxt(txtLastNameRegister)
                             || !StrHelper.CheckTxt(txtFirstNameRegister)
                             || !StrHelper.CheckTxt(txtMiddleRegister)
-                            || !StrHelper.CheckTxt(txtEmailRegister)
+                            || !StrHelper.CheckTxt(txtPhoneRegister)
                             || !StrHelper.CheckTxt(txtConfirmPasswordRegister)
                             )
                         {
-                            MessageBox.Show("Необходимо ввести к");
+                            MessageBox.Show("Необходимо заполнить все поля");
                             return;
                         }
-                        if (txtConfirmPasswordRegister != txtPasswordRegister)
+
+
+                        if (string.Equals(txtConfirmPasswordRegister, txtPasswordRegister, StringComparison.Ordinal))
                         {
                             MessageBox.Show("Пароли не совпадают");
                             return;
                         }
+
+
                         var newUserReguest = new RegisterRequest(txtLoginRegister, txtPasswordRegister, txtLastNameRegister, 
-                            txtFirstNameRegister, txtMiddleRegister, txtEmailRegister);
+                            txtFirstNameRegister, txtMiddleRegister, txtPhoneRegister);
+
                         var result = await _authSerivce.RegisterNewUserAsync(newUserReguest);
+
                         if (result == null)
                         {
                             MessageBox.Show("Пользователь с таким логином уже зарегистрирован!");
                             return;
                         }
+                        AppSettings.Instance.LoginUser = txtLoginRegister;
+                        AppSettings.Instance.RegisterResponse = result;
                     }));
             }
         }

@@ -26,5 +26,30 @@ namespace Taxi.WPF.Views
             InitializeComponent();
             this.DataContext = viewModel;
         }
+
+
+        private void PasswordBoxConfirm_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext != null)
+            {
+                ((AuthorizationViewModel)this.DataContext).txtConfirmPasswordRegister = ((PasswordBox)sender).Password;
+            }
+        }
+
+        private void PasswordBoxRegister_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext != null)
+            {
+                ((AuthorizationViewModel)this.DataContext).txtPasswordRegister = ((PasswordBox)sender).Password;
+            }
+        }
+
+        private void PasswordBoxLogin_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext != null)
+            {
+                ((AuthorizationViewModel)this.DataContext).txtPasswordLogin = ((PasswordBox)sender).Password;
+            }
+        }
     }
 }

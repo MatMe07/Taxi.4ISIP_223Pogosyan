@@ -5,16 +5,18 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Taxi.WPF.ViewModels"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="250" Width="250"
+      d:Background="White"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      d:DesignHeight="450" d:DesignWidth="400" Width="400"
       Title="AuthorizationPage">
     <!--<Page.DataContext>
         <local:AuthorizationViewModel/>
     </Page.DataContext>-->
     <Grid>
-        <TabControl>
+        <TabControl Padding="10 0">
             <TabItem Header="Войти">
 
-                <Border Background="White">
+                <Border Padding="0 0 10 0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
@@ -23,65 +25,60 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Логин" Style="{DynamicResource TextBlockStyle}" Grid.Row="0"/>
-                        <TextBox Text="{Binding txtLoginLogin}" Style="{DynamicResource TextBoxStyle}" Grid.Row="1"/>
+                        <TextBox Text="{Binding txtLoginLogin}" materialDesign:HintAssist.Hint="Логин"
+                                 Style="{DynamicResource AppTextBox}" Grid.Row="1"/>
 
-                        <TextBlock Text="Пароль" Style="{DynamicResource TextBlockStyle}" Grid.Row="2" Margin="0 15 0 0"/>
-                        <PasswordBox PasswordChar="{Binding txtPasswordLogin}"  Style="{DynamicResource PasswordBoxStyle}" Grid.Row="3"/>
+                        <PasswordBox materialDesign:HintAssist.Hint="Пароль"
+                                     Style="{DynamicResource AppPasswordBox}" Grid.Row="2" PasswordChanged="PasswordBoxLogin_PasswordChanged"/>
 
 
-                        <Button Command="{Binding BtnSendLogin}"  Style="{DynamicResource ButtonStyle}" Content="Войти" Grid.Row="4"
-                        HorizontalAlignment="Center" Padding="5" Width="100" Margin="15"/>
+                        <Button Command="{Binding BtnSendLogin}"  Style="{DynamicResource buttonBased}" Content="Войти" Grid.Row="3" Margin="0 10"/>
                     </Grid>
                 </Border>
             </TabItem>
             <TabItem Header="Регистрация">
 
-                <Border Background="White">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Логин" Grid.Row="0"/>
-                        <TextBox Text="{Binding txtLoginRegister}" Grid.Row="1"/>
+                <ScrollViewer>
+                    <Border Padding="0 0 10 0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBox Text="{Binding txtLoginRegister}" materialDesign:HintAssist.Hint="Логин"
+                                 Style="{DynamicResource AppTextBox}" Grid.Row="0"/>
 
-                        <TextBlock Text="Имя" Grid.Row="2" Margin="0 15 0 0"/>
-                        <TextBox Text="{Binding txtFirstNameRegister}" Grid.Row="3"/>
+                            <TextBox Text="{Binding txtFirstNameRegister}" materialDesign:HintAssist.Hint="Имя"
+                                 Style="{DynamicResource AppTextBox}" Grid.Row="1"/>
 
-                        <TextBlock Text="Фамилия" Grid.Row="4" Margin="0 15 0 0"/>
-                        <TextBox Text="{Binding txtLastNameRegister}" Grid.Row="5"/>
+                            <TextBox Text="{Binding txtLastNameRegister}" materialDesign:HintAssist.Hint="Фамилия"
+                                 Style="{DynamicResource AppTextBox}" Grid.Row="2"/>
 
-                        <TextBlock Text="Отчество" Grid.Row="6" Margin="0 15 0 0"/>
-                        <TextBox Text="{Binding txtMiddleRegister}" Grid.Row="7"/>
+                            <TextBox Text="{Binding txtMiddleRegister}" materialDesign:HintAssist.Hint="Отчество"
+                                 Style="{DynamicResource AppTextBox}" Grid.Row="3"/>
 
-                        <TextBlock Text="Почта" Grid.Row="8" Margin="0 15 0 0"/>
-                        <TextBox Text="{Binding txtEmailRegister}" Grid.Row="9"/>
+                            <TextBox Text="{Binding txtPhoneRegister}" materialDesign:HintAssist.Hint="Телефон"
+                                 Style="{DynamicResource AppTextBox}" Grid.Row="4"/>
 
-                        <TextBlock Text="Пароль" Grid.Row="10" Margin="0 15 0 0"/>
-                        <TextBox Text="{Binding txtPasswordRegister}" Grid.Row="11"/>
-                        
-                        <TextBlock Text="Подтвердите пароль" Grid.Row="12" Margin="0 15 0 0"/>
-                        <TextBox Text="{Binding txtConfirmPasswordRegister}" Grid.Row="13"/>
+                            <PasswordBox   Style="{DynamicResource AppPasswordBox}" materialDesign:HintAssist.Hint="Пароль"
+                                  Grid.Row="5" PasswordChanged="PasswordBoxRegister_PasswordChanged"/>
+
+                            <PasswordBox   Style="{DynamicResource AppPasswordBox}" materialDesign:HintAssist.Hint="Подтверждение пароля"
+                                  Grid.Row="6" PasswordChanged="PasswordBoxConfirm_PasswordChanged"/>
 
 
-                        <Button Command="{Binding BtnSendRegister}" Style="{DynamicResource ButtonStyle}" Content="Зарегистрироваться" Grid.Row="14"
-                        HorizontalAlignment="Center" Padding="5" Width="125" Margin="15"/>
-                    </Grid>
-                </Border>
+
+                            <Button Command="{Binding BtnSendRegister}" Margin="0 10 0 15" Style="{DynamicResource buttonBased}"  Content="Зарегистрироваться" Grid.Row="7" />
+                        </Grid>
+
+                    </Border>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
     </Grid>

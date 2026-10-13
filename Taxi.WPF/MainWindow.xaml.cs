@@ -1,23 +1,6 @@
-﻿using dotenv.net;
-using Microsoft.Web.WebView2.Core;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Taxi.WPF.ViewModels;
+﻿using System.Windows;
 using Taxi.src.Taxi.Map;
-using Taxi.src.Taxi.Map.Helpers;
 using Taxi.WPF.Views;
-using Taxi.WPF;
 
 
 namespace Taxi.WPF
@@ -64,14 +47,9 @@ namespace Taxi.WPF
 
         private async void Window_Closed(object sender, EventArgs e)
         {
-
             await AppCache.Cache.SaveAsync();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 
 }

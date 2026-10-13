@@ -1,39 +1,18 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    >
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
     <ResourceDictionary.MergedDictionaries>
+        <materialDesign:BundledTheme BaseTheme="Light"
+                                     PrimaryColor="Blue"
+                                     SecondaryColor="Blue"/>
+        
         <ResourceDictionary Source="/Styles/BasedOnElement/Button.xaml"/>
         <ResourceDictionary Source="/Styles/BasedOnElement/TextBox.xaml"/>
         <ResourceDictionary Source="/Styles/BasedOnElement/TextBlock.xaml"/>
         <ResourceDictionary Source="/Styles/BasedOnElement/PasswordBox.xaml"/>
+        <ResourceDictionary Source="/Styles/Thems/ColorsLight.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-    
-    
-    <SolidColorBrush x:Key="blackBlue" Color="#040521"/>
-    <SolidColorBrush x:Key="nembogoBlue" Color="#081D56"/>
-    <SolidColorBrush x:Key="lightBlue" Color="#62AAE5"/>
-    <SolidColorBrush x:Key="taxiColor" Color="#F59A2F"/>
-    
-    <Style x:Key="TextBlockStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource textBlockBased}">
-        <Setter Property="Background" Value="White" />
-        <Setter Property="Foreground" Value="Gray" />
-    </Style>
-    <Style x:Key="WindowStyle" TargetType="Window">
-        <Setter Property="Background" Value="White" />
-    </Style>
-    <Style x:Key="ButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource buttonBased }">
-        <Setter Property="Background" Value="{StaticResource taxiColor}" />
-        <Setter Property="Foreground" Value="White" />
-        <Setter Property="BorderBrush" Value="Transparent" />
 
-    </Style>
-
-    <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource textBoxBased}">
-        
-    </Style>
-    <Style x:Key="PasswordBoxStyle" TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource passwordBoxBased}">
-        
-    </Style>
 
 </ResourceDictionary>

@@ -589,10 +589,6 @@ public partial class TaxiBaseContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
-            entity.Property(e => e.Email)
-                .IsRequired()
-                .HasMaxLength(255)
-                .HasColumnName("email");
             entity.Property(e => e.FirstName)
                 .IsRequired()
                 .HasMaxLength(255)
@@ -612,6 +608,9 @@ public partial class TaxiBaseContext : DbContext
             entity.Property(e => e.PasswordHashe)
                 .IsRequired()
                 .HasColumnName("passwordHashe");
+            entity.Property(e => e.Phone)
+                .HasMaxLength(20)
+                .HasColumnName("phone");
             entity.Property(e => e.RoleId).HasColumnName("role_id");
 
             entity.HasOne(d => d.Role).WithMany(p => p.Users)

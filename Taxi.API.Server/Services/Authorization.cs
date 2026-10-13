@@ -41,7 +41,7 @@ namespace Taxi.API.Server.Services
                 LastName = request.lastName,
                 FirstName = request.firstName,
                 MiddleName = request.middleName,
-                Email = request.email,
+                Phone = request.phone,
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true
             };

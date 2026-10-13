@@ -34,8 +34,8 @@ namespace Taxi.API.Server.Controllers
             if (string.IsNullOrWhiteSpace(request.password))
                 return BadRequest(new { message = "Пароль обязателен" });
 
-            if (string.IsNullOrWhiteSpace(request.email))
-                return BadRequest(new { message = "Email обязателен" });
+            if (string.IsNullOrWhiteSpace(request.phone))
+                return BadRequest(new { message = "Phone обязателен" });
 
             if (string.IsNullOrWhiteSpace(request.lastName) || string.IsNullOrWhiteSpace(request.middleName) || string.IsNullOrWhiteSpace(request.firstName))
                 return BadRequest(new { message = "ФИО обязателен" });
