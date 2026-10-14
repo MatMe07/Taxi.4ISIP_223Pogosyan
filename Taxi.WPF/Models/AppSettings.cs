@@ -22,7 +22,6 @@ namespace Taxi.WPF.Models
 
         public string Theme { get; set; } = "Light";
         public string LoginUser { get; set; } = string.Empty;
-        public RegisterResponse? RegisterResponse { get; set; }
         public LoginResponse? LoginResponse { get; set; }
 
         public DateTimeOffset LastSessionDate { get; set; }

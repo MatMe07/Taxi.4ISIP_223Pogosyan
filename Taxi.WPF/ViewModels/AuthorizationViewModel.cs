@@ -2,16 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Taxi.Core.Models.Auth;
 using Taxi.WPF.Commands;
 using Taxi.WPF.Helpers;
 using Taxi.WPF.Models;
 using Taxi.WPF.Services;
 using Taxi.WPF.Services.Interfaces;
+using Windows.Devices.Usb;
 
 namespace Taxi.WPF.ViewModels
 {
@@ -25,20 +29,123 @@ namespace Taxi.WPF.ViewModels
             _authSerivce = (AuthService?)authService;
         }
 
-        public string txtLoginLogin {  get; set; }
+        public Action ClearPasswords;
+
+
+        private Guid _captchaId;
+        private string _txtLoginLogin;
+        public string txtLoginLogin
+        {
+            get { return _txtLoginLogin; }
+            set
+            {
+                _txtLoginLogin = value;
+                OnPropertyChanged(nameof(txtLoginLogin));
+            }
+        }
         public string txtPasswordLogin { get; set; }
 
         private RelayCommand _btnSendLogin;
 
-        public string txtLoginRegister { get; set; }
-        public string txtFirstNameRegister { get; set; }
-        public string txtLastNameRegister { get; set; }
-        public string txtMiddleRegister { get; set; }
-        public string txtPhoneRegister { get; set; }
+
+
+
+        private string _txtLoginRegister;
+        public string txtLoginRegister
+        {
+            get { return _txtLoginRegister; }
+            set
+            {
+                _txtLoginRegister = value;
+                OnPropertyChanged(nameof(txtLoginRegister));
+            }
+        }
+
+        private string _txtFirstNameRegister;
+        public string txtFirstNameRegister
+        {
+            get { return _txtFirstNameRegister; }
+            set
+            {
+                _txtFirstNameRegister = value;
+                OnPropertyChanged(nameof(txtFirstNameRegister));
+            }
+        }
+
+        private string _txtLastNameRegister;
+        public string txtLastNameRegister
+        {
+            get { return _txtLastNameRegister; }
+            set
+            {
+                _txtLastNameRegister = value;
+                OnPropertyChanged(nameof(txtLastNameRegister));
+            }
+        }
+
+        private string _txtMiddleRegister;
+        public string txtMiddleRegister
+        {
+            get { return _txtMiddleRegister; }
+            set
+            {
+                _txtMiddleRegister = value;
+                OnPropertyChanged(nameof(txtMiddleRegister));
+            }
+        }
+
+        private string _txtPhoneRegister;
+        public string txtPhoneRegister
+        {
+            get { return _txtPhoneRegister; }
+            set
+            {
+                _txtPhoneRegister = value;
+                OnPropertyChanged(nameof(txtPhoneRegister));
+            }
+        }
         public string txtPasswordRegister { get; set; }
-        public string txtConfirmPasswordRegister { get; set; }
+        
+        public string txtConfirmPasswordRegister {  get; set; }
 
         private RelayCommand _btnSendRegister;
+
+
+        private bool _IsCaptchaVisible = false;
+        public bool IsCaptchaVisible
+        {
+            get { return _IsCaptchaVisible; }
+
+            set
+            {
+                if (_IsCaptchaVisible != value)
+                {
+                    _IsCaptchaVisible = value;
+                    OnPropertyChanged(nameof(IsCaptchaVisible));
+                }
+            }
+        }
+        private string _txtCaptchaLogin = "";
+        public string txtCaptchaLogin
+        {
+            get { return _txtCaptchaLogin; }
+            set
+            {
+                _txtCaptchaLogin = value;
+                OnPropertyChanged(nameof(txtCaptchaLogin));
+            }
+        }
+
+        private ImageSource _captchaImage;
+        public ImageSource CaptchaImage
+        {
+            get => _captchaImage;
+            set
+            {
+                _captchaImage = value;
+                OnPropertyChanged(nameof(CaptchaImage));
+            }
+        }
 
         public RelayCommand BtnSendLogin
         {
@@ -52,14 +159,44 @@ namespace Taxi.WPF.ViewModels
                             MessageBox.Show("Необходимо заполнить все поля");
                             return;
                         }
-                        var userRequest = new LoginRequest(txtLoginLogin, txtPasswordLogin);
-                        var result = await _authSerivce.LoginUserAsync(userRequest);
-                        if (result == null)
+
+                        var userRequest = new LoginRequest
                         {
-                            MessageBox.Show("Такого пользователя нет");
-                            return;
+                            login = txtLoginLogin,
+                            password = txtPasswordLogin,
+                            captchaId = _captchaId,
+                            captchaText = txtCaptchaLogin
+                        };
+                        var result = await _authSerivce.LoginUserAsync(userRequest);
+
+                        if (!result.IsSuccess)
+                        {
+                            MessageBox.Show(result.message);
+                            _captchaId = result.CaptchaId;
+                            if (result.IsCaptchaRequired)
+                            {
+                                CaptchaImage = null;
+                                byte[] imgBytes = Convert.FromBase64String(result.CaptchaImageBase64);
+                                using var ms = new MemoryStream(imgBytes);
+
+                                var bimap = new BitmapImage();
+                                bimap.BeginInit();
+                                bimap.StreamSource = ms;
+                                bimap.CacheOption = BitmapCacheOption.OnLoad;
+                                bimap.EndInit();
+
+                                CaptchaImage = bimap;
+
+                                IsCaptchaVisible = true;
+                                return;
+                            }
                         }
-                        AppSettings.Instance.LoginUser = txtLoginRegister;
+
+                        IsCaptchaVisible = false;
+                        CaptchaImage = null;
+
+
+                        AppSettings.Instance.LoginUser = txtLoginLogin;
                         AppSettings.Instance.LoginResponse = result;
                     }));
             }
@@ -87,7 +224,7 @@ namespace Taxi.WPF.ViewModels
                         }
 
 
-                        if (string.Equals(txtConfirmPasswordRegister, txtPasswordRegister, StringComparison.Ordinal))
+                        if (!string.Equals(txtConfirmPasswordRegister, txtPasswordRegister, StringComparison.Ordinal))
                         {
                             MessageBox.Show("Пароли не совпадают");
                             return;
@@ -104,9 +241,28 @@ namespace Taxi.WPF.ViewModels
                             MessageBox.Show("Пользователь с таким логином уже зарегистрирован!");
                             return;
                         }
-                        AppSettings.Instance.LoginUser = txtLoginRegister;
-                        AppSettings.Instance.RegisterResponse = result;
+
+                        SelectItemTabControl = 0;
+                        txtLoginLogin = txtLoginRegister;
+
+                        txtLoginRegister = "";
+                        txtFirstNameRegister = "";
+                        txtLastNameRegister = "";
+                        txtMiddleRegister = "";
+                        txtPhoneRegister = "";
+                        ClearPasswords();
                     }));
+            }
+        }
+
+        private int _selectItemTabControl = 0;
+        public int SelectItemTabControl
+        {
+            get { return _selectItemTabControl; }
+            set
+            {
+                _selectItemTabControl = value;
+                OnPropertyChanged(nameof(SelectItemTabControl));
             }
         }
 

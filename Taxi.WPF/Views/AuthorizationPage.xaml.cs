@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Taxi.WPF.ViewModels;
+using Taxi.WPF.Converters;
 
 namespace Taxi.WPF.Views
 {
@@ -24,9 +25,17 @@ namespace Taxi.WPF.Views
         public AuthorizationPage(AuthorizationViewModel viewModel)
         {
             InitializeComponent();
+            viewModel.ClearPasswords = ClearPasswords;
             this.DataContext = viewModel;
+
         }
 
+        public void ClearPasswords()
+        {
+            PasswordBoxLogin.Clear();
+            PasswordBoxRegister.Clear();
+            PasswordBoxRegisterConfirm.Clear();
+        }
 
         private void PasswordBoxConfirm_PasswordChanged(object sender, RoutedEventArgs e)
         {

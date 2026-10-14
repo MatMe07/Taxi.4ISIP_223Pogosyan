@@ -55,6 +55,9 @@ builder.Services.AddScoped<Authorization>();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<TaxiBaseContext>();
 
+builder.Services.AddTransient<CaptchaService>();
+builder.Services.AddMemoryCache();
+
 var app = builder.Build();
 
 app.UseAuthentication();

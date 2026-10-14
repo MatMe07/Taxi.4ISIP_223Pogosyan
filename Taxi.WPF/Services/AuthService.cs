@@ -25,8 +25,8 @@ namespace Taxi.WPF.Services
             var response = await _http.PostAsJsonAsync("api/auth/login", loginRequest);
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
-            if (result == null)
-                throw new InvalidCastException("LoginResponse error");
+            //if (result == null)
+            //    throw new InvalidCastException("LoginResponse error");
             return result;
         }
 

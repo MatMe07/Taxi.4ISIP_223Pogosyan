@@ -57,6 +57,8 @@ namespace Taxi.API.Server.Services
 
         public async Task<string?> LoginUserAsync(LoginRequest request)
         {
+
+
             var account = await _context.Users.FirstOrDefaultAsync(a => a.Login == request.login);
 
             if (account == null ||

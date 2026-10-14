@@ -1,4 +1,13 @@
-﻿namespace Taxi.Core.Models.Auth
+﻿using System.Text.Json.Serialization;
+
+namespace Taxi.Core.Models.Auth
 {
-    public record LoginRequest(string login, string password);
+    public class LoginRequest
+    {
+        public string login { get; set; }
+        public string password { get; set; }
+
+        public Guid captchaId { get; set; }
+        public string captchaText { get; set; } = string.Empty;
+    }
 }
