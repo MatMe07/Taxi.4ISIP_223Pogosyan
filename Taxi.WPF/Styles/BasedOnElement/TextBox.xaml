@@ -6,17 +6,17 @@
        TargetType="TextBox"
        BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
 
-        <Setter Property="Margin" Value="0,8,0,8"/>
+        <Setter Property="Margin" Value="0 8"/>
         <Setter Property="Padding" Value="10 3"/>
-        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontSize" Value="14"/>
         <Setter Property="Height" Value="30"/>
 
         <Setter Property="Foreground"
             Value="{DynamicResource TextBlockPrimaryBrush}"/>
         <Setter Property="CaretBrush"
             Value="{DynamicResource TextBlockPrimaryBrush}"/>
-        <Setter Property="Background"
-            Value="{DynamicResource SurfaceBrush}"/>
+        <!--<Setter Property="Background"
+            Value="{DynamicResource SurfaceBrush}"/>-->
         <Setter Property="BorderBrush"
             Value="{DynamicResource BorderBrush}"/>
 
@@ -24,11 +24,13 @@
         <Setter Property="materialDesign:TextFieldAssist.DecorationVisibility" Value="Collapsed"/>
         <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True"/>
         <Setter Property="materialDesign:HintAssist.IsFloating" Value="True"/>
-
+        <!--<Setter Property="materialDesign:HintAssist.FloatingScale" Value=".4"/>-->
         <Setter Property="materialDesign:HintAssist.Foreground"
-            Value="{DynamicResource TextBlockSecondaryBrush}"/>
+            Value="{DynamicResource TextBoxHintBrush}"/>
+        <Setter Property="materialDesign:HintAssist.Background"
+            Value="{DynamicResource AppBackgroundBrush}"/>
+        <Setter Property="materialDesign:HintAssist.HintPaddingBrush" Value="{DynamicResource AppBackgroundBrush}"/>
 
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
-
     </Style>
 </ResourceDictionary>

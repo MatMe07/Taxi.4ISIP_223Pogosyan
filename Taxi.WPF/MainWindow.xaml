@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Taxi.WPF.ViewModels"
         mc:Ignorable="d"
-        Title="Taxi App" Height="450" Width="800" Closed="Window_Closed" Style="{StaticResource MaterialDesignWindow}">
+        Title="Taxi App" Height="450" Width="800" Closed="Window_Closed" Style="{DynamicResource WindowStyle}">
     <Window.DataContext>
         <local:MainViewModel/>
     </Window.DataContext>
@@ -20,8 +20,8 @@
         </Grid.RowDefinitions>
 
         <Button Content="{Binding BtnContent}" HorizontalAlignment="Right" Width="50"
-                Padding="5" Margin="5" Command="{Binding BtnThemsCommand}" x:Name="btnThems" Style="{DynamicResource ButtonStyle}" />
-        <Frame  x:Name="frameMain" Grid.Row="1" Grid.ColumnSpan="2"/>
+                Padding="5" Margin="5" Command="{Binding BtnThemsCommand}" x:Name="btnThems" Style="{DynamicResource buttonBased}" />
+        <Frame  x:Name="frameMain"  Grid.Row="1" Grid.ColumnSpan="2"/>
         
     </Grid>
 </Window>

@@ -17,7 +17,7 @@
         <local:BoolToVisibilityConverter x:Key="boolToVisibleConverter"/>
     </Page.Resources>
     <Grid>
-        <TabControl Padding="10 0" SelectedIndex="{Binding SelectItemTabControl, Mode=TwoWay}">
+        <TabControl Padding="10 0" Style="{DynamicResource  TabControlStyle}" SelectedIndex="{Binding SelectItemTabControl, Mode=TwoWay}">
             <TabItem Header="Войти">
 
                 <Border Padding="0 0 10 0">
@@ -29,23 +29,23 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        
-                        <TextBox Text="{Binding txtLoginLogin}" materialDesign:HintAssist.Hint="Логин"
+
+                        <TextBox materialDesign:HintAssist.HelperTextFontSize="222" Text="{Binding txtLoginLogin}" materialDesign:HintAssist.Hint="Логин"
                                  Style="{DynamicResource AppTextBox}" Grid.Row="1" x:Name="txtBoxLogin"/>
 
                         <PasswordBox materialDesign:HintAssist.Hint="Пароль" x:Name="PasswordBoxLogin"
                                      Style="{DynamicResource AppPasswordBox}" Grid.Row="2" PasswordChanged="PasswordBoxLogin_PasswordChanged"/>
-                        <Border Grid.Row="3" BorderThickness="1" Visibility="{Binding IsCaptchaVisible, Converter={StaticResource boolToVisibleConverter}}" 
-                                CornerRadius="8" BorderBrush="Gray" Padding="10 5" Height="60">
+                        <Border Style="{DynamicResource borderCarts}" Grid.Row="3" Visibility="{Binding IsCaptchaVisible, Converter={StaticResource boolToVisibleConverter}}" 
+                                 Padding="10 5" Height="60" >
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-
+                                
                                 <Image Source="{Binding CaptchaImage}" />
                                 <!--<TextBlock Text="hello" Grid.Column="0" VerticalAlignment="Center"/>-->
-                                <TextBox Text="{Binding txtCaptchaLogin}" materialDesign:HintAssist.Hint="Введите код с картинки" HorizontalContentAlignment="Center" Grid.Column="1" />
+                                <TextBox Text="{Binding txtCaptchaLogin}" materialDesign:HintAssist.Hint="Введите код с картинки" VerticalAlignment="Bottom" Grid.Column="1" />
                             </Grid>
 
                         </Border>
