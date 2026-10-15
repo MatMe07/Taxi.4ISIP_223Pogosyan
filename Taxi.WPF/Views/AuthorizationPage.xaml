@@ -45,7 +45,7 @@
 
                                 <Image Source="{Binding CaptchaImage}" />
                                 <!--<TextBlock Text="hello" Grid.Column="0" VerticalAlignment="Center"/>-->
-                                <TextBox Text="{Binding txtCaptchaLogin}" materialDesign:HintAssist.Hint="Введите код с картинки" Grid.Column="1" />
+                                <TextBox Text="{Binding txtCaptchaLogin}" materialDesign:HintAssist.Hint="Введите код с картинки" HorizontalContentAlignment="Center" Grid.Column="1" />
                             </Grid>
 
                         </Border>

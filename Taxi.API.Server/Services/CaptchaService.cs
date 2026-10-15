@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using SkiaSharp;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace Taxi.API.Server.Services
 {
@@ -24,7 +25,7 @@ namespace Taxi.API.Server.Services
 
             var typeFace = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Italic);
             using var font = new SKFont(typeFace, 20);
-            var paint = new SKPaint();
+            using var paint = new SKPaint();
             paint.IsAntialias = true;
             paint.Color = SKColors.DarkSlateGray;
             
@@ -34,13 +35,16 @@ namespace Taxi.API.Server.Services
                 Color = SKColors.LightGray,
                 StrokeWidth = 2
             };
+
+
             for (int i = 0; i < 5; i++)
             { 
                 canvas.DrawLine(
                     random.Next(0, width), random.Next(0, height),
-                    random.Next(0, width), random.Next(0, height),
+                    random.Next(0, width), random.Next(0, height), 
                     linePaint
                     );
+
             }
 
             float x = 5;
@@ -58,6 +62,9 @@ namespace Taxi.API.Server.Services
             data.SaveTo(memoryStream); 
             byte[] imageBytes = memoryStream.ToArray();
             return Convert.ToBase64String(imageBytes);
+
+
+
         }
 
         public string CaptchaGen(string userLogin)

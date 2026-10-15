@@ -41,4 +41,15 @@
     <SolidColorBrush x:Key="RoleFleetBrush"        Color="#8E24AA"/>
     <SolidColorBrush x:Key="RoleAdminBrush"        Color="#546E7A"/>
 
+
+
+    <SolidColorBrush x:Key="ButtonPrimaryBackgroundBrush"        Color="#4A90E2"/>
+    <SolidColorBrush x:Key="ButtonPrimaryHoverBackgroundBrush"   Color="#5BA0F2"/>
+    <SolidColorBrush x:Key="ButtonPrimaryPressedBackgroundBrush" Color="#3A7BC8"/>
+    <SolidColorBrush x:Key="ButtonPrimaryForegroundBrush"        Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="ButtonPrimaryBorderBrush"            Color="Transparent"/>
+
+    <SolidColorBrush x:Key="ButtonDisabledBackgroundBrush"       Color="#2D3742"/>
+    <SolidColorBrush x:Key="ButtonDisabledForegroundBrush"       Color="#5A6773"/>
+
 </ResourceDictionary>
