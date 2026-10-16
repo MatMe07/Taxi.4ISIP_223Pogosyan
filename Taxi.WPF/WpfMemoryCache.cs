@@ -61,9 +61,9 @@ namespace Taxi
         public async Task UpdateAsync<TItem>(string key, TItem newValue)
         {
             JsonElement json;
-            if (!_cache.TryGetValue(key, out json)) return;
+            //if (!_cache.TryGetValue(key, out json)) return;
             _cache[key] = JsonSerializer.SerializeToElement(newValue);
-            _expiry[key] = DateTimeOffset.UtcNow;
+            _expiry[key] = null;
 
         }
 

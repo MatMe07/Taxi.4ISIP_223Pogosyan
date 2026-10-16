@@ -39,15 +39,15 @@ namespace Taxi.WPF.Services
 
             Application.Current.Resources.MergedDictionaries.Add(resourceDict);
 
-            AppSettings.Instance.Theme = them;
+            AppSettings.Instance.Theme = style;
             ChangeSettings();
         }
 
-        public async void ChangeSettings()
+        public void ChangeSettings()
         {
             //AppSettings.Instance = appSettings ??
-            //    throw new ArgumentNullException(nameof(appSettings));
-            await AppCache.Cache.UpdateAsync(nameof(AppSettings), AppSettings.Instance);
+                //throw new ArgumentNullException(nameof(appSettings));
+            AppCache.Cache.Set(nameof(AppSettings), AppSettings.Instance);
 
         }
 

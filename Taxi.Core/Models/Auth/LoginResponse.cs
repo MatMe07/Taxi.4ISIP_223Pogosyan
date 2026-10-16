@@ -14,6 +14,7 @@ namespace Taxi.Core.Models.Auth
 
         public bool IsSuccess { get; set; }
 
+        public int RoleId { get; set; }
         public Guid CaptchaId { get; set; }
 
         public string CaptchaImageBase64 { get; set; } = string.Empty;

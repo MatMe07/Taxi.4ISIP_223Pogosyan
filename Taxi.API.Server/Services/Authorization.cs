@@ -55,7 +55,7 @@ namespace Taxi.API.Server.Services
         }
 
 
-        public async Task<string?> LoginUserAsync(LoginRequest request)
+        public async Task<(string, int)?> LoginUserAsync(LoginRequest request)
         {
 
 
@@ -71,13 +71,13 @@ namespace Taxi.API.Server.Services
             if (result == PasswordVerificationResult.Failed)
                 return null;
 
-
-            return CreateToken(account);
+            string token = CreateToken(account);
+            return (token, account.RoleId);
         }
 
 
 
-        private string CreateToken(User account)
+        private string  CreateToken(User account)
         {
             var claims = new[]
             {

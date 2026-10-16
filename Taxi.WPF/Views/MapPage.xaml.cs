@@ -36,14 +36,18 @@ namespace Taxi.src.Taxi.Map
         }
         private async void MainWindow_Loaded()
         {
-
             await MyWebView.EnsureCoreWebView2Async(null);
             MyWebView.WebMessageReceived += WebView_WebMessageReceived;
+            MyWebView.CoreWebView2.Settings.IsZoomControlEnabled = false;
+
 
             string htmlPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "map.html");
             Debug.WriteLine(htmlPath);
 
+
+
             MyWebView.CoreWebView2.Navigate(new Uri(htmlPath).AbsoluteUri);
+            await MyWebView.EnsureCoreWebView2Async();
         }
 
         public Task<string> CallJsAsync(string function, string args = "")

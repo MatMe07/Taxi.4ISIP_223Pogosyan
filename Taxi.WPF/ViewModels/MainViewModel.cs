@@ -15,6 +15,7 @@ using Taxi.Core.Models.Map;
 using Taxi.src.Services;
 using Taxi.src.Taxi.Map.Helpers;
 using Taxi.WPF.Commands;
+using Taxi.WPF.Models;
 using Taxi.WPF.Services;
 
 namespace Taxi.WPF.ViewModels
@@ -57,7 +58,8 @@ namespace Taxi.WPF.ViewModels
                     (_btnThemsCommand = new RelayCommand(obj =>
                     {
                         string style = thems == "light" ? "dark" : "light";
-                        _configurationSerivce.ChangeThems(style);
+                        AppSettings.Instance.Theme = style;
+                        _configurationSerivce.ChangeThems();
 
                         //var uri = new Uri("Styles/Thems/" + style + ".xaml", UriKind.Relative);
 
@@ -74,9 +76,8 @@ namespace Taxi.WPF.ViewModels
         }
         
         public MainViewModel() {
-            styles = new List<string> { "light", "dark" };
-            thems = styles[0];
-            BtnContent = styles[0];
+            thems = AppSettings.Instance.Theme;
+            BtnContent = AppSettings.Instance.Theme;
         }
     }
 }

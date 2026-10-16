@@ -87,7 +87,9 @@ namespace Taxi.API.Server.Controllers
                 }
             }
 
-            var token = await authorization.LoginUserAsync(request);
+                
+            var res = await authorization.LoginUserAsync(request);
+            var (token, roleId) = res.Value;
             
             if (token != null)
             {
@@ -97,6 +99,7 @@ namespace Taxi.API.Server.Controllers
                     access_token = token,
                     IsCaptchaRequired = false,
                     token_type = "Bearer",
+                    RoleId=roleId
                 });
 
             }

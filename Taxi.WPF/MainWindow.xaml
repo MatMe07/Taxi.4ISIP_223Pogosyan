@@ -17,8 +17,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button Content="{Binding BtnContent}" HorizontalAlignment="Right" Width="50"
-                Padding="5" Margin="5" Command="{Binding BtnThemsCommand}" x:Name="btnThems" Style="{DynamicResource buttonBased}" />
+        <!--<Button Content="{Binding BtnContent}" HorizontalAlignment="Right" Width="50"
+                Padding="5" Margin="5" Command="{Binding BtnThemsCommand}" x:Name="btnThems" Style="{DynamicResource buttonBased}" />-->
         <Frame  x:Name="frameMain" NavigationUIVisibility="Hidden" Grid.Row="1" Grid.ColumnSpan="2"/>
         
     </Grid>

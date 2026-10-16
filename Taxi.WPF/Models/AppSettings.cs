@@ -28,7 +28,7 @@ namespace Taxi.WPF.Models
         }
 
 
-        public string Theme { get; set; } = "Light";
+        public string Theme { get; set; } = "light";
         public string LoginUser { get; set; } = string.Empty;
 
         public LoginResponse? LoginResponse { get; set; }

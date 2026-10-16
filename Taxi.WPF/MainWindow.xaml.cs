@@ -15,9 +15,13 @@ namespace Taxi.WPF
     public partial class MainWindow : Window
     {
 
-        //private MapPage mapPage;
+        private MainPage mainPage;
 
-        public MainWindow(MainViewModel viewModel, AuthorizationPage authorizationPage, MapPage mapPage, ConfigurationService configuration)
+        public MainWindow(MainViewModel viewModel,
+            MainPage mainPage
+            
+            , AuthorizationPage authorizationPage, 
+            MapPage mapPage, ConfigurationService configuration)
         {
             viewModel._configurationSerivce = configuration;
             this.DataContext = viewModel;
@@ -26,10 +30,19 @@ namespace Taxi.WPF
                 frameMain.Navigate(authorizationPage);
             else
             {
-                frameMain.Navigate(mapPage);
+                frameMain.Navigate(mainPage);
             }
-                //this.mapPage = mapPage;
+                this.mainPage = mainPage;
 
+        }
+
+        public void ChangePage()
+        {
+            frameMain.Navigate(mainPage);
+            while (frameMain.CanGoBack)
+            {
+                frameMain.RemoveBackEntry();
+            }
         }
 
 

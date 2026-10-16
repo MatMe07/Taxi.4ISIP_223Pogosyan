@@ -202,7 +202,7 @@ namespace Taxi.WPF.ViewModels
                         AppSettings.Instance.LoginUser = txtLoginLogin;
                         AppSettings.Instance.LoginResponse = result;
                         AppSettings.Instance.IsSign = true;
-                        await AppCache.Cache.UpdateAsync(nameof(AppSettings), AppSettings.Instance);
+                        AppCache.Cache.Set(nameof(AppSettings), AppSettings.Instance);
                         ChangePage();
                     }));
             }
@@ -212,11 +212,8 @@ namespace Taxi.WPF.ViewModels
         {
             if (Application.Current.MainWindow is MainWindow mainWindow)
             {
-                mainWindow.frameMain.Navigate(new MainPage());
-                while (mainWindow.frameMain.CanGoBack)
-                {
-                    mainWindow.frameMain.RemoveBackEntry();
-                }
+                mainWindow.ChangePage();
+
             }
         }
 

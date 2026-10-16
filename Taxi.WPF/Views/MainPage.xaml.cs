@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Taxi.src.Taxi.Map;
+using Taxi.WPF.Models;
 using Taxi.WPF.Services;
 using Taxi.WPF.ViewModels;
 
@@ -22,16 +24,44 @@ namespace Taxi.WPF.Views
     /// </summary>
     public partial class MainPage : Page
     {
-        public MainPage(MainPageViewModel viewModel,ConfigurationService configuration)
+        private MapPage mapPage;
+        public MainPage(MainPageViewModel viewModel, MapPage mapPage, ConfigurationService configuration)
         {
             viewModel._configurationSerivce = configuration;
             this.DataContext = viewModel;
             InitializeComponent();
-
+            this.mapPage = mapPage;
         }
-        public MainPage()
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            InitializeComponent();
+            if (!AppSettings.Instance.IsSign) return;
+            switch (AppSettings.Instance.LoginResponse.RoleId)
+            {
+                case 1:
+                    {
+                        frameMain.Navigate(mapPage);
+                        break;
+                    }
+                case 2:
+                    {
+                        frameMain.Navigate(mapPage);
+
+                        break;
+                    }
+                case 3:
+                    {
+                        frameMain.Navigate(mapPage);
+
+                        break;
+                    }
+                case 4:
+                    {
+                        frameMain.Navigate(mapPage);
+
+                        break;
+                    }
+            }
         }
     }
 }
