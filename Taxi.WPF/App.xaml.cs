@@ -53,12 +53,17 @@ namespace Taxi.WPF
 
             services.AddTransient<MapViewModel>();
             services.AddTransient<MapPage>();
-            services.AddScoped<ConfigurationService>();
+
+            services.AddTransient<MainPageViewModel>();
+            services.AddTransient<MainPage>();
+
+            services.AddSingleton<ConfigurationService>();
             
 
 
 
 
+            services.AddTransient<MainViewModel>();
             services.AddTransient<MainWindow>();
 
 

@@ -8,4 +8,21 @@
         <Setter Property="CornerRadius" Value="8"/>
         <Setter Property="BorderThickness" Value="1"/>
     </Style>
+
+    <Style x:Key="borderNav" TargetType="Border">
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="Black" 
+                                  Direction="200" 
+                                  ShadowDepth="0" 
+                                  BlurRadius="20" 
+                                  Opacity="0.3" RenderingBias="Performance"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Background" Value="{DynamicResource AppBackgroundBrush}"/>
+        
+        <Setter Property="CornerRadius" Value="15"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
 </ResourceDictionary>

@@ -62,7 +62,8 @@ namespace Taxi
         {
             JsonElement json;
             if (!_cache.TryGetValue(key, out json)) return;
-            _cache.TryUpdate(key, json, ()); // доделать
+            _cache[key] = JsonSerializer.SerializeToElement(newValue);
+            _expiry[key] = DateTimeOffset.UtcNow;
 
         }
 

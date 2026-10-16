@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Taxi.WPF.Services;
+using Taxi.WPF.ViewModels;
 
 namespace Taxi.WPF.Views
 {
@@ -20,6 +22,13 @@ namespace Taxi.WPF.Views
     /// </summary>
     public partial class MainPage : Page
     {
+        public MainPage(MainPageViewModel viewModel,ConfigurationService configuration)
+        {
+            viewModel._configurationSerivce = configuration;
+            this.DataContext = viewModel;
+            InitializeComponent();
+
+        }
         public MainPage()
         {
             InitializeComponent();

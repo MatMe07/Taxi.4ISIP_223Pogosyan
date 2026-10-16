@@ -12,9 +12,10 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Taxi.Core.Models.Map;
-using Taxi.src.Taxi.Map.Helpers;
 using Taxi.src.Services;
+using Taxi.src.Taxi.Map.Helpers;
 using Taxi.WPF.Commands;
+using Taxi.WPF.Services;
 
 namespace Taxi.WPF.ViewModels
 {
@@ -33,6 +34,8 @@ namespace Taxi.WPF.ViewModels
                 OnPropertyChanged(nameof(BtnContent));
             }
         }
+        public ConfigurationService _configurationSerivce;
+
 
         private string thems { get; set; }
         private List<string> styles { get; set; }
@@ -54,20 +57,22 @@ namespace Taxi.WPF.ViewModels
                     (_btnThemsCommand = new RelayCommand(obj =>
                     {
                         string style = thems == "light" ? "dark" : "light";
+                        _configurationSerivce.ChangeThems(style);
 
-                        var uri = new Uri("Styles/Thems/" + style + ".xaml", UriKind.Relative);
+                        //var uri = new Uri("Styles/Thems/" + style + ".xaml", UriKind.Relative);
 
-                        ResourceDictionary resourceDict = Application.LoadComponent(uri) as ResourceDictionary;
+                        //ResourceDictionary resourceDict = Application.LoadComponent(uri) as ResourceDictionary;
 
-                        Application.Current.Resources.Clear();
+                        //Application.Current.Resources.Clear();
 
-                        Application.Current.Resources.MergedDictionaries.Add(resourceDict);
+                        //Application.Current.Resources.MergedDictionaries.Add(resourceDict);
 
                         thems = style;
                         BtnContent = style;
                     }));
             }
         }
+        
         public MainViewModel() {
             styles = new List<string> { "light", "dark" };
             thems = styles[0];

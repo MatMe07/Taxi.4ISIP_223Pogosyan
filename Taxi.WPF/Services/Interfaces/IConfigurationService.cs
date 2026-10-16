@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Taxi.WPF.Services.Interfaces
 {
-    class IConfigurationService
+    public interface IConfigurationService
     {
     }
 }

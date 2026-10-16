@@ -6,9 +6,7 @@
         xmlns:local="clr-namespace:Taxi.WPF.ViewModels"
         mc:Ignorable="d"
         Title="Taxi App" Height="450" Width="800" Closed="Window_Closed" Style="{DynamicResource WindowStyle}">
-    <Window.DataContext>
-        <local:MainViewModel/>
-    </Window.DataContext>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>

@@ -26,6 +26,7 @@ namespace Taxi.WPF.ViewModels
 
         private readonly AuthService _authSerivce;
 
+        public ConfigurationService _configurationSerivce;
         public AuthorizationViewModel(IAuthService authService)
         {
             _authSerivce = (AuthService?)authService;
@@ -201,7 +202,7 @@ namespace Taxi.WPF.ViewModels
                         AppSettings.Instance.LoginUser = txtLoginLogin;
                         AppSettings.Instance.LoginResponse = result;
                         AppSettings.Instance.IsSign = true;
-                        AppCache.Cache.Set(nameof(AppSettings), AppSettings.Instance);
+                        await AppCache.Cache.UpdateAsync(nameof(AppSettings), AppSettings.Instance);
                         ChangePage();
                     }));
             }

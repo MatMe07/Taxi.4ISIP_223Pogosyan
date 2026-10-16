@@ -9,7 +9,7 @@ namespace Taxi.WPF.Models
 {
     public class AppSettings
     {
-        private  static AppSettings _instance;
+        private static AppSettings _instance;
         public static AppSettings Instance
         {
             get
@@ -25,7 +25,7 @@ namespace Taxi.WPF.Models
                 }
                 _instance = value;
             }
-        }   
+        }
 
 
         public string Theme { get; set; } = "Light";

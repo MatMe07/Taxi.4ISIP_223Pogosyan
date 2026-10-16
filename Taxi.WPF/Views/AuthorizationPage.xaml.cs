@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Taxi.WPF.ViewModels;
 using Taxi.WPF.Converters;
+using Taxi.WPF.Services;
 
 namespace Taxi.WPF.Views
 {
@@ -22,11 +23,12 @@ namespace Taxi.WPF.Views
     /// </summary>
     public partial class AuthorizationPage : Page
     {
-        public AuthorizationPage(AuthorizationViewModel viewModel)
+        public AuthorizationPage(AuthorizationViewModel viewModel, ConfigurationService configuration)
         {
             InitializeComponent();
             viewModel.ClearPasswords = ClearPasswords;
             this.DataContext = viewModel;
+
 
         }
 

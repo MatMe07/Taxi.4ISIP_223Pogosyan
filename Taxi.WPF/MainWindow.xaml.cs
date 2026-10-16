@@ -2,6 +2,8 @@
 using System.Windows.Controls;
 using Taxi.src.Taxi.Map;
 using Taxi.WPF.Models;
+using Taxi.WPF.Services;
+using Taxi.WPF.ViewModels;
 using Taxi.WPF.Views;
 
 
@@ -13,26 +15,23 @@ namespace Taxi.WPF
     public partial class MainWindow : Window
     {
 
-        private MapPage mapPage;
+        //private MapPage mapPage;
 
-        public MainWindow(AuthorizationPage authorizationPage, MapPage mapPage)
+        public MainWindow(MainViewModel viewModel, AuthorizationPage authorizationPage, MapPage mapPage, ConfigurationService configuration)
         {
+            viewModel._configurationSerivce = configuration;
+            this.DataContext = viewModel;
             InitializeComponent();
-            if (!AppSettings.Instance.IsSign)
+            if (!AppSettings.Instance.IsSign )
                 frameMain.Navigate(authorizationPage);
             else
             {
                 frameMain.Navigate(mapPage);
             }
-                this.mapPage = mapPage;
+                //this.mapPage = mapPage;
 
         }
 
-
-        public void ChangePage(Page page)
-        {
-            frameMain.Navigate(page);
-        }
 
 
         //public async Task PoiskAsync()

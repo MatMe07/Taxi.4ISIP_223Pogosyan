@@ -13,5 +13,25 @@
 
     <Grid>
         
+        <Border VerticalAlignment="Top" Margin="10" Style="{StaticResource borderNav}">
+
+
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="CASE" Style="{DynamicResource AppTextBlockTitle}" Grid.Column="0"/>
+                
+                
+                <Button Grid.Column="2">
+                    <materialDesign:PackIcon/>
+                    
+                </Button>
+            </Grid>
+        </Border>
+
+        <Frame NavigationUIVisibility="Hidden"/>
     </Grid>
 </Page>
