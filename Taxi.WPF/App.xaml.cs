@@ -4,6 +4,7 @@ using System.Windows;
 using Taxi.Core.Models.Auth;
 using Taxi.src.Services;
 using Taxi.src.Taxi.Map;
+using Taxi.WPF.Models;
 using Taxi.WPF.Services;
 using Taxi.WPF.Services.Interfaces;
 using Taxi.WPF.ViewModels;
@@ -18,11 +19,15 @@ namespace Taxi.WPF
     public partial class App : Application
     {
         public static IServiceProvider serviceProvider {  get; private set; }
-        protected override void OnStartup(StartupEventArgs e)
+        protected async override void OnStartup(StartupEventArgs e)
         {
             DotEnv.Load();
 
             base.OnStartup(e);
+
+            await AppCache.Cache.LoadAsync();
+
+
 
             var services = new ServiceCollection();
 
@@ -38,6 +43,7 @@ namespace Taxi.WPF
             services.AddHttpClient<IAuthService, AuthService>();
             services.AddHttpClient<IGeocodeService, GeocodeService>();
             services.AddHttpClient<IRoutingService, RoutingService>();
+            services.AddHttpClient<IConfigurationService, ConfigurationService>();
 
 
 
@@ -47,8 +53,8 @@ namespace Taxi.WPF
 
             services.AddTransient<MapViewModel>();
             services.AddTransient<MapPage>();
+            services.AddScoped<ConfigurationService>();
             
-
 
 
 
@@ -57,9 +63,12 @@ namespace Taxi.WPF
 
 
 
-
-
             serviceProvider = services.BuildServiceProvider();
+
+            var configuration = serviceProvider.GetRequiredService<ConfigurationService>();
+
+            configuration.Load();
+
 
             var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();

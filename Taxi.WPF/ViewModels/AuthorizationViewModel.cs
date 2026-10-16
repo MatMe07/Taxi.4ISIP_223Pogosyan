@@ -9,12 +9,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using Taxi.Core.Models.Auth;
 using Taxi.WPF.Commands;
 using Taxi.WPF.Helpers;
 using Taxi.WPF.Models;
 using Taxi.WPF.Services;
 using Taxi.WPF.Services.Interfaces;
+using Taxi.WPF.Views;
 using Windows.Devices.Usb;
 
 namespace Taxi.WPF.ViewModels
@@ -198,7 +200,22 @@ namespace Taxi.WPF.ViewModels
 
                         AppSettings.Instance.LoginUser = txtLoginLogin;
                         AppSettings.Instance.LoginResponse = result;
+                        AppSettings.Instance.IsSign = true;
+                        AppCache.Cache.Set(nameof(AppSettings), AppSettings.Instance);
+                        ChangePage();
                     }));
+            }
+        }
+
+        private void ChangePage()
+        {
+            if (Application.Current.MainWindow is MainWindow mainWindow)
+            {
+                mainWindow.frameMain.Navigate(new MainPage());
+                while (mainWindow.frameMain.CanGoBack)
+                {
+                    mainWindow.frameMain.RemoveBackEntry();
+                }
             }
         }
 

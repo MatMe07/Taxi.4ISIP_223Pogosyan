@@ -27,7 +27,7 @@ namespace Taxi
         private readonly ConcurrentDictionary<string, JsonElement> _cache = new ConcurrentDictionary<string, JsonElement>();
         private readonly ConcurrentDictionary<string, DateTimeOffset?> _expiry = new ConcurrentDictionary<string, DateTimeOffset?>();
         //private static readonly JsonSerializerOptions Opts = new JsonSerializerOptions();
-        private readonly string _filePath = "geocode_cache.json";
+        private readonly string _filePath = "local_cache.json";
 
 
         public bool TryGet<TItem>(string key, out TItem item)
@@ -46,6 +46,7 @@ namespace Taxi
             return true;
         } 
 
+            
         public void Remove(string key)
         {
             _cache.TryRemove(key, out _);
@@ -55,6 +56,14 @@ namespace Taxi
         {
             _cache[key] = JsonSerializer.SerializeToElement(value);
             _expiry[key] = ttl is null ? null : DateTimeOffset.UtcNow + ttl;
+        }
+
+        public async Task UpdateAsync<TItem>(string key, TItem newValue)
+        {
+            JsonElement json;
+            if (!_cache.TryGetValue(key, out json)) return;
+            _cache.TryUpdate(key, json, ()); // доделать
+
         }
 
         public async Task SaveAsync()

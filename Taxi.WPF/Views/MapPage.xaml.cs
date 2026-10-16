@@ -36,7 +36,6 @@ namespace Taxi.src.Taxi.Map
         }
         private async void MainWindow_Loaded()
         {
-            await AppCache.Cache.LoadAsync();
 
             await MyWebView.EnsureCoreWebView2Async(null);
             MyWebView.WebMessageReceived += WebView_WebMessageReceived;

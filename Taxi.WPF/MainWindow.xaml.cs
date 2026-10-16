@@ -1,5 +1,7 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using Taxi.src.Taxi.Map;
+using Taxi.WPF.Models;
 using Taxi.WPF.Views;
 
 
@@ -11,16 +13,25 @@ namespace Taxi.WPF
     public partial class MainWindow : Window
     {
 
-        //private MainViewModel viewModel;
+        private MapPage mapPage;
 
         public MainWindow(AuthorizationPage authorizationPage, MapPage mapPage)
         {
-            //DotEnv.Load();
             InitializeComponent();
-            //viewModel = new MainViewModel(MyWebView);
-            //frameMain.Navigate(mapPage);
-            frameMain.Navigate(authorizationPage);
+            if (!AppSettings.Instance.IsSign)
+                frameMain.Navigate(authorizationPage);
+            else
+            {
+                frameMain.Navigate(mapPage);
+            }
+                this.mapPage = mapPage;
 
+        }
+
+
+        public void ChangePage(Page page)
+        {
+            frameMain.Navigate(page);
         }
 
 
