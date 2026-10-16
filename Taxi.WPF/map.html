@@ -20,29 +20,80 @@
             width: 100%;
             height: 100%;
         }
-
-        #searchBox {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            width: 340px;
-            z-index: 1000;
+        .box{
+            position: absolute; 
+            display: flex; 
+            flex-direction: column; 
+            top: 16px; 
+            left: 16px; 
+            min-width: 30%; 
+            max-width: 60%; 
+            z-index: 1000; 
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 20px 20px 0px 0px;
         }
 
-        #search {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 12px 14px;
-            font-size: 15px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            outline: none;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        .separator {
+            border: none;
+            border-top: 1px solid #ccc; 
+            width: 80%;
         }
+#searchBox {
+    position: absolute; 
+    display: flex; 
+    flex-direction: column; 
+    z-index: 1000; 
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Мягкая тень как на скриншоте */
+    border-radius: 20px;
+    padding: 4px 0; /* Небольшой отступ сверху/снизу внутри контейнера */
+}
+
+#notice {
+    margin: 0;
+}
+
+.searchDefault {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 16px 16px 50px; /* 50px слева оставит место для вашей иконки «Откуда» */
+    font-size: 16px;
+    color: #333;
+    
+    /* Стили линии: */
+    border: none;
+    border-bottom: 1.5px solid #e0e0e0; /* Светло-серая аккуратная линия */
+    
+    border-radius: 20px 20px 0px 0px;
+    outline: none;
+    background: transparent;
+}
+
+.searchDefault2 {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 16px 16px 50px; /* 50px слева оставит место для вашей иконки «Куда» */
+    font-size: 16px;
+    color: #333;
+    
+    border: none;
+    border-radius: 0px 0px 20px 20px;
+    outline: none;
+    background: transparent;
+}
+
+/* Изменяем цвет плейсхолдера, чтобы он был мягким серым */
+.searchDefault::placeholder,
+.searchDefault2::placeholder {
+    color: #9e9e9e;
+}
+
 
         #search:focus {
             border-color: #fdd734;
         }
+
 
         #search.input_error,
         #search.input_error:focus {
@@ -64,14 +115,21 @@
 
 <body>
     <div id="map"></div>
-    <div id="searchBox">
-        <input id="search" placeholder="Адрес, объект — или кликните по карте" autocomplete="off">
-        <p id="notice"></p>
+    <div class="box">
+        <div id="searchBox">
+            <input id="search" class="searchDefault" placeholder="Откуда?" autocomplete="off">
+            <p id="notice"></p>
+            
+            <input id="search2" class="searchDefault2" placeholder="Куда?" autocomplete="off">
+        </div>
+
     </div>
+
+
     <script type="text/javascript">
         var map = null;
         var suggestView = null;
-        // Нарисованный маршрут и метки точек.
+        var suggestView2 = null;
         var routeLine = null;
         var points = { from: null, to: null };
 
@@ -115,28 +173,14 @@
             suggestView = new ymaps.SuggestView('search');
             suggestView.events.add('select', function (e) {
                 hideNotice();
-                // Геокодирование и маршрут делает C#, он вернёт результат через setPoint/showRoute.
                 postToHost({ type: 'destinationSelected', address: e.get('item').value });
             });
 
-            // Вторую точку можно поставить кликом по карте.
-            // map.events.add('click', function (e) {
-            //     // Клик по метке или линии маршрута точку не переставляет.
-            //     if (e.get('target')) {
-            //         return;
-            //     }
-
-            //     var coords = e.get('coords');
-            //     if (!coords || coords.length < 2 ||
-            //         !isFinite(coords[0]) || !isFinite(coords[1])) {
-            //         return;
-            //     }
-
-            //     // coords из API уже в порядке [широта, долгота].
-            //     postToHost({ type: 'mapClicked', lat: coords[0], lon: coords[1] });
-            // });
-
-            // Сообщаем C#, что карта готова - он поставит точку "Откуда".
+            suggestView2 = new ymaps.SuggestView('search2');
+            suggestView2.events.add('select', function (e) {
+                hideNotice();
+                postToHost({ type: 'destinationSelected', address: e.get('item').value });
+            });
             postToHost({ type: 'ready' });
         }
 

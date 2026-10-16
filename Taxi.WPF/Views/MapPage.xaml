@@ -18,5 +18,11 @@
         <Button  Content="Click" Margin="5" Padding="5" HorizontalAlignment="Left" Click="Button_Click"/>
         <wv2:WebView2 x:Name="MyWebView" Grid.Row="1" />
 
+        <Border Background="White" HorizontalAlignment="Left" MinWidth="250" Margin="20" MinHeight="300" CornerRadius="25" Grid.RowSpan="3">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="6" ShadowDepth="0"/>
+            </Border.Effect>
+
+        </Border>
     </Grid>
 </Page>
