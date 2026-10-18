@@ -3,12 +3,12 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using Taxi.Core.Models.Auth;
 using Taxi.src.Services;
-using Taxi.src.Taxi.Map;
-using Taxi.WPF.Models;
 using Taxi.WPF.Services;
 using Taxi.WPF.Services.Interfaces;
 using Taxi.WPF.ViewModels;
+using Taxi.WPF.ViewModels.ProfileViewModels;
 using Taxi.WPF.Views;
+using Taxi.WPF.Views.ProfilePages;
 
 
 namespace Taxi.WPF
@@ -54,13 +54,15 @@ namespace Taxi.WPF
             services.AddTransient<MapViewModel>();
             services.AddTransient<MapPage>();
 
-            services.AddTransient<MainPageViewModel>();
-            services.AddTransient<MainPage>();
 
             services.AddSingleton<ConfigurationService>();
-            
+
+            services.AddTransient<ProfileViewModel>();
+            services.AddTransient<ProfilePage>();
 
 
+            services.AddTransient<ProfileEditViewModel>();
+            services.AddTransient<ProfileEditPage>();
 
 
             services.AddTransient<MainViewModel>();

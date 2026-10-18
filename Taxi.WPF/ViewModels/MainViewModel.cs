@@ -1,26 +1,13 @@
-﻿using Microsoft.Web.WebView2.Wpf;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using Taxi.Core.Models.Map;
-using Taxi.src.Services;
-using Taxi.src.Taxi.Map.Helpers;
+﻿using System.ComponentModel;
+using System.Windows.Controls;
 using Taxi.WPF.Commands;
 using Taxi.WPF.Models;
 using Taxi.WPF.Services;
+using Taxi.WPF.Views;
 
 namespace Taxi.WPF.ViewModels
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : ViewModelBase
     {
         private string btnContent;
         public string BtnContent
@@ -37,18 +24,85 @@ namespace Taxi.WPF.ViewModels
         }
         public ConfigurationService _configurationSerivce;
 
+        private int _rowFrame = 1;
+        public int RowFrame
+        {
+            get { return _rowFrame; }
+            set
+            {
+                _rowFrame = value;
+                OnPropertyChanged(nameof(RowFrame));
+            }
+        }
+        public Frame frameMain;
 
-        private string thems { get; set; }
-        private List<string> styles { get; set; }
+        private RelayCommand _commandOpenProfile;
+        public RelayCommand CommandOpenProfile
+        {
+            get
+            {
+                return _commandOpenProfile ??
+                    (_commandOpenProfile = new RelayCommand(obj =>
+                    {
+                        RowFrame = 1;
+                        frameMain.Navigate(profilePage);
+                    }
+                    ));
+            }
+        }
+        private bool _isBlurVisible = false;
+        public bool IsBlurVisible
+        {
+            get { return _isBlurVisible; }
+            set
+            {
+                _isBlurVisible = value;
+                OnPropertyChanged(nameof(IsBlurVisible));
+            }
+        }
+
+        public void ShowBlur(bool blur)
+        {
+            _isBlurVisible = blur;
+        }
+
+        public void LoadNextPageRoleId()
+        {
+            switch (AppSettings.Instance.LoginResponse.RoleId)
+            {
+                case 1:
+                    {
+                        RowFrame = 0;
+                        frameMain.Navigate(mapPage);
+                        break;
+                    }
+                case 2:
+                    {
+                        RowFrame = 0;
+                        frameMain.Navigate(mapPage);
+
+                        break;
+                    }
+                case 3:
+                    {
+                        frameMain.Navigate(mapPage);
+
+                        break;
+                    }
+                case 4:
+                    {
+                        frameMain.Navigate(mapPage);
+
+                        break;
+                    }
+            }
+        }
+
+        private MapPage mapPage;
+        private ProfilePage profilePage;
+
 
         private RelayCommand _btnThemsCommand;
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        public void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         public RelayCommand BtnThemsCommand
         {
@@ -57,27 +111,20 @@ namespace Taxi.WPF.ViewModels
                 return _btnThemsCommand ??
                     (_btnThemsCommand = new RelayCommand(obj =>
                     {
-                        string style = thems == "light" ? "dark" : "light";
+                        string style = AppSettings.Instance.Theme == "light" ? "dark" : "light";
                         AppSettings.Instance.Theme = style;
                         _configurationSerivce.ChangeThems();
-
-                        //var uri = new Uri("Styles/Thems/" + style + ".xaml", UriKind.Relative);
-
-                        //ResourceDictionary resourceDict = Application.LoadComponent(uri) as ResourceDictionary;
-
-                        //Application.Current.Resources.Clear();
-
-                        //Application.Current.Resources.MergedDictionaries.Add(resourceDict);
-
-                        thems = style;
-                        BtnContent = style;
                     }));
             }
         }
-        
-        public MainViewModel() {
-            thems = AppSettings.Instance.Theme;
-            BtnContent = AppSettings.Instance.Theme;
+
+
+        public MainViewModel(MapPage mapPage, ConfigurationService configuration, ProfilePage profilePage)
+        {
+            this.profilePage = profilePage;
+            this.mapPage = mapPage;
+            _configurationSerivce = configuration;
         }
+
     }
 }

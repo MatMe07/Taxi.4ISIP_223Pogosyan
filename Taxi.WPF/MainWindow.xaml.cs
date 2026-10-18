@@ -15,30 +15,25 @@ namespace Taxi.WPF
     public partial class MainWindow : Window
     {
 
-        private MainPage mainPage;
 
         public MainWindow(MainViewModel viewModel,
-            MainPage mainPage
-            
-            , AuthorizationPage authorizationPage, 
-            MapPage mapPage, ConfigurationService configuration)
+            AuthorizationPage authorizationPage)
         {
-            viewModel._configurationSerivce = configuration;
-            this.DataContext = viewModel;
             InitializeComponent();
+            this.DataContext = viewModel;
+            viewModel.frameMain = frameMain;
             if (!AppSettings.Instance.IsSign )
-                frameMain.Navigate(authorizationPage);
-            else
             {
-                frameMain.Navigate(mainPage);
+                frameMain.Navigate(authorizationPage);
+                return;
             }
-                this.mainPage = mainPage;
+            //frameMain.Navigate(mainPage);
 
         }
 
         public void ChangePage()
         {
-            frameMain.Navigate(mainPage);
+            (DataContext as MainViewModel).LoadNextPageRoleId(); 
             while (frameMain.CanGoBack)
             {
                 frameMain.RemoveBackEntry();
@@ -70,9 +65,33 @@ namespace Taxi.WPF
 
         private async void Window_Closed(object sender, EventArgs e)
         {
+
             await AppCache.Cache.SaveAsync();
         }
 
+
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!AppSettings.Instance.IsSign) return;
+            //LoadNextPageRoleId();
+            ChangePage();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var result = MessageBox.Show(
+                "Вы уверены, что хотите закрыть окно?",
+                "Подтверждение",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question
+            );
+            if (result == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
+            
+        }
     }
 
 }

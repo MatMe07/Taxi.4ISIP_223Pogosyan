@@ -35,25 +35,34 @@ namespace Taxi.API.Server.Controllers
         public async Task<IActionResult> AddUserRegister(RegisterRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.login))
-                return BadRequest(new { message = "Логин обязателен" });
+                return BadRequest(new RegisterResponse { message = "Логин обязателен" });
+            if (request.login.Length <= 3)
+            {
+                return BadRequest(new RegisterResponse { message = "Размер логина должно быть не менее 3!" });
+            }
 
             if (string.IsNullOrWhiteSpace(request.password))
-                return BadRequest(new { message = "Пароль обязателен" });
+                return BadRequest(new RegisterResponse { message = "Пароль обязателен" });
 
             if (string.IsNullOrWhiteSpace(request.phone))
-                return BadRequest(new { message = "Phone обязателен" });
+                return BadRequest(new RegisterResponse { message = "Phone обязателен" });
 
             if (string.IsNullOrWhiteSpace(request.lastName) || string.IsNullOrWhiteSpace(request.middleName) || string.IsNullOrWhiteSpace(request.firstName))
-                return BadRequest(new { message = "ФИО обязателен" });
+                return BadRequest(new RegisterResponse { message = "ФИО обязателен" });
 
+            var (chekPas, message) =  CheckPassword(request.password);
+            if (!chekPas)
+            {
+                return BadRequest(new RegisterResponse { message = message });
+            }
             var user = await authorization.RegisterUserAsync(request);
             if (user == null)
             {
-                return Conflict(new { message = "Логин уже занят" });
+                return Conflict(new RegisterResponse { message = "Логин уже занят" });
             }
             string fio = $"{user.FirstName} {user.MiddleName} {user.LastName}";
 
-            return Ok(new RegisterResponse(user.Login, fio));
+            return Ok(new RegisterResponse {login = user.Login, fio= fio, message="Успешная регистрация!" });
         }
 
 
@@ -89,10 +98,11 @@ namespace Taxi.API.Server.Controllers
 
                 
             var res = await authorization.LoginUserAsync(request);
-            var (token, roleId) = res.Value;
-            
-            if (token != null)
+            if (res != null)
             {
+
+                var (token, roleId) = res.Value;
+            
                 _cache.Remove(loginKey);
                 return Ok(new LoginResponse {
                     IsSuccess = true,
@@ -147,6 +157,41 @@ namespace Taxi.API.Server.Controllers
             var img = captchaService.GenImageBase64(text);
             _cache.Set(guid.ToString(), text, TimeSpan.FromMinutes(5));
             return (guid, img);
+        }
+
+
+
+        private (bool, string) CheckPassword(string password)
+        {
+            string message = "";
+            bool en = true;
+            bool number = false;
+            bool passLen = password.Length >= 6;
+
+            if (passLen)
+            {
+                for (int i = 0; i < password.Length; i++)
+                {
+                    if (password[i] >= '0' && password[i] <= '9') number = true;
+                    else if (!(
+                        (password[i] >= 'A' && password[i] <= 'Z')
+                        ||
+                        (password[i] >= 'a' && password[i] <= 'z')
+                        ))
+                        en = false;
+                }
+            }
+
+            if (!passLen)
+                message = "Пароль слишком короткий, должно быть минимум 6 символов!";
+            else if (!en)
+            {
+                message = "Используйте только английскую расскладку!";
+            }
+            else if (!number)
+                message = "Добавьте хотябы одну цифру!";
+
+            return (passLen && en && number, message);
         }
     }
 }

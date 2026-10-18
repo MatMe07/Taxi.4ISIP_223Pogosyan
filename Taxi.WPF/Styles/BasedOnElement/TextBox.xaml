@@ -1,12 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                    >
 
     <Style x:Key="AppTextBox"
        TargetType="TextBox"
        BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
 
-        <Setter Property="Margin" Value="0 8"/>
+        <Setter Property="Margin" Value="0 20"/>
         <Setter Property="Padding" Value="10 3"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Height" Value="30"/>
@@ -33,4 +35,17 @@
 
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
     </Style>
+
+    <Style x:Key="TextBoxPhone" TargetType="xctk:MaskedTextBox" BasedOn="{StaticResource AppTextBox}">
+        <Setter Property="Mask" Value=""/>
+        <Style.Triggers>
+            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter Property="Mask" Value="+7 (000) 000-00-00"/>
+            </Trigger>
+            <Trigger Property="IsMaskCompleted" Value="True">
+                <Setter Property="Mask" Value="+7 (000) 000-00-00"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
 </ResourceDictionary>

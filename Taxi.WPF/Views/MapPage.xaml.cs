@@ -18,7 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Taxi.WPF.ViewModels;
 
-namespace Taxi.src.Taxi.Map
+namespace Taxi.WPF.Views
 {
     /// <summary>
     /// Логика взаимодействия для MapPage.xaml

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Taxi.WPF.Views
 {
     /// <summary>
-    /// Логика взаимодействия для MenegerAutoPage.xaml
+    /// Логика взаимодействия для ManagerAutoPage.xaml
     /// </summary>
-    public partial class MenegerAutoPage : Page
+    public partial class ManagerAutoPage : Page
     {
-        public MenegerAutoPage()
+        public ManagerAutoPage()
         {
             InitializeComponent();
         }

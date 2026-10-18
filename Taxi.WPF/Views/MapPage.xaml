@@ -1,4 +1,4 @@
-﻿<Page x:Class="Taxi.src.Taxi.Map.MapPage"
+﻿<Page x:Class="Taxi.WPF.Views.MapPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 

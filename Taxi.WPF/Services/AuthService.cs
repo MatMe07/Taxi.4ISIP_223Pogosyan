@@ -33,10 +33,10 @@ namespace Taxi.WPF.Services
         public async Task<RegisterResponse> RegisterNewUserAsync(RegisterRequest registerRequest)
         {
             var response = await _http.PostAsJsonAsync("api/auth/register", registerRequest);
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadFromJsonAsync<RegisterResponse>();
-            if (result == null)
-                throw new InvalidCastException("RegisterNewUser error");
+            //if (result == null)
+            //    throw new InvalidCastException("RegisterNewUser error");
             return result;
         }
 

@@ -7,5 +7,10 @@ using System.Threading.Tasks;
 
 namespace Taxi.Core.Models.Auth
 {
-    public record RegisterResponse(string login, string fio);
+    public record RegisterResponse {
+        public string login { get; set; }
+        public string fio {  get; set; }
+
+        public string message { get; set; } = string.Empty;
+            }
 }

@@ -21,7 +21,7 @@ using Windows.Devices.Usb;
 
 namespace Taxi.WPF.ViewModels
 {
-    public class AuthorizationViewModel : INotifyPropertyChanged
+    public class AuthorizationViewModel : ViewModelBase
     {
 
         private readonly AuthService _authSerivce;
@@ -213,9 +213,10 @@ namespace Taxi.WPF.ViewModels
             if (Application.Current.MainWindow is MainWindow mainWindow)
             {
                 mainWindow.ChangePage();
-
             }
         }
+
+        
 
 
         public RelayCommand BtnSendRegister
@@ -251,9 +252,10 @@ namespace Taxi.WPF.ViewModels
 
                         var result = await _authSerivce.RegisterNewUserAsync(newUserReguest);
 
-                        if (result == null)
+                        if (result.login == null)
                         {
-                            MessageBox.Show("Пользователь с таким логином уже зарегистрирован!");
+
+                            MessageBox.Show(result.message);
                             return;
                         }
 
@@ -285,11 +287,5 @@ namespace Taxi.WPF.ViewModels
 
 
 
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

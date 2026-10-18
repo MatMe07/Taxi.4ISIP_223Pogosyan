@@ -5,7 +5,7 @@
     <SolidColorBrush x:Key="PrimaryHoverBrush"     Color="#5BA0F2"/>
     <SolidColorBrush x:Key="PrimaryPressedBrush"   Color="#3A7BC8"/>
 
-    <SolidColorBrush x:Key="AppBackgroundBrush"    Color="#0F1419"/>
+    <SolidColorBrush x:Key="AppBackgroundBrush"    Color="#191917"/>
     <SolidColorBrush x:Key="SurfaceBrush"          Color="#1A2028"/>
     <SolidColorBrush x:Key="SurfaceAltBrush"       Color="#242C36"/>
     <SolidColorBrush x:Key="SidebarBrush"          Color="#0A0E13"/>
@@ -13,6 +13,7 @@
     <SolidColorBrush x:Key="BorderBrush"           Color="#2D3742"/>
     <SolidColorBrush x:Key="DividerBrush"          Color="#232B34"/>
 
+    <SolidColorBrush x:Key="IconBrush"       Color="#E8EDF2"/>
     <SolidColorBrush x:Key="TextBlockPrimaryBrush"       Color="#E8EDF2"/>
     <SolidColorBrush x:Key="TextBlockSecondaryBrush"     Color="#A0AEBD"/>
     <SolidColorBrush x:Key="TextBlockDisabledBrush"      Color="#5A6773"/>

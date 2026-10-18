@@ -14,7 +14,7 @@ using Taxi.src.Services;
 
 namespace Taxi.WPF.ViewModels
 {
-    public class MapViewModel
+    public class MapViewModel : ViewModelBase
     {
         private string DefaultFromAddress = "Москва, Льва Толстого, 16";
         private string DefaultToAddress = "Москва, Льва Толстого, 10";

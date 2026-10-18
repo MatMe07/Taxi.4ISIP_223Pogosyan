@@ -12,11 +12,11 @@
     <Style x:Key="borderNav" TargetType="Border">
         <Setter Property="Effect">
             <Setter.Value>
-                <DropShadowEffect Color="Black" 
+                <DropShadowEffect Color="{DynamicResource MaterialDesignShadow}" 
                                   Direction="200" 
                                   ShadowDepth="0" 
-                                  BlurRadius="20" 
-                                  Opacity="0.3" RenderingBias="Performance"/>
+                                  BlurRadius="25" 
+                                  Opacity="0.4" RenderingBias="Performance"/>
             </Setter.Value>
         </Setter>
         <Setter Property="Padding" Value="10"/>

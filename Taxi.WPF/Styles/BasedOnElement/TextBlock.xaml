@@ -5,10 +5,10 @@
     <Style x:Key="AppTextBlockTitle"
            TargetType="TextBlock"
            BasedOn="{StaticResource MaterialDesignHeadline2TextBlock}">
-        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontSize" Value="22"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground"
-                Value="{DynamicResource TextPrimaryBrush}"/>
+                Value="{DynamicResource TextBlockPrimaryBrush}"/>
     </Style>
 
     <Style x:Key="AppTextBlockSubtitle"
@@ -17,7 +17,7 @@
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="Foreground"
-                Value="{DynamicResource TextPrimaryBrush}"/>
+                Value="{DynamicResource TextBlockSecondaryBrush}"/>
     </Style>
 
     <Style x:Key="AppTextBlockBody"
@@ -25,7 +25,7 @@
            BasedOn="{StaticResource MaterialDesignTextBlock}">
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground"
-                Value="{DynamicResource TextPrimaryBrush}"/>
+                Value="{DynamicResource TextBlockPrimaryBrush}"/>
     </Style>
 
     <Style x:Key="AppTextBlockCaption"
@@ -33,7 +33,7 @@
            BasedOn="{StaticResource MaterialDesignTextBlock}">
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Foreground"
-                Value="{DynamicResource TextSecondaryBrush}"/>
+                Value="{DynamicResource TextBlockSecondaryBrush}"/>
     </Style>
 
 </ResourceDictionary>
