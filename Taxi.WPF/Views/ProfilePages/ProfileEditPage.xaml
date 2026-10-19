@@ -9,6 +9,7 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       
       d:Background="{StaticResource AppBackgroundBrush}"
+      d:DataContext="{d:DesignInstance {x:Type local:ProfileEditViewModel}}"
       mc:Ignorable="d" d:DesignWidth="800"
       x:Name="page"
       
@@ -76,10 +77,12 @@
                 </StackPanel>
             </ScrollViewer>
             <Popup x:Name="ChangePasswordPopup"
+                   DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Page}}"
+               
                IsOpen="{Binding IsChangePasswordOpen, Mode=TwoWay}"
                PlacementTarget="{Binding ElementName=page}"
                Placement="Center"
-               StaysOpen="False"
+               StaysOpen="True"
                AllowsTransparency="True"
                PopupAnimation="Fade"
                HorizontalOffset="0"
@@ -104,17 +107,19 @@
 
                         <PasswordBox Style="{StaticResource AppPasswordBox}"
                          materialDesign:HintAssist.Hint="Текущий пароль"
-                         
-                         Margin="0 0 0 10"/>
+                         x:Name="passwordCur"
+                         Margin="0 0 0 10" PasswordChanged="PasswordBoxCurrent_PasswordChanged"/>
 
                         <PasswordBox Style="{StaticResource AppPasswordBox}"
                          materialDesign:HintAssist.Hint="Новый пароль"
-                         
-                         Margin="0 0 0 10"/>
+                         x:Name="passwordNew"
+                         Margin="0 0 0 10" PasswordChanged="PasswordBoxNEW_PasswordChanged"/>
 
                         <PasswordBox Style="{StaticResource AppPasswordBox}"
                          materialDesign:HintAssist.Hint="Повторите новый пароль"
-                         Margin="0 0 0 15"/>
+                                     x:Name="passwordNewConfirm"
+                                     
+                         Margin="0 0 0 15" PasswordChanged="PasswordBoxNewConfirm_PasswordChanged"/>
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                             <Button Content="Отмена"
