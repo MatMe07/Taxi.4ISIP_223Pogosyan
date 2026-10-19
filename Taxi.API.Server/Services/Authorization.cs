@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -54,11 +55,26 @@ namespace Taxi.API.Server.Services
             return user;
         }
 
+        public async Task<string> ChangePasswordAsync(ChangePasswordRequst request)
+        {
+
+            var account = await _context.Users.FirstOrDefaultAsync(a => a.Login == request.LoginUser);
+            if (account == null)
+                return "Нет такого логина!";
+
+            var result = hasher.VerifyHashedPassword(
+                account, account.PasswordHashe, request.PasswordCurrent);
+
+            if (result == PasswordVerificationResult.Failed) return "Введенный текущий пароль неправильный";
+
+            account.PasswordHashe = hasher.HashPassword(account, request.PasswordNew);
+
+            await _context.SaveChangesAsync();
+            return "Пароль успешно изменен!";
+        }
 
         public async Task<(string, int)?> LoginUserAsync(LoginRequest request)
         {
-
-
             var account = await _context.Users.FirstOrDefaultAsync(a => a.Login == request.login);
 
             if (account == null ||

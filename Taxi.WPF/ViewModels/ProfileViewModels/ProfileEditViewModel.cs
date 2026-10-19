@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Taxi.WPF.Commands;
 using Taxi.WPF.Services;
+using Taxi.WPF.Services.Interfaces;
 
 namespace Taxi.WPF.ViewModels.ProfileViewModels
 {
@@ -55,7 +56,8 @@ namespace Taxi.WPF.ViewModels.ProfileViewModels
             get { return _isChangePasswordOpen; }
             set
             {
-                
+                        Debug.WriteLine(AuthService);
+
                 _isChangePasswordOpen = value;
                 OnPropertyChanged(nameof(IsChangePasswordOpen));
             }
@@ -86,9 +88,9 @@ namespace Taxi.WPF.ViewModels.ProfileViewModels
 
         //private MainViewModel MainViewModel;
         private AuthService AuthService;
-        public ProfileEditViewModel(AuthService authService)
+        public ProfileEditViewModel(IAuthService authService)
         {
-            AuthService = authService;
+            AuthService = authService as AuthService;
             //MainViewModel = mainView;
         }
     }

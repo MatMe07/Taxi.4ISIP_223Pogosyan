@@ -30,6 +30,20 @@ namespace Taxi.WPF.Services
             return result;
         }
 
+        public async Task<ChangePasswordResponse> ChangePasswordAsync(LoginResponse loginRequest,string curPassword,string newPassword)
+        {
+            var changeRequest = new ChangePasswordRequst
+            {
+                loginResponse = loginRequest,
+                PasswordCurrent = curPassword,
+                PasswordNew = newPassword
+            };
+            var response = await _http.PostAsJsonAsync("api/auth/changePassword", changeRequest);
+            response.EnsureSuccessStatusCode();
+            var result = await response.Content.ReadFromJsonAsync<ChangePasswordResponse>();
+            return result;
+        }
+
         public async Task<RegisterResponse> RegisterNewUserAsync(RegisterRequest registerRequest)
         {
             var response = await _http.PostAsJsonAsync("api/auth/register", registerRequest);

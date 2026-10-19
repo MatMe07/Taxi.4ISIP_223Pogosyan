@@ -143,6 +143,35 @@ namespace Taxi.API.Server.Controllers
 
         }
 
+
+        [HttpPost("changePassword")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequst response)
+        {
+            if (string.Equals(response.PasswordCurrent, response.PasswordNew))
+            {
+                return BadRequest(
+                    new ChangePasswordResponse
+                    {
+                        message = "Пароли одинаковые!"
+                    }
+                    );
+            }
+            var (chekPas, message) = CheckPassword(response.PasswordNew);
+            if (!chekPas)
+            {
+                return BadRequest(new RegisterResponse { message = message });
+            }
+            message = await authorization.ChangePasswordAsync(response);
+
+            return BadRequest(
+                new ChangePasswordResponse
+                {
+                    message = message
+                }
+                );
+        }
+
         private void PLUSFailed(string key, ref int current)
         {
             current++;
