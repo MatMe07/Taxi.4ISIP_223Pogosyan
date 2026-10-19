@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Taxi.API.Server.Models;
 using Taxi.Core.Models.Auth;
+using Taxi.Core.Models.DB;
 
 namespace Taxi.API.Server.Services
 {
@@ -57,7 +58,6 @@ namespace Taxi.API.Server.Services
 
         public async Task<string> ChangePasswordAsync(ChangePasswordRequst request)
         {
-
             var account = await _context.Users.FirstOrDefaultAsync(a => a.Login == request.LoginUser);
             if (account == null)
                 return "Нет такого логина!";
@@ -73,7 +73,7 @@ namespace Taxi.API.Server.Services
             return "Пароль успешно изменен!";
         }
 
-        public async Task<(string, int)?> LoginUserAsync(LoginRequest request)
+        public async Task<(string, UserDTO)?> LoginUserAsync(LoginRequest request)
         {
             var account = await _context.Users.FirstOrDefaultAsync(a => a.Login == request.login);
 
@@ -88,7 +88,17 @@ namespace Taxi.API.Server.Services
                 return null;
 
             string token = CreateToken(account);
-            return (token, account.RoleId);
+            return (token, new UserDTO
+            {
+                Id = account.Id,
+                Login = account.Login,
+                LastName = account.LastName,
+                FirstName   = account.FirstName,
+                MiddleName = account.MiddleName,
+                Phone= account.Phone,
+                isActive= account.IsActive,
+                RoleId = account.RoleId,
+            });
         }
 
 
@@ -106,7 +116,7 @@ namespace Taxi.API.Server.Services
                 issuer: _jwt.Issuer,
                 audience: _jwt.Audience,
                 claims: claims,
-                //expires: DateTime.UtcNow.AddMinutes(15),
+                expires: DateTime.UtcNow.AddDays(30),
                 signingCredentials: new SigningCredentials(
                     _signingKey, SecurityAlgorithms.HmacSha256));
 

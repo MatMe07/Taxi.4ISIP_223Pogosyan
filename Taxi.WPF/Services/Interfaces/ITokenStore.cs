@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Taxi.WPF.Services.Interfaces
+{
+    public interface ITokenStore
+    {
+        string? AccesToken { get; }
+        void SetToken(string? token);
+        void Clear();
+    }
+}

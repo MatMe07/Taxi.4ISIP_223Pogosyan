@@ -101,7 +101,7 @@ namespace Taxi.API.Server.Controllers
             if (res != null)
             {
 
-                var (token, roleId) = res.Value;
+                var (token, UserDto) = res.Value;
             
                 _cache.Remove(loginKey);
                 return Ok(new LoginResponse {
@@ -109,7 +109,7 @@ namespace Taxi.API.Server.Controllers
                     access_token = token,
                     IsCaptchaRequired = false,
                     token_type = "Bearer",
-                    RoleId=roleId
+                    User = UserDto
                 });
 
             }
@@ -141,6 +141,22 @@ namespace Taxi.API.Server.Controllers
                 message = "Неверный логин или пароль."
             });
 
+        }
+
+        [HttpGet("getProst")]
+        [Authorize]
+        public IActionResult GetProst()
+        {
+            var isAuth = User.Identity?.IsAuthenticated ?? false;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                         ?? User.FindFirst("sub")?.Value;
+
+            Console.WriteLine($"Auth: {isAuth}, UserId: {userId ?? "<null>"}");
+
+            if (!isAuth)
+                return Unauthorized();
+
+            return Ok(new { hel = "helo", userId });
         }
 
 

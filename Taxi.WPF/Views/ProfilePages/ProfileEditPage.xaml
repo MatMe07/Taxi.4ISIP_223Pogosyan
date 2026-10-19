@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       
       xmlns:local="clr-namespace:Taxi.WPF.ViewModels.ProfileViewModels"
+      xmlns:localConverters="clr-namespace:Taxi.WPF.Converters"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       
@@ -17,6 +18,9 @@
       
       >
 
+    <Page.Resources>
+        <localConverters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    </Page.Resources>
 
     <Grid >
         <Grid HorizontalAlignment="Center">
@@ -39,19 +43,19 @@
                         <TextBox Grid.Row="0" Grid.Column="0" Margin="0 5 5 5" MinWidth="190"
                      Style="{StaticResource AppTextBox}"
                      materialDesign:HintAssist.Hint="ФИО"
-                     Text="{Binding DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding DisplayName, Mode=TwoWay}"/>
 
                         <TextBox Grid.Row="0" Grid.Column="1" Margin="5 5 0 5"
                      Style="{StaticResource AppTextBox}"  MinWidth="190"
                      materialDesign:HintAssist.Hint="Логин"
                      IsReadOnly="True"
-                     Text="{Binding User.Login}"/>
+                     Text="{Binding Login}"/>
 
 
                         <xctk:MaskedTextBox Grid.Row="1" Grid.Column="0" Margin="0 5 5 5"
                      Style="{StaticResource TextBoxPhone}"
                      materialDesign:HintAssist.Hint="Телефон"
-                     Text="{Binding Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding Phone, Mode=TwoWay}"/>
 
                     </Grid>
 
@@ -76,69 +80,45 @@
 
                 </StackPanel>
             </ScrollViewer>
-            <Popup x:Name="ChangePasswordPopup"
-                   DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Page}}"
-               
-               IsOpen="{Binding IsChangePasswordOpen, Mode=TwoWay}"
-               PlacementTarget="{Binding ElementName=page}"
-               Placement="Center"
-               StaysOpen="True"
-               AllowsTransparency="True"
-               PopupAnimation="Fade"
-               HorizontalOffset="0"
-               VerticalOffset="8">
+            <Border Height="270"
+               Visibility="{Binding IsChangePasswordOpen, Converter={StaticResource boolToVisibilityConverter}}"
+                    Style="{DynamicResource PasswordPopupBorder}" d:Visibility="Collapsed">
+                <StackPanel>
 
-                <Border Background="{DynamicResource AppBackgroundBrush}"
-            BorderBrush="{DynamicResource BorderBrush}"
-            BorderThickness="1"
-            CornerRadius="8"
-             
-            Padding="20"
-            Width="320">
-                    <Border.Effect>
-                        <DropShadowEffect BlurRadius="20" ShadowDepth="2" Opacity="0.25"/>
-                    </Border.Effect>
-
-                    <StackPanel DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Page}}">
-
-                        <TextBlock Style="{StaticResource AppTextBlockTitle}"
+                    <TextBlock Style="{StaticResource AppTextBlockTitle}"
                            Text="Смена пароля"
                            Margin="0 0 0 15"/>
 
-                        <PasswordBox Style="{StaticResource AppPasswordBox}"
+                    <PasswordBox Style="{StaticResource AppPasswordBox}"
                          materialDesign:HintAssist.Hint="Текущий пароль"
                          x:Name="passwordCur"
                          Margin="0 0 0 10" PasswordChanged="PasswordBoxCurrent_PasswordChanged"/>
 
-                        <PasswordBox Style="{StaticResource AppPasswordBox}"
+                    <PasswordBox Style="{StaticResource AppPasswordBox}"
                          materialDesign:HintAssist.Hint="Новый пароль"
                          x:Name="passwordNew"
                          Margin="0 0 0 10" PasswordChanged="PasswordBoxNEW_PasswordChanged"/>
 
-                        <PasswordBox Style="{StaticResource AppPasswordBox}"
+                    <PasswordBox Style="{StaticResource AppPasswordBox}"
                          materialDesign:HintAssist.Hint="Повторите новый пароль"
                                      x:Name="passwordNewConfirm"
                                      
                          Margin="0 0 0 15" PasswordChanged="PasswordBoxNewConfirm_PasswordChanged"/>
 
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Content="Отмена"
-                        Style="{StaticResource buttonBased}"
-                        Background="{DynamicResource SurfaceAltBrush}"
-                        Foreground="{DynamicResource TextBlockPrimaryBrush}"
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Отмена"
+                        Style="{StaticResource SecondaryButtonBased}"
                         Command="{Binding CloseChangePasswordCommand}"
-                        Margin="0 0 10 0"
-                        Padding="15 8"/>
-                            <Button Content="Сохранить"
+                                    
+                                    />
+                        <Button Content="Сохранить"
                             Style="{StaticResource buttonBased}"
                             Command="{Binding SavePasswordCommand}"
-                            IsEnabled="{Binding IsPasswordValid}"
                             Padding="15 8"/>
-                        </StackPanel>
-                        
                     </StackPanel>
-                </Border>
-            </Popup>
+
+                </StackPanel>
+            </Border>
         </Grid>
     </Grid>
 </Page>

@@ -36,16 +36,18 @@ namespace Taxi.WPF
                 opt.ConfigureHttpClient(client =>
                 {
                     client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("BaseAddress"));
-
                 });
             });
 
             services.AddHttpClient<IAuthService, AuthService>();
+
+
             services.AddHttpClient<IGeocodeService, GeocodeService>();
             services.AddHttpClient<IRoutingService, RoutingService>();
             services.AddHttpClient<IConfigurationService, ConfigurationService>();
 
 
+            services.AddSingleton<IUserSessionService, UserSessionService>();
 
 
             services.AddTransient<AuthorizationViewModel>();

@@ -203,6 +203,7 @@ namespace Taxi.WPF.ViewModels
                         AppSettings.Instance.LoginResponse = result;
                         AppSettings.Instance.IsSign = true;
                         AppCache.Cache.Set(nameof(AppSettings), AppSettings.Instance);
+                        
                         ChangePage();
                     }));
             }

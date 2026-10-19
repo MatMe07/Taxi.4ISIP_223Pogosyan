@@ -31,8 +31,6 @@ var validation = new TokenValidationParameters
     ValidateIssuerSigningKey = true,
     IssuerSigningKey = signKey,
 
-    ValidateLifetime = true,
-    ClockSkew = TimeSpan.Zero,
 
     NameClaimType = "name",
     RoleClaimType = "role"
@@ -45,6 +43,19 @@ builder.Services
     {
         options.MapInboundClaims = true;
         options.TokenValidationParameters = validation;
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = ctx =>
+            {
+                Console.WriteLine($"JWT FAIL: {ctx.Exception.Message}");
+                return Task.CompletedTask;
+            },
+            OnTokenValidated = ctx =>
+            {
+                Console.WriteLine($"JWT OK: {ctx.Principal?.Identity?.Name}");
+                return Task.CompletedTask;
+            }
+        };
     });
 
 

@@ -8,10 +8,10 @@
        TargetType="TextBox"
        BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
 
-        <Setter Property="Margin" Value="0 20"/>
+        <Setter Property="Margin" Value="0 10 0 5"/>
         <Setter Property="Padding" Value="10 3"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Height" Value="30"/>
+        <Setter Property="Height" Value="35"/>
 
         <Setter Property="Foreground"
             Value="{DynamicResource TextBlockPrimaryBrush}"/>

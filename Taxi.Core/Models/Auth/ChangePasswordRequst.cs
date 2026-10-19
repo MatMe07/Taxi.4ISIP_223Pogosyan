@@ -8,7 +8,6 @@ namespace Taxi.Core.Models.Auth
 {
     public class ChangePasswordRequst
     {
-        public LoginResponse loginResponse {  get; set; }
         public string LoginUser {  get; set; }
         public string PasswordCurrent {  get; set; }
         public string PasswordNew {  get; set; }

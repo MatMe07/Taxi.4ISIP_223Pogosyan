@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Taxi.WPF.Commands;
+using Taxi.WPF.Models;
 using Taxi.WPF.Services;
 using Taxi.WPF.Services.Interfaces;
+using Windows.Networking.NetworkOperators;
 
 namespace Taxi.WPF.ViewModels.ProfileViewModels
 {
-    public class ProfileEditViewModel : INotifyPropertyChanged
+    public class ProfileEditViewModel : ViewModelBase
     {
 
         private RelayCommand _openChangePasswordCommand;
@@ -35,16 +37,52 @@ namespace Taxi.WPF.ViewModels.ProfileViewModels
         public string PasswordNewConfirm { get; set; }
 
 
+        private string _displayName;
+        public string DisplayName
+        {
+            get => _displayName;
+            set
+            {
+                CheckFieldsUser();
+                _displayName = value;
+                OnPropertyChanged(nameof(DisplayName));
+            }
+        }
+        private string _Login;
+        public string Login
+        {
+            get => _Login;
+            set
+            {
+                _Login = value;
+                OnPropertyChanged(nameof(Login));
+            }
+        }
+        private string _Phone;
+        public string Phone
+        {
+            get => _Phone;
+            set
+            {
+                CheckFieldsUser();
+                _Phone = value;
+                OnPropertyChanged(nameof(Phone));
+            }
+        }
+
 
 
         private bool CheckFilledfields()
         {
-            if (!string.IsNullOrWhiteSpace(PasswordCurrent) ||
+            return !string.IsNullOrWhiteSpace(PasswordCurrent) ||
                 !string.IsNullOrWhiteSpace(PasswordNew) ||
-                !string.IsNullOrWhiteSpace(PasswordNewConfirm)
-                )
+                !string.IsNullOrWhiteSpace(PasswordNewConfirm);
+        }
+        private bool ClosePupon()
+        {
+            if (CheckFilledfields())
             {
-                var res = MessageBox.Show("Вы действительно хотите выйти? Данные потеряются!", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                var res = MessageBox.Show("Вы действительно хотите выйти? Данные потеряются!", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Information);
                 return res == MessageBoxResult.No;
             }
             return false;
@@ -73,25 +111,81 @@ namespace Taxi.WPF.ViewModels.ProfileViewModels
                 return _closeChangePasswordCommand ??
                     (_closeChangePasswordCommand = new RelayCommand(obj =>
                     {
-                        var checkFiled= CheckFilledfields();
+                        var checkFiled= ClosePupon();
                         if (!checkFiled) ClearPasswords();
                         IsChangePasswordOpen = checkFiled;
                     }));
             }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public void OnPropertyChanged(string propertyName)
+
+        private RelayCommand _savePasswordCommand;
+        public RelayCommand SavePasswordCommand
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            get
+            {
+                return _savePasswordCommand ??
+                    (new RelayCommand(async obj =>
+                    {
+                        if (
+                        !string.IsNullOrWhiteSpace(PasswordCurrent) &&
+                        !string.IsNullOrWhiteSpace(PasswordNew) &&
+                        !string.IsNullOrWhiteSpace(PasswordNewConfirm)
+                        )
+                        {
+                            var result = await AuthService.ChangePasswordAsync(AppSettings.Instance.LoginUser, PasswordCurrent,PasswordNew);
+                            MessageBox.Show(result.message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                        }
+                        else
+                        {
+                            var res = MessageBox.Show("Заполните все поля!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                        }
+                    }));
+            }
         }
+        private bool _isEnabledButton = false;
+        public bool IsEnabledButton
+        {
+            get => _isEnabledButton;
+            set
+            {
+                _isEnabledButton = value;
+                OnPropertyChanged(nameof(IsEnabledButton));
+            }
+
+        }
+
+        private void CheckFieldsUser()
+        {
+            IsEnabledButton = !string.Equals(_basePhone, Phone) && !string.Equals(_baseDisplayName, DisplayName);
+        }
+
+        private string _baseDisplayName;
+        private string _basePhone;
 
         //private MainViewModel MainViewModel;
         private AuthService AuthService;
-        public ProfileEditViewModel(IAuthService authService)
+        private IUserSessionService UserSessionService;
+        public ProfileEditViewModel(IAuthService authService, IUserSessionService userSession)
         {
             AuthService = authService as AuthService;
+            UserSessionService = userSession;
+
             //MainViewModel = mainView;
         }
+
+        public void Load()
+        {
+            var us = UserSessionService.CurrentSession ?? throw new InvalidOperationException("Not authenticated");
+            _baseDisplayName = $"{us.User.FirstName} {us.User.LastName} {us.User.MiddleName}";
+            DisplayName = $"{us.User.FirstName} {us.User.LastName} {us.User.MiddleName}";
+            Phone = us.User.Phone;
+            _basePhone = us.User.Phone;
+            Login = us.User.Login;
+        }
+
+
     }
 }

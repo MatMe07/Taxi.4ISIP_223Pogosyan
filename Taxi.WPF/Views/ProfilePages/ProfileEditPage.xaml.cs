@@ -30,6 +30,7 @@ namespace Taxi.WPF.Views.ProfilePages
             this.viewModel = viewModel;
             InitializeComponent();
             this.DataContext  = this.viewModel;
+            Loaded += (_, _) => viewModel.Load();
 
         }
 

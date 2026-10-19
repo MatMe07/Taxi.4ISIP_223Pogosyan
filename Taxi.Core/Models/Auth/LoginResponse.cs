@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Taxi.Core.Models.DB;
 
 namespace Taxi.Core.Models.Auth
 {
@@ -14,12 +15,15 @@ namespace Taxi.Core.Models.Auth
 
         public bool IsSuccess { get; set; }
 
-        public int RoleId { get; set; }
+        public UserDTO User { get; set; }
         public Guid CaptchaId { get; set; }
 
         public string CaptchaImageBase64 { get; set; } = string.Empty;
 
         public string message {  get; set; }
+
+
+
 
     }
 

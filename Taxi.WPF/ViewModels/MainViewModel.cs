@@ -68,7 +68,7 @@ namespace Taxi.WPF.ViewModels
 
         public void LoadNextPageRoleId()
         {
-            switch (AppSettings.Instance.LoginResponse.RoleId)
+            switch (AppSettings.Instance.LoginResponse.User.RoleId)
             {
                 case 1:
                     {

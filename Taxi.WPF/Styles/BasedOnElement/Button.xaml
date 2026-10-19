@@ -50,4 +50,12 @@
         </Setter>
     </Style>
 
+    <Style x:Key="SecondaryButtonBased"
+       TargetType="{x:Type Button}"
+       BasedOn="{StaticResource buttonBased}">
+        <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBlockPrimaryBrush}"/>
+        <Setter Property="Margin" Value="0,0,10,0"/>
+        <Setter Property="Padding" Value="15,8"/>
+    </Style>
 </ResourceDictionary>
