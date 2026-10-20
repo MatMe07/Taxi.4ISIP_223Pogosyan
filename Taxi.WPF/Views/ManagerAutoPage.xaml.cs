@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Taxi.WPF.Views.ManagerPages;
 
 namespace Taxi.WPF.Views
 {
@@ -20,9 +21,10 @@ namespace Taxi.WPF.Views
     /// </summary>
     public partial class ManagerAutoPage : Page
     {
-        public ManagerAutoPage()
+        public ManagerAutoPage(DataCarsPage dataCars)
         {
             InitializeComponent();
+            frameVehicles.Navigate(dataCars);
         }
     }
 }

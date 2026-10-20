@@ -85,7 +85,7 @@ namespace Taxi.WPF.ViewModels
                     }
                 case 3:
                     {
-                        frameMain.Navigate(mapPage);
+                        frameMain.Navigate(managerAutoPage);
 
                         break;
                     }
@@ -100,6 +100,7 @@ namespace Taxi.WPF.ViewModels
 
         private MapPage mapPage;
         private ProfilePage profilePage;
+        private ManagerAutoPage managerAutoPage;
 
 
         private RelayCommand _btnThemsCommand;
@@ -119,11 +120,12 @@ namespace Taxi.WPF.ViewModels
         }
 
 
-        public MainViewModel(MapPage mapPage, ConfigurationService configuration, ProfilePage profilePage)
+        public MainViewModel(MapPage mapPage, ConfigurationService configuration, ProfilePage profilePage, ManagerAutoPage managerAutoPage)
         {
             this.profilePage = profilePage;
             this.mapPage = mapPage;
             _configurationSerivce = configuration;
+            this.managerAutoPage = managerAutoPage;
         }
 
     }

@@ -1,0 +1,38 @@
+﻿<Page x:Class="Taxi.WPF.Views.ManagerPages.DataCarsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Taxi.WPF.Views.ManagerPages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="DataAuto"
+      >
+
+    <Grid>
+        <DataGrid 
+          AutoGenerateColumns="False"
+            
+            Style="{DynamicResource dataGrid}"
+            d:ItemsSource="{d:SampleData ItemCount=5}" ColumnHeaderStyle="{DynamicResource dataGridTextColumn}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding id}"/>
+                <DataGridTextColumn Header="Номера" Binding="{Binding gov_number}"/>
+                <DataGridTextColumn Header="Модель" Binding="{Binding model}"/>
+                <DataGridTextColumn Header="Бренд" Binding="{Binding brand}"/>
+                <DataGridTextColumn Header="Класс машины" Binding="{Binding class_id}"/>
+                <DataGridTextColumn Header="Год" Binding="{Binding year}"/>
+                <DataGridTemplateColumn Header="Доступность" MinWidth="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding is_active}" Tag="{Binding}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Page>

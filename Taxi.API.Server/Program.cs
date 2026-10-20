@@ -25,13 +25,13 @@ var validation = new TokenValidationParameters
     ValidateIssuer = true,
     ValidIssuer = jwt.Issuer,
 
-     ValidateAudience = true,
+    ValidateAudience = true,
     ValidAudience = jwt.Audience,
 
     ValidateIssuerSigningKey = true,
     IssuerSigningKey = signKey,
 
-
+    ValidateLifetime = false,
     NameClaimType = "name",
     RoleClaimType = "role"
 };
@@ -63,11 +63,14 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<Authorization>();
 
+
+
 builder.Services.AddControllers();
 builder.Services.AddDbContext<TaxiBaseContext>();
 
 builder.Services.AddTransient<CaptchaService>();
 builder.Services.AddMemoryCache();
+builder.Services.AddTransient<VehiclesServices>();
 
 var app = builder.Build();
 

@@ -14,6 +14,7 @@
         <ResourceDictionary Source="/Styles/BasedOnElement/BorderCards.xaml"/>
         <ResourceDictionary Source="/Styles/BasedOnElement/Window.xaml"/>
         <ResourceDictionary Source="/Styles/BasedOnElement/TabControl.xaml"/>
+        <ResourceDictionary Source="/Styles/BasedOnElement/GridData.xaml"/>
 
         <ResourceDictionary Source="/Styles/Thems/ColorsDark.xaml"/>
     </ResourceDictionary.MergedDictionaries>

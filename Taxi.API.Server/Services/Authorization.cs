@@ -116,7 +116,7 @@ namespace Taxi.API.Server.Services
                 issuer: _jwt.Issuer,
                 audience: _jwt.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(30),
+                //expires: DateTime.UtcNow.AddDays(30),
                 signingCredentials: new SigningCredentials(
                     _signingKey, SecurityAlgorithms.HmacSha256));
 

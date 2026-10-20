@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Taxi.API.Server.Models;
 using Taxi.API.Server.Services;
@@ -71,6 +73,8 @@ namespace Taxi.API.Server.Controllers
         public async Task<IActionResult> LoginUser(LoginRequest request)
         {
             string loginKey = $"LoginKey_{request.login}";
+
+            Debug.WriteLine(JsonSerializer.Serialize(request));
             _cache.TryGetValue(loginKey, out int failedAttmpts);
 
             bool captchaRequired = failedAttmpts >= 1;
