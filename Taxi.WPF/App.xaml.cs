@@ -33,24 +33,30 @@ namespace Taxi.WPF
 
             var services = new ServiceCollection();
 
+            services.AddTransient<MyDelegatingHandler>();
+            services.AddSingleton<ITokenStore, TokenStore>();
+            services.AddSingleton<IUserSessionService, UserSessionService>();
+
             services.ConfigureHttpClientDefaults(opt =>
             {
                 opt.ConfigureHttpClient(client =>
                 {
                     client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("BaseAddress"));
                 });
+
+                opt.AddHttpMessageHandler<MyDelegatingHandler>();
+
             });
 
             services.AddHttpClient<IAuthService, AuthService>();
-
-
             services.AddHttpClient<IGeocodeService, GeocodeService>();
             services.AddHttpClient<IRoutingService, RoutingService>();
-            services.AddHttpClient<IConfigurationService, ConfigurationService>();
+
+            services.AddSingleton<ConfigurationService>();
+            services.AddSingleton<IConfigurationService>(sp=>sp.GetRequiredService<ConfigurationService>());
 
 
-            services.AddSingleton<IUserSessionService, UserSessionService>();
-            services.AddSingleton<IUserBaseService, ManagerService>();
+            services.AddTransient<IUserBaseService, ManagerService>();
 
 
             services.AddTransient<AuthorizationViewModel>();

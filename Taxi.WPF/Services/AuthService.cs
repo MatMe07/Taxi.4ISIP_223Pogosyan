@@ -19,11 +19,13 @@ namespace Taxi.WPF.Services
     public class AuthService : IAuthService
     {
         private readonly HttpClient _http;
-        private readonly IUserSessionService _userSession;
-        public AuthService(HttpClient http, IUserSessionService userSession)
+        //private readonly IUserSessionService _userSession;
+        private readonly ITokenStore _tokenStore;
+        public AuthService(HttpClient http, ITokenStore tokenStore)
         {
             _http = http;
-            _userSession = userSession;
+            //_userSession = userSession;
+            _tokenStore = tokenStore;
         }
 
         public async Task<LoginResponse> LoginUserAsync(LoginRequest loginRequest)
@@ -31,25 +33,29 @@ namespace Taxi.WPF.Services
             var response = await _http.PostAsJsonAsync("api/auth/login", loginRequest);
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
-            //if (result == null)
-            //    throw new InvalidCastException("LoginResponse error");
-            _userSession.SetSession(new UserSession
+            if (result?.User == null)
+                return result;
+            var newUsSes = new UserSession
             {
-                User = result.User,
-                access_token = result.access_token,
-            });
+                User = result.User
+            };
+            newUsSes.access_token.SetToken(result.access_token);
+            _tokenStore.SetToken(result.access_token);
+            AppSettings.Instance.userSession = newUsSes;
+
+            
             return result;
         }
 
-        public async Task<ChangePasswordResponse> ChangePasswordAsync(string login, string curPassword,string newPassword)
+        public async Task<ChangePasswordResponse> ChangePasswordAsync(string curPassword,string newPassword, string newConfirmPassword)
         {
             //_http.DefaultRequestHeaders.Add("Authorization", "Bearer " + AppSettings.Instance.LoginResponse.access_token);
 
             var changeRequest = new ChangePasswordRequst
             {
-                LoginUser=login,
                 PasswordCurrent = curPassword,
-                PasswordNew = newPassword
+                PasswordNew = newPassword,
+                PasswordNewConfirm=newConfirmPassword
             };
             string js = JsonSerializer.Serialize(changeRequest);
             Debug.WriteLine(js);

@@ -10,9 +10,8 @@ namespace Taxi.WPF.Services.Interfaces
     public interface IUserSessionService
     {
         public UserSession CurrentSession { get; }
-        bool IsLoggedIn { get; }
+        public bool IsLoggedIn { get; }
         void SetSession(UserSession session);
-        void UpdateProfile(string phone);
         void Clear();
     }
 }

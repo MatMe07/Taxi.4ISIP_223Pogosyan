@@ -22,7 +22,7 @@ namespace Taxi.WPF
             InitializeComponent();
             this.DataContext = viewModel;
             viewModel.frameMain = frameMain;
-            if (!AppSettings.Instance.IsSign )
+            if (!AppSettings.Instance.IsAuth)
             {
                 frameMain.Navigate(authorizationPage);
                 return;
@@ -73,7 +73,7 @@ namespace Taxi.WPF
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!AppSettings.Instance.IsSign) return;
+            if (!AppSettings.Instance.IsAuth) return;
             //LoadNextPageRoleId();
             ChangePage();
         }

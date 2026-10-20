@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,14 +27,10 @@ namespace Taxi.WPF.Models
                 _instance = value;
             }
         }
-
+        public bool IsAuth => userSession?.access_token != null;
 
         public string Theme { get; set; } = "light";
-        public string LoginUser { get; set; } = string.Empty;
-
-        public LoginResponse? LoginResponse { get; set; }
-
-        public bool IsSign {  get; set; } = false;
+        public UserSession userSession { get; set; }
 
         public DateTimeOffset LastSessionDate { get; set; }
     }

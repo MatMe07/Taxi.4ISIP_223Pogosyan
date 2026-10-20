@@ -168,12 +168,23 @@ namespace Taxi.API.Server.Controllers
         [Authorize]
         public async Task<IActionResult> ChangePassword(ChangePasswordRequst response)
         {
+            if (!string.Equals(response.PasswordNewConfirm, response.PasswordNew))
+            {
+                return BadRequest(
+                    new ChangePasswordResponse
+                    {
+                        message = "Новый пароль и подтверждение пароля не совпадают.",
+                        IsSuccess = false
+                    }
+                    );
+            }
             if (string.Equals(response.PasswordCurrent, response.PasswordNew))
             {
                 return BadRequest(
                     new ChangePasswordResponse
                     {
-                        message = "Пароли одинаковые!"
+                        message = "Пароли одинаковые!",
+                        IsSuccess = false
                     }
                     );
             }
@@ -182,12 +193,14 @@ namespace Taxi.API.Server.Controllers
             {
                 return BadRequest(new RegisterResponse { message = message });
             }
-            message = await authorization.ChangePasswordAsync(response);
+            var userLogin  = User.Identity?.Name;
+            message = await authorization.ChangePasswordAsync( userLogin,response);
 
-            return BadRequest(
+            return Ok(
                 new ChangePasswordResponse
                 {
-                    message = message
+                    message = message,
+                    IsSuccess= true
                 }
                 );
         }

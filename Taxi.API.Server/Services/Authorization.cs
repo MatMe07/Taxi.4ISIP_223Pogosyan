@@ -56,9 +56,10 @@ namespace Taxi.API.Server.Services
             return user;
         }
 
-        public async Task<string> ChangePasswordAsync(ChangePasswordRequst request)
+        public async Task<string> ChangePasswordAsync(string loginUser,ChangePasswordRequst request)
         {
-            var account = await _context.Users.FirstOrDefaultAsync(a => a.Login == request.LoginUser);
+
+            var account = await _context.Users.FirstOrDefaultAsync(a => a.Login == loginUser);
             if (account == null)
                 return "Нет такого логина!";
 
@@ -116,6 +117,7 @@ namespace Taxi.API.Server.Services
                 issuer: _jwt.Issuer,
                 audience: _jwt.Audience,
                 claims: claims,
+                
                 //expires: DateTime.UtcNow.AddDays(30),
                 signingCredentials: new SigningCredentials(
                     _signingKey, SecurityAlgorithms.HmacSha256));

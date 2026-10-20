@@ -9,6 +9,7 @@ namespace Taxi.Core.Models.Auth
     public class ChangePasswordResponse
     {
         public string message { get; set; }
+        public bool IsSuccess { get; set; }
         
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Diagnostics;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -20,9 +21,11 @@ namespace Taxi.WPF.Services
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "api/vehicle/getAllVehicles");
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", AppSettings.Instance.LoginResponse.access_token);
+            //request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", AppSettings.Instance.LoginResponse.access_token);
             var response = await _httpClient.SendAsync(request);
-            var result = await response.Content.ReadFromJsonAsync<List<VehicleDTO>>();
+            Debug.WriteLine(response.Content.ReadFromJsonAsync<VehicleDTO>());
+            string rawJson = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<List<VehicleDTO>>(rawJson);
             return result;
              
         }

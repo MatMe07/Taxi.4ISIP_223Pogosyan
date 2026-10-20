@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Permissions;
@@ -43,6 +44,8 @@ namespace Taxi
             }
 
             item = JsonSerializer.Deserialize<TItem>(json);
+            Debug.WriteLine(json);
+            Debug.WriteLine(JsonSerializer.Serialize( item));
             return true;
         } 
 

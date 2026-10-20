@@ -9,7 +9,7 @@ namespace Taxi.WPF.Services
 {
     public class TokenStore : ITokenStore
     {
-        public string? AccesToken { get; private set; }
+        public string? AccesToken { get;  set; }
 
         public void Clear()
         {

@@ -49,6 +49,7 @@
                      Style="{StaticResource AppTextBox}"  MinWidth="190"
                      materialDesign:HintAssist.Hint="Логин"
                      IsReadOnly="True"
+                                 ToolTip="Нельзя редактировать"
                      Text="{Binding Login}"/>
 
 

@@ -199,9 +199,8 @@ namespace Taxi.WPF.ViewModels
                         CaptchaImage = null;
 
 
-                        AppSettings.Instance.LoginUser = txtLoginLogin;
-                        AppSettings.Instance.LoginResponse = result;
-                        AppSettings.Instance.IsSign = true;
+                        //AppSettings.Instance.userSession.User = result.User;
+
                         AppCache.Cache.Set(nameof(AppSettings), AppSettings.Instance);
                         
                         ChangePage();

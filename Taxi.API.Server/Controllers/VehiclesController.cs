@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taxi.API.Server.Services;
+using Taxi.Core.Models.DB;
 
 namespace Taxi.API.Server.Controllers
 {
@@ -20,7 +21,8 @@ namespace Taxi.API.Server.Controllers
         [Authorize]
         public async Task<IActionResult> GetAllVehiclesAsync()
         {
-            return Ok(services.GetAllVehiclesAsync());
+            List<VehicleDTO> lst = await services.GetAllVehiclesAsync();
+            return Ok(lst);
         }
     }
 }

@@ -14,16 +14,25 @@ namespace Taxi.WPF.Services
     {
 
         //public AppSettings Settings { get; private set; }
+        private readonly IUserSessionService _userSession;
+        private readonly ITokenStore _tokenStore;
 
-        public ConfigurationService()
+
+        public ConfigurationService(IUserSessionService userSession, ITokenStore token) 
         { 
             //Settings = new AppSettings();  
+            _userSession = userSession;
+            _tokenStore = token;
+
         }
 
         public void Load()
         {
             AppCache.Cache.TryGet(nameof(AppSettings), out AppSettings appSettings);
+            if (appSettings == null) return;
             AppSettings.Instance = appSettings;
+            _tokenStore.SetToken(appSettings.userSession.access_token.AccesToken);
+            _userSession.SetSession(appSettings.userSession);
             ChangeThems();
         }
         

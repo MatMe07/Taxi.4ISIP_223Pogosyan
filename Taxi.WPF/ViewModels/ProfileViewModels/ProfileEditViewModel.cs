@@ -94,8 +94,7 @@ namespace Taxi.WPF.ViewModels.ProfileViewModels
             get { return _isChangePasswordOpen; }
             set
             {
-                        Debug.WriteLine(AuthService);
-
+                if (value == false) ClearPasswords();
                 _isChangePasswordOpen = value;
                 OnPropertyChanged(nameof(IsChangePasswordOpen));
             }
@@ -112,7 +111,7 @@ namespace Taxi.WPF.ViewModels.ProfileViewModels
                     (_closeChangePasswordCommand = new RelayCommand(obj =>
                     {
                         var checkFiled= ClosePupon();
-                        if (!checkFiled) ClearPasswords();
+                        //if (!checkFiled) ClearPasswords();
                         IsChangePasswordOpen = checkFiled;
                     }));
             }
@@ -133,14 +132,22 @@ namespace Taxi.WPF.ViewModels.ProfileViewModels
                         !string.IsNullOrWhiteSpace(PasswordNewConfirm)
                         )
                         {
-                            var result = await AuthService.ChangePasswordAsync(AppSettings.Instance.LoginUser, PasswordCurrent,PasswordNew);
-                            MessageBox.Show(result.message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                            var result = await _auth.ChangePasswordAsync(PasswordCurrent,PasswordNew, PasswordNewConfirm);
+                            if (result.IsSuccess)
+                            {
+                                MessageBox.Show(result.message, "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
+                                IsChangePasswordOpen = false;
+
+                            }
+                            else
+                            {
+                                MessageBox.Show(result.message, "Неудача", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
 
                         }
                         else
                         {
-                            var res = MessageBox.Show("Заполните все поля!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
-
+                            MessageBox.Show("Заполните все поля!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
                     }));
             }
@@ -166,19 +173,18 @@ namespace Taxi.WPF.ViewModels.ProfileViewModels
         private string _basePhone;
 
         //private MainViewModel MainViewModel;
-        private AuthService AuthService;
+        private readonly AuthService _auth;
         private IUserSessionService UserSessionService;
         public ProfileEditViewModel(IAuthService authService, IUserSessionService userSession)
         {
-            AuthService = authService as AuthService;
+            _auth = authService as AuthService;
             UserSessionService = userSession;
 
-            //MainViewModel = mainView;
         }
 
         public void Load()
         {
-            var us = UserSessionService.CurrentSession ?? throw new InvalidOperationException("Not authenticated");
+            var us = AppSettings.Instance.userSession ?? throw new InvalidOperationException("Not authenticated");
             _baseDisplayName = $"{us.User.FirstName} {us.User.LastName} {us.User.MiddleName}";
             DisplayName = $"{us.User.FirstName} {us.User.LastName} {us.User.MiddleName}";
             Phone = us.User.Phone;

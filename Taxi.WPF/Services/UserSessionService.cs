@@ -12,8 +12,7 @@ namespace Taxi.WPF.Services
     {
         public UserSession? CurrentSession { get; private set; }
 
-
-        public bool IsLoggedIn => CurrentSession?.User.Login != null;
+        public bool IsLoggedIn => CurrentSession?.access_token.AccesToken != null;
 
 
         public void Clear()
@@ -26,10 +25,5 @@ namespace Taxi.WPF.Services
             CurrentSession = session;
         }
 
-        public void UpdateProfile(string phone)
-        {
-            if (CurrentSession is null) return;
-            CurrentSession.User.Phone = phone;
-        }
     }
 }
