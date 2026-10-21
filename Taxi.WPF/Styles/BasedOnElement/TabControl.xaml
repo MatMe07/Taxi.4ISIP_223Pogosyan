@@ -3,7 +3,11 @@
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
 
-    <Style x:Key="TabControlStyle" TargetType="TabControl" BasedOn="{StaticResource MaterialDesignUniformTabControl}">
+    <Style x:Key="TabControlStyle" TargetType="TabControl" BasedOn="{StaticResource MaterialDesignNavigationRailTabControl}">
+        <Setter Property="Background" Value="{DynamicResource AppBackgroundBrush}"/>
+        <Setter Property="materialDesign:NavigationRailAssist.SelectionCornerRadius" Value="10"/>
+        <Setter Property="materialDesign:NavigationRailAssist.ShowSelectionBackground" Value="True"/>
+
         <Style.Resources>
             <Style TargetType="TabItem" BasedOn="{StaticResource MaterialDesignTabItem}">
                 <Setter Property="HeaderTemplate">
@@ -13,14 +17,65 @@
                                Text="{Binding}"/>
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TabItem}, Path=IsSelected}" Value="False">
-                                    <Setter Property="TextElement.Foreground" Value="{DynamicResource TextBlockSecondaryBrush}"/>
+                                    <Setter TargetName="HeaderTextBlock" Property="Foreground" Value="{DynamicResource TextBlockOnDarkBrush}"/>
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>
 
                     </Setter.Value>
                 </Setter>
+
+                <Setter Property="Width" Value="500"/>
             </Style>
         </Style.Resources>
     </Style>
+    <Style x:Key="CustomTabItemStyle" 
+           TargetType="{x:Type TabItem}" 
+           BasedOn="{StaticResource MaterialDesignNavigationRailTabItem}">
+        <Setter Property="Width" Value="100"/>
+        
+        <!--<Setter Property="Foreground" Value="{DynamicResource TextBlockHeaderBrush}"/>-->
+
+        <!--<Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="#E3F2FD"/>
+                <Setter Property="Foreground" Value="#1976D2"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource TextBlockHeaderBrush}"/>
+            </Trigger>
+
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource DividerBrush}"/>
+            </Trigger>
+        </Style.Triggers>-->
+
+        <Style.Resources>
+            <Style TargetType="{x:Type materialDesign:PackIcon}">
+                <Setter Property="Width" Value="30"/>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+
+                <Setter Property="Foreground" Value="{DynamicResource TextBlockLabelBrush}"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TabItem}}" Value="True">
+
+                        <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextBlockLabelBrush}"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TabItem}}" Value="True">
+
+                        <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Style.Resources>
+    </Style>
+
 </ResourceDictionary>

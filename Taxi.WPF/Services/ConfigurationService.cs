@@ -49,6 +49,7 @@ namespace Taxi.WPF.Services
             Application.Current.Resources.MergedDictionaries.Add(resourceDict);
 
             AppSettings.Instance.Theme = style;
+            
             ChangeSettings();
         }
 

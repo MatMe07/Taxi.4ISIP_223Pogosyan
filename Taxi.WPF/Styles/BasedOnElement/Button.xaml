@@ -55,7 +55,50 @@
        BasedOn="{StaticResource buttonBased}">
         <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource TextBlockPrimaryBrush}"/>
-        <Setter Property="Margin" Value="0,0,10,0"/>
-        <Setter Property="Padding" Value="15,8"/>
+        <Setter Property="Margin" Value="0 0 10 0"/>
+        <Setter Property="Padding" Value="15 8"/>
+    </Style>
+
+    <Style x:Key="buttonIconCLick"
+       TargetType="{x:Type Button}"
+       BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+        <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBlockPrimaryBrush}"/>
+        <Setter Property="Margin" Value="0 0 10 0"/>
+        <Setter Property="Padding" Value="15 8"/>
+    </Style>
+
+
+    <Style x:Key="buttonAdd" TargetType="{x:Type Button}" BasedOn="{StaticResource buttonBased}">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Padding" Value="7 0"/>
+    </Style>
+
+    <Style x:Key="SearchIconButtonStyle"
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource MaterialDesignToolButton}">
+        <Setter Property="Width"  Value="40"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Foreground" Value="{DynamicResource IconBrush}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+
+    <Style x:Key="DialogButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource buttonBased}">
+        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="Margin"   Value="10 0 0 0"/>
+    </Style>
+
+    <Style x:Key="DialogCancelButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource SecondaryButtonBased}">
+        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="Margin"   Value="0"/>
+    </Style>
+
+
+    <Style x:Key="DialogDangerButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource buttonBased}">
+        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="Background" Value="{DynamicResource DangerBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBlockOnDarkBrush}"/>
     </Style>
 </ResourceDictionary>

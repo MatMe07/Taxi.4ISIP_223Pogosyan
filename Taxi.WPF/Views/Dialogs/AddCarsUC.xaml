@@ -1,0 +1,110 @@
+﻿<UserControl x:Class="Taxi.WPF.Views.Dialogs.AddCarsUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Taxi.WPF.ViewModels.DialogsVM"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      d:DataContext="{d:DesignInstance {x:Type local:AddCarViewModel}}"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="420">
+    <Border Style="{DynamicResource DialogContentBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0 0 0 10">
+                <TextBlock Text="Новое ТС"
+                               Style="{DynamicResource AppTextBlockTitle}"
+                               VerticalAlignment="Center"/>
+                <Button Style="{StaticResource MaterialDesignToolButton}"
+                            HorizontalAlignment="Right"
+                            Width="32" Height="32"
+                            Foreground="{DynamicResource IconBrush}"
+                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                    <materialDesign:PackIcon Kind="Close" Width="18" Height="18"/>
+                </Button>
+            </Grid>
+
+            <Border Grid.Row="1" Height="1"
+                        Background="{DynamicResource DividerBrush}"
+                        Margin="0 0 0 12"/>
+
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                <StackPanel>
+
+                    <TextBlock Text="Госномер *" Style="{DynamicResource AppFieldLabel}"/>
+                    <TextBox Style="{StaticResource AppTextBox}"
+                                 Margin="0 0 0 5"
+                                 Text="{Binding NewVehicle.LicensePlate, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="А123ВС 77"/>
+
+                    <TextBlock Text="Марка *" Style="{DynamicResource AppFieldLabel}"/>
+                    <TextBox Style="{StaticResource AppTextBox}"
+                                 Margin="0 0 0 5"
+                                 Text="{Binding NewVehicle.Brand, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="Toyota"/>
+
+                    <TextBlock Text="Модель *" Style="{DynamicResource AppFieldLabel}"/>
+                    <TextBox Style="{StaticResource AppTextBox}"
+                                 Margin="0 0 0 5"
+                                 Text="{Binding NewVehicle.Model, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="Camry"/>
+
+                    <!-- Класс ТС + Год выпуска (две колонки) -->
+                    <Grid Margin="0 6 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Класс ТС *" Style="{DynamicResource AppFieldLabel}"/>
+                            <ComboBox Style="{StaticResource FilterComboBoxStyle}"
+                                          Margin="0"
+                                          materialDesign:HintAssist.Hint="Класс"
+                                          ItemsSource="{Binding VehicleClasses}"
+                                          SelectedItem="{Binding NewVehicle.VehicleClass}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Год выпуска *" Style="{DynamicResource AppFieldLabel}"/>
+                            <ComboBox Style="{DynamicResource FilterComboBoxStyle}"
+                                          Margin="0"
+                                          materialDesign:HintAssist.Hint="Год"
+                                          ItemsSource="{Binding Years}"
+                                          SelectedItem="{Binding NewVehicle.Year}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock Text="Статус в системе" Style="{DynamicResource AppFieldLabel}" Margin="0 12 0 2"/>
+                    <CheckBox Content="Активен" Style="{DynamicResource MaterialDesignFilterChipSecondaryCheckBox }"
+                                         IsChecked="{Binding NewVehicle.IsActive}"/>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <Border Grid.Row="3" Height="1"
+                        Background="{DynamicResource DividerBrush}"
+                        Margin="0 16 0 12"/>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Отмена"
+                            Style="{DynamicResource DialogCancelButtonStyle}"
+                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                <Button Content="Сохранить"
+                            Style="{DynamicResource DialogButtonStyle}"
+                            Command="{Binding SaveVehicleCommand}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:DialogHost}}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+
+</UserControl>

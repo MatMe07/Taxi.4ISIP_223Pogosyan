@@ -9,7 +9,7 @@
       mc:Ignorable="d" 
       d:Background="White"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" d:DesignWidth="400" Width="400"
-      Title="AuthorizationPage" Height="615">
+      Title="AuthorizationPage">
     <!--<Page.DataContext>
         <local:AuthorizationViewModel/>
     </Page.DataContext>-->
@@ -53,7 +53,7 @@
             </TabItem>
             <TabItem Header="Регистрация">
 
-                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="500">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Style="{DynamicResource MaterialDesignScrollViewer}">
                     <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>

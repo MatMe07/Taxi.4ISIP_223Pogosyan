@@ -43,7 +43,7 @@
                         <TextBox Grid.Row="0" Grid.Column="0" Margin="0 5 5 5" MinWidth="190"
                      Style="{StaticResource AppTextBox}"
                      materialDesign:HintAssist.Hint="ФИО"
-                     Text="{Binding DisplayName, Mode=TwoWay}"/>
+                     Text="{Binding DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBox Grid.Row="0" Grid.Column="1" Margin="5 5 0 5"
                      Style="{StaticResource AppTextBox}"  MinWidth="190"
@@ -53,10 +53,12 @@
                      Text="{Binding Login}"/>
 
 
-                        <xctk:MaskedTextBox Grid.Row="1" Grid.Column="0" Margin="0 5 5 5"
-                     Style="{StaticResource TextBoxPhone}"
+                        <TextBox Grid.Row="1" Grid.Column="0" Margin="0 5 5 5"
+                     Style="{StaticResource AppTextBox}"
                      materialDesign:HintAssist.Hint="Телефон"
-                     Text="{Binding Phone, Mode=TwoWay}"/>
+                                             ToolTip="Нельзя редактировать"
+                                 IsReadOnly="True"
+                     Text="{Binding Phone}"/>
 
                     </Grid>
 

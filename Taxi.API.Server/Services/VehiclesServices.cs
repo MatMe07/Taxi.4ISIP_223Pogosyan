@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Taxi.API.Server.Models;
 using Taxi.Core.Models.DB;
 
@@ -11,16 +12,52 @@ namespace Taxi.API.Server.Services
         public async Task<List<VehicleDTO>> GetAllVehiclesAsync()
         {
             var lstVehiclesDTO = new List<VehicleDTO>();
-            foreach(var v in _context.Vehicles)
+            var docsType = _context.VehicleDocumentTypes.ToList();
+
+            var vehicles = _context.Vehicles.Include(v => v.Maintenances).Include(v => v.VehicleDocuments).ThenInclude(d=>d.DocType).ToList();
+            foreach (var v in _context.Vehicles.Select(v=> new {
+            v.Id,
+            Class = v.Class.Name,
+            v.GovNumber,
+            v.Brand,
+            v.Year,
+            v.IsActive,
+            v.Model,
+            v.Maintenances,
+            v.VehicleDocuments,
+            DocTypes = v.VehicleDocuments.Where(v=>v.IsVerified).Select(d=>d.DocType)
+            }))
             {
-                lstVehiclesDTO.Add(new VehicleDTO {
-                    Id=v.Id,
-                    GovNumber=v.GovNumber,
-                    Model=v.Model,
-                        Brand= v.Brand,
-                        ClassId=v.ClassId,
-                        Year=v.Year,
-                        IsActive=v.IsActive,
+                var dop = v.DocTypes.Union(docsType).FirstOrDefault();
+                var TO = v.Maintenances.FirstOrDefault();
+                //string dopusk = "";
+                //if (!v.IsActive) dopusk = "Архив";
+                //else if (dop == null)
+                //{
+                //    if (!(TO?.IsDone ?? true))
+                //    {
+                //        dopusk = "На ТО";
+                //    }
+                //}
+                //else
+                //{
+                //    dopusk = dop.Name;
+                //}
+                lstVehiclesDTO.Add(new VehicleDTO
+                {
+                    Id = v.Id,
+                    GovNumber = v.GovNumber,
+                    Model = v.Model,
+                    Brand = v.Brand,
+                    Year = v.Year,
+                    ClassName = v.Class,
+                    IsActive = v.IsActive,
+                    //dopuskText = string.IsNullOrWhiteSpace(dopusk) ? "Готово" : dopusk,
+                    HasActiveMaintenance = TO?.IsDone ?? false,
+                    HasOsago = (dop?.Id ?? -1) == 3,
+                    HasTechCheck= (dop?.Id ?? -1) == 4,
+                    HasPermit= (dop?.Id ?? -1) == 5
+
                 });
             }
 

@@ -3,36 +3,146 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Taxi.WPF.Views.ManagerPages"
+      xmlns:local="clr-namespace:Taxi.WPF.ViewModels.ManagerViewModels"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      
+      d:DataContext="{d:DesignInstance {x:Type local:DataCarsViewModel}}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="DataAuto"
+       
+      Background="{DynamicResource AppBackgroundBrush}"
       >
 
-    <Grid>
-        <DataGrid 
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Автопарк" Style="{DynamicResource AppTextBlockTitle}" VerticalAlignment="Center"/>
+            <Button Content="Добавить ТС" Grid.Column="1"
+                    Command="{Binding BtnAddCar}"
+                    HorizontalAlignment="Right" Style="{DynamicResource buttonAdd}" />
+        </Grid>
+
+        <StackPanel Grid.Row="1"  Orientation="Horizontal">
+            <Border Style="{StaticResource SearchContainerStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="SearchButton"
+                    Width="40"
+                    Height="40"
+                    Style="{StaticResource MaterialDesignToolButton}">
+                        <materialDesign:PackIcon Kind="Magnify" Opacity=".56" Height="25" Width="25" />
+                    </Button>
+
+                    <TextBox x:Name="SearchBox"
+                     Grid.Column="1" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"
+                                 FontSize="15"
+                     materialDesign:HintAssist.Hint="Госномер или модель..."
+                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                     BorderThickness="0"
+                             Style="{DynamicResource SearchTextBoxStyle}"
+                             MinWidth="240"
+                     />
+                </Grid>
+            </Border>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10 0" Grid.Row="1">
+                <materialDesign:PackIcon Kind="FilterCogOutline" Height="25" Width="25" Foreground="{DynamicResource IconBrush}"/>
+                <ComboBox Margin="5 0 20 0" Width="150" Padding="5"
+                  Style="{StaticResource FilterComboBoxStyle}"
+                  materialDesign:HintAssist.Hint="Класс" ItemsSource="{Binding SortClasses}"
+                  SelectedItem="{Binding SelectedClassSort}" />
+
+                <ComboBox Width="150" Padding="5"
+                  Style="{StaticResource FilterComboBoxStyle}"
+              SelectedItem="{Binding SelectedDopuskSort}"
+                  ItemsSource="{Binding SortDopusks}" materialDesign:HintAssist.Hint="Допуск" />
+            </StackPanel>
+        </StackPanel>
+        
+        
+        
+        <DataGrid Grid.Row="2" Margin="0 10 0 0 "
           AutoGenerateColumns="False"
-            
+            GridLinesVisibility="Horizontal"
+            HorizontalContentAlignment="Stretch"
+                  SelectionChanged="DataGrid_SelectionChanged" 
             Style="{DynamicResource dataGrid}"
-            d:ItemsSource="{d:SampleData ItemCount=5}" ColumnHeaderStyle="{DynamicResource dataGridTextColumn}">
+            d:ItemsSource="{d:SampleData ItemCount=5}" 
+            ItemsSource="{Binding VehicleDTOs}"
+            ColumnHeaderStyle="{DynamicResource dataGridTextColumn}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding id}"/>
-                <DataGridTextColumn Header="Номера" Binding="{Binding gov_number}"/>
-                <DataGridTextColumn Header="Модель" Binding="{Binding model}"/>
-                <DataGridTextColumn Header="Бренд" Binding="{Binding brand}"/>
-                <DataGridTextColumn Header="Класс машины" Binding="{Binding class_id}"/>
-                <DataGridTextColumn Header="Год" Binding="{Binding year}"/>
-                <DataGridTemplateColumn Header="Доступность" MinWidth="100">
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Госномер" Binding="{Binding GovNumber}" MinWidth="130" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Модель" Binding="{Binding Model}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Бренд" Binding="{Binding Brand}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Класс машины" Binding="{Binding ClassName}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Год" Binding="{Binding Year}" IsReadOnly="True"/>
+
+                <DataGridTextColumn Header="Допуск" Binding="{Binding AdmissionStatus}" MinWidth="80" IsReadOnly="True"/>
+                <!--<DataGridTemplateColumn Header="Допуск" MinWidth="80" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate> 
+                            <CheckBox IsChecked="{Binding IsActive}"  IsEnabled="False" Tag="{Binding}" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
+
+                <DataGridTemplateColumn Header="Действие" MinWidth="135">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding is_active}" Tag="{Binding}"/>
+
+                            <StackPanel Orientation="Horizontal">
+                                <Button 
+                                Height="32"
+                                Width="32" Margin="5 0"
+                                    ToolTip="Редактировать ТС"
+                                    CommandParameter="{Binding}"
+                                    
+                                    Command="{Binding DataContext.BtnEditCar, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                Style="{DynamicResource MaterialDesignIconForegroundButton}">
+                                    <Button.Content>
+
+                                        <materialDesign:PackIcon Kind="Pencil"
+                                                             Width="18" 
+                                             Height="18" />
+                                    </Button.Content>
+                                </Button>
+                                <Button 
+                                Height="32"
+                                Width="32"
+                                    ToolTip="Удалить ТС"
+                                    Command="{Binding DataContext.BtnDeleteCar, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                    CommandParameter="{Binding}"
+                                    Style="{DynamicResource MaterialDesignIconForegroundButton}">
+                                    <Button.Content>
+
+                                        <materialDesign:PackIcon Kind="Delete"
+                                                             Width="18" 
+                                             Height="18" />
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
             </DataGrid.Columns>
+            
+            
         </DataGrid>
-
+        
     </Grid>
 </Page>

@@ -9,48 +9,57 @@
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         d:DataContext="{d:DesignInstance Type=local:MainViewModel}"
-        Title="Taxi App" Height="450" Width="800" Closed="Window_Closed"
+        Title="Taxi App" MinWidth="830" Closed="Window_Closed"
+        MinHeight="610"
         d:Background="{DynamicResource AppBackgroundBrush}"
         Style="{DynamicResource WindowStyle}" Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
         <localConverters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
     </Window.Resources>
-    
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Border VerticalAlignment="Top" Margin="10"
+    <materialDesign:DialogHost Identifier="AddVehicleDialog"
+                               
+                               DialogTheme="Inherit">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border VerticalAlignment="Top" Margin="10"
                 Style="{DynamicResource borderNav}"
                  Panel.ZIndex="1">
 
 
-            <Grid >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="CASE" Style="{DynamicResource AppTextBlockTitle}" Grid.Column="0"/>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Вези!" Grid.Column="0" Style="{DynamicResource  buttonIconCLick}"
+                        materialDesign:RippleAssist.IsDisabled="True"
+                        Command="{Binding BtnIconClickCommand}"
+                        />
+                    <!--<TextBlock Text="CASE" Style="{DynamicResource AppTextBlockTitle}" Grid.Column="0"/>-->
 
-                <StackPanel Grid.Column="2" Orientation="Horizontal">
-                    <Button Grid.Column="2" Margin="20  0"  Command="{Binding BtnThemsCommand}" Style="{DynamicResource buttonBased}" >
-                        <materialDesign:PackIcon Kind="ThemeLightDark" Width="25" Height="25"/>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <Button Grid.Column="2" Margin="20  0"  Command="{Binding BtnThemsCommand}" Style="{DynamicResource buttonBased}" >
+                            <materialDesign:PackIcon Kind="ThemeLightDark" Width="25" Height="25"/>
 
-                    </Button>
-                    <Button Grid.Column="2" 
+                        </Button>
+                        <Button Grid.Column="2" 
                             Style="{DynamicResource buttonBased}" Command="{Binding CommandOpenProfile}">
-                        <materialDesign:PackIcon Kind="Account" Width="25" Height="25" />
+                            <materialDesign:PackIcon Kind="Account" Width="25" Height="25" />
 
-                    </Button>
+                        </Button>
 
-                </StackPanel>
-            </Grid>
-        </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
 
-        <Frame NavigationUIVisibility="Hidden" Grid.Row="{Binding RowFrame}" Grid.RowSpan="2" x:Name="frameMain"/>
-        <Border Background="#7F262633" d:Visibility="Collapsed" Panel.ZIndex="2" Grid.RowSpan="3"  Visibility="{Binding IsBlurVisible, Converter={StaticResource boolToVisibilityConverter}}"/>
+            <Frame NavigationUIVisibility="Hidden" Grid.Row="{Binding RowFrame}" Grid.RowSpan="2" x:Name="frameMain"/>
+            <Border Background="#7F262633" d:Visibility="Collapsed" Panel.ZIndex="2" Grid.RowSpan="3"  Visibility="{Binding IsBlurVisible, Converter={StaticResource boolToVisibilityConverter}}"/>
 
-    </Grid>
+        </Grid>
+    </materialDesign:DialogHost>
 </Window>

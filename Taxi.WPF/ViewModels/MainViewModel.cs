@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using Taxi.WPF.Commands;
 using Taxi.WPF.Models;
@@ -44,6 +45,7 @@ namespace Taxi.WPF.ViewModels
                 return _commandOpenProfile ??
                     (_commandOpenProfile = new RelayCommand(obj =>
                     {
+                        if (!CheckUserAuth()) return;
                         RowFrame = 1;
                         frameMain.Navigate(profilePage);
                     }
@@ -66,36 +68,52 @@ namespace Taxi.WPF.ViewModels
             _isBlurVisible = blur;
         }
 
+        private Page _mainPage;
+
+
+        private bool CheckUserAuth()
+        {
+            if (!AppSettings.Instance.IsAuth)
+            {
+                MessageBox.Show("Сначала войдите в систему!!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            return true;
+        }
+
         public void LoadNextPageRoleId()
         {
+            if (!CheckUserAuth()) return;
             switch (AppSettings.Instance.userSession.User.RoleId)
             {
                 case 1:
                     {
                         RowFrame = 0;
-                        frameMain.Navigate(mapPage);
+                        _mainPage = mapPage;
                         break;
                     }
                 case 2:
                     {
                         RowFrame = 0;
-                        frameMain.Navigate(mapPage);
+                        //frameMain.Navigate(mapPage);
 
                         break;
                     }
                 case 3:
                     {
-                        frameMain.Navigate(managerAutoPage);
-
+                        //frameMain.Navigate(managerAutoPage);
+                        _mainPage = managerAutoPage;
                         break;
                     }
                 case 4:
                     {
-                        frameMain.Navigate(mapPage);
+                        //frameMain.Navigate(mapPage);
 
                         break;
                     }
             }
+            frameMain.Navigate(_mainPage);
+
         }
 
         private MapPage mapPage;
@@ -115,6 +133,19 @@ namespace Taxi.WPF.ViewModels
                         string style = AppSettings.Instance.Theme == "light" ? "dark" : "light";
                         AppSettings.Instance.Theme = style;
                         _configurationSerivce.ChangeThems();
+                    }));
+            }
+        }
+        private RelayCommand _btnIconClickCommand;
+
+        public RelayCommand BtnIconClickCommand
+        {
+            get
+            {
+                return _btnIconClickCommand ??
+                    (_btnIconClickCommand = new RelayCommand(obj =>
+                    {
+                        LoadNextPageRoleId();
                     }));
             }
         }

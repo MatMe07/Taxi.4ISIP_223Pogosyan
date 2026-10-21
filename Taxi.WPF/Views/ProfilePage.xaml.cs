@@ -22,11 +22,15 @@ namespace Taxi.WPF.Views
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            var selectTabItem = (sender as TabControl).SelectedItem as TabItem;
+            var selectTabItem = sender as TabControl;
+            
             //if ()
             //lst.Clear();
             if (selectTabItem != null)
             {
+                selectTabItem.SelectedIndex = 0;
+                e.Handled = true;   
+                return;
 
                 switch (selectTabItem.Tag.ToString())
                 {
@@ -52,10 +56,10 @@ namespace Taxi.WPF.Views
             }
         }
 
-        public void BackToMainPage()
-        {
-            tabControlPage.SelectedIndex = 0;
-        }
+        //public void BackToMainPage()
+        //{
+        //    tabControlPage.SelectedIndex = 0;
+        //}
 
 
         private void btnEditProfile_Click(object sender, RoutedEventArgs e)
@@ -89,6 +93,11 @@ namespace Taxi.WPF.Views
 
                 //}
             }
+        }
+
+        private void tabControlPage_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

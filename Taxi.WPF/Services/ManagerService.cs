@@ -23,12 +23,15 @@ namespace Taxi.WPF.Services
 
             //request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", AppSettings.Instance.LoginResponse.access_token);
             var response = await _httpClient.SendAsync(request);
-            Debug.WriteLine(response.Content.ReadFromJsonAsync<VehicleDTO>());
+            //Debug.WriteLine(response.Content.ReadFromJsonAsync<VehicleDTO>());
             string rawJson = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine(rawJson);
             var result = JsonSerializer.Deserialize<List<VehicleDTO>>(rawJson);
             return result;
              
         }
+
+        //public async Task<List<>>
 
     }
 }

@@ -43,9 +43,9 @@ namespace Taxi.WPF.ViewModels.ProfileViewModels
             get => _displayName;
             set
             {
-                CheckFieldsUser();
                 _displayName = value;
                 OnPropertyChanged(nameof(DisplayName));
+                CheckFieldsUser();
             }
         }
         private string _Login;
@@ -64,7 +64,6 @@ namespace Taxi.WPF.ViewModels.ProfileViewModels
             get => _Phone;
             set
             {
-                CheckFieldsUser();
                 _Phone = value;
                 OnPropertyChanged(nameof(Phone));
             }
@@ -166,11 +165,10 @@ namespace Taxi.WPF.ViewModels.ProfileViewModels
 
         private void CheckFieldsUser()
         {
-            IsEnabledButton = !string.Equals(_basePhone, Phone) && !string.Equals(_baseDisplayName, DisplayName);
+            IsEnabledButton = !string.Equals(_baseDisplayName, DisplayName);
         }
 
         private string _baseDisplayName;
-        private string _basePhone;
 
         //private MainViewModel MainViewModel;
         private readonly AuthService _auth;
@@ -188,7 +186,6 @@ namespace Taxi.WPF.ViewModels.ProfileViewModels
             _baseDisplayName = $"{us.User.FirstName} {us.User.LastName} {us.User.MiddleName}";
             DisplayName = $"{us.User.FirstName} {us.User.LastName} {us.User.MiddleName}";
             Phone = us.User.Phone;
-            _basePhone = us.User.Phone;
             Login = us.User.Login;
         }
 

@@ -27,5 +27,14 @@ namespace Taxi.WPF.Views.ManagerPages
             DataContext = dataCarsView;
             Loaded += (_, _) => dataCarsView.Load();
         }
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is DataGrid dataGrid)
+            {
+                dataGrid.SelectedIndex = -1;
+            }
+        }
+
+
     }
 }

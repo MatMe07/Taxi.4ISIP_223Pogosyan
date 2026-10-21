@@ -3,14 +3,16 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Taxi.WPF.Views"
+      xmlns:local="clr-namespace:Taxi.WPF.ViewModels"
        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      
+      d:DataContext="{d:DesignInstance {x:Type local:ProfileViewModel}}"
       
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ProfilePage">
 
-    <Grid>
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
@@ -43,14 +45,14 @@
                 </Button>
             </StackPanel>
             <TabControl  Grid.Row="1"
-                         x:Name="tabControlPage"
                           Style="{StaticResource MaterialDesignNavigationRailTabControl}"
+                         SelectedIndex="{Binding SelectedItemIndex, Mode=TwoWay}"
                          
                     materialDesign:NavigationRailAssist.SelectionCornerRadius="10"
 
                     materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
                      materialDesign:ElevationAssist.Elevation="Dp0" 
-                          TabStripPlacement="Left" Background="{DynamicResource AppBackgroundBrush}" >
+                          TabStripPlacement="Left" Background="{DynamicResource AppBackgroundBrush}" SelectionChanged="TabControl_SelectionChanged" >
                 <TabItem  MinWidth="150" Height="40" Margin="0 5" Tag="Главная">
                     <TabItem.Header >
                         <TextBlock FontSize="16" HorizontalAlignment="Left" Text="Главная" Width="130"/>

@@ -65,7 +65,7 @@ namespace Taxi.WPF
 
         private async void Window_Closed(object sender, EventArgs e)
         {
-
+            if (!AppSettings.Instance.IsAuth) return;
             await AppCache.Cache.SaveAsync();
         }
 

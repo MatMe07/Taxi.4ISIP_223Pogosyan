@@ -6,9 +6,11 @@ using Taxi.src.Services;
 using Taxi.WPF.Services;
 using Taxi.WPF.Services.Interfaces;
 using Taxi.WPF.ViewModels;
+using Taxi.WPF.ViewModels.DialogsVM;
 using Taxi.WPF.ViewModels.ManagerViewModels;
 using Taxi.WPF.ViewModels.ProfileViewModels;
 using Taxi.WPF.Views;
+using Taxi.WPF.Views.Dialogs;
 using Taxi.WPF.Views.ManagerPages;
 using Taxi.WPF.Views.ProfilePages;
 
@@ -68,20 +70,32 @@ namespace Taxi.WPF
 
             services.AddSingleton<ConfigurationService>();
 
+
+
             services.AddTransient<ProfileViewModel>();
             services.AddTransient<ProfilePage>();
 
+            services.AddTransient<ProfileEditViewModel>();
+            services.AddTransient<ProfileEditPage>();
 
-            services.AddTransient<DataCarsViewModel>();
-            services.AddTransient<DataCarsPage>();
+
 
 
             services.AddTransient<ManagerViewModel>();
             services.AddTransient<ManagerAutoPage>();
 
+            services.AddTransient<DataCarsViewModel>();
+            services.AddTransient<DataCarsPage>();
 
-            services.AddTransient<ProfileEditViewModel>();
-            services.AddTransient<ProfileEditPage>();
+            services.AddTransient<AddCarsUC>();
+            services.AddTransient<AddCarViewModel>();
+
+            services.AddTransient<EditCarUC>();
+            services.AddTransient<EditCarViewModel>();
+
+
+
+
 
 
             services.AddTransient<MainViewModel>();

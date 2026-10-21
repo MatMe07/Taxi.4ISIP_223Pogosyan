@@ -36,4 +36,23 @@
                 Value="{DynamicResource TextBlockSecondaryBrush}"/>
     </Style>
 
+    <Style x:Key="TextBlockTabItem"
+           TargetType="TextBlock"
+           BasedOn="{StaticResource MaterialDesignTextBlock}">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="DemiBold"/>
+        
+    </Style>
+    <Style x:Key="AppFieldLabel" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
+        <Setter Property="FontSize"    Value="12"/>
+        <Setter Property="Margin"      Value="0 6 0 2"/>
+        <Setter Property="Foreground"  Value="{DynamicResource TextBlockLabelBrush}"/>
+    </Style>
+    <Style x:Key="AppReadOnlyValue" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
+        <Setter Property="FontSize"    Value="15"/>
+        <Setter Property="FontWeight"  Value="SemiBold"/>
+        <Setter Property="Foreground"  Value="{DynamicResource TextBlockPrimaryBrush}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
 </ResourceDictionary>
