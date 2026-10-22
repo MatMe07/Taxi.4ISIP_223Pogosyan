@@ -36,7 +36,7 @@ namespace Taxi.WPF.Services
             ChangeThems();
         }
         
-        public void ChangeThems(string them=null)
+        public void ChangeThems()
         {
             string style = AppSettings.Instance.Theme;
 

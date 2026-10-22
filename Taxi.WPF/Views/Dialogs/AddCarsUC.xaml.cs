@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Taxi.Core.Models.DB;
+using Taxi.WPF.ViewModels.DialogsVM;
 
 namespace Taxi.WPF.Views.Dialogs
 {
@@ -20,9 +22,11 @@ namespace Taxi.WPF.Views.Dialogs
     /// </summary>
     public partial class AddCarsUC : UserControl
     {
-        public AddCarsUC()
+        public AddCarsUC(AddCarViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = viewModel;
+            Loaded += (_, _) => viewModel.Load();
         }
     }
 }

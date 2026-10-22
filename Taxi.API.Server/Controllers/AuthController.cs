@@ -148,19 +148,19 @@ namespace Taxi.API.Server.Controllers
         }
 
         [HttpGet("getProst")]
-        [Authorize]
+        [AllowAnonymous]
         public IActionResult GetProst()
         {
-            var isAuth = User.Identity?.IsAuthenticated ?? false;
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-                         ?? User.FindFirst("sub")?.Value;
+            //var isAuth = User.Identity?.IsAuthenticated ?? false;
+            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+            //             ?? User.FindFirst("sub")?.Value;
 
-            Console.WriteLine($"Auth: {isAuth}, UserId: {userId ?? "<null>"}");
+            //Console.WriteLine($"Auth: {isAuth}, UserId: {userId ?? "<null>"}");
 
-            if (!isAuth)
-                return Unauthorized();
+            //if (!isAuth)
+            //    return Unauthorized();
 
-            return Ok(new { hel = "helo", userId });
+            return Ok(new { hel = "helo" });
         }
 
 

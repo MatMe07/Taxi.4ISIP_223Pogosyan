@@ -1,18 +1,20 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Taxi.Core.Models.DB;
-using Taxi.WPF.Models;
-using Taxi.WPF.Services.Interfaces;
 
 namespace Taxi.WPF.Services
 {
-    public class ManagerService : IUserBaseService
+    public class VehiclesServices
     {
         HttpClient _httpClient;
-        public ManagerService(HttpClient httpClient)
+        public VehiclesServices(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
@@ -27,11 +29,14 @@ namespace Taxi.WPF.Services
             string rawJson = await response.Content.ReadAsStringAsync();
             Debug.WriteLine(rawJson);
             var result = JsonSerializer.Deserialize<List<VehicleDTO>>(rawJson);
-            return result;
-             
+            return result ?? [];
         }
 
-        //public async Task<List<>>
-
+        public async Task<List<VehicleClassDTO>> GetAllVehicleClassesAsync()
+        {
+            var response = await _httpClient.GetAsync("api/vehicle/getAllClasses");
+            var result = await response.Content.ReadFromJsonAsync<List<VehicleClassDTO>>();
+            return result ?? [];
+        } 
     }
 }

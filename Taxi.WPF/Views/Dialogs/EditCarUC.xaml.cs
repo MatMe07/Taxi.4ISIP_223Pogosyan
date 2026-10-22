@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Taxi.Core.Models.DB;
 
 namespace Taxi.WPF.Views.Dialogs
 {
@@ -20,6 +21,7 @@ namespace Taxi.WPF.Views.Dialogs
     /// </summary>
     public partial class EditCarUC : UserControl
     {
+        public VehicleDTO SelectVehicle {  get; set; }
         public EditCarUC()
         {
             InitializeComponent();

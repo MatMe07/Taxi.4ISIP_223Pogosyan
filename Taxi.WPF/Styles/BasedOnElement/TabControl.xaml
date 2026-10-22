@@ -5,6 +5,7 @@
 
     <Style x:Key="TabControlStyle" TargetType="TabControl" BasedOn="{StaticResource MaterialDesignNavigationRailTabControl}">
         <Setter Property="Background" Value="{DynamicResource AppBackgroundBrush}"/>
+        
         <Setter Property="materialDesign:NavigationRailAssist.SelectionCornerRadius" Value="10"/>
         <Setter Property="materialDesign:NavigationRailAssist.ShowSelectionBackground" Value="True"/>
 
@@ -12,7 +13,7 @@
             <Style TargetType="TabItem" BasedOn="{StaticResource MaterialDesignTabItem}">
                 <Setter Property="HeaderTemplate">
                     <Setter.Value>
-                        <DataTemplate>
+                        <DataTemplate>  
                             <TextBlock x:Name="HeaderTextBlock" 
                                Text="{Binding}"/>
                             <DataTemplate.Triggers>
@@ -25,7 +26,32 @@
                     </Setter.Value>
                 </Setter>
 
-                <Setter Property="Width" Value="500"/>
+            </Style>
+        </Style.Resources>
+    </Style>
+    <Style x:Key="TabControlAuthStyle" TargetType="TabControl" BasedOn="{StaticResource MaterialDesignTabControl}">
+        <Setter Property="Background" Value="{DynamicResource AppBackgroundBrush}"/>
+        
+        <Setter Property="materialDesign:NavigationRailAssist.SelectionCornerRadius" Value="10"/>
+        <Setter Property="materialDesign:NavigationRailAssist.ShowSelectionBackground" Value="True"/>
+
+        <Style.Resources>
+            <Style TargetType="TabItem" BasedOn="{StaticResource MaterialDesignTabItem}">
+                <Setter Property="HeaderTemplate">
+                    <Setter.Value>
+                        <DataTemplate>  
+                            <TextBlock x:Name="HeaderTextBlock" 
+                               Text="{Binding}"/>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TabItem}, Path=IsSelected}" Value="False">
+                                    <Setter TargetName="HeaderTextBlock" Property="Foreground" Value="{DynamicResource TextBlockSecondaryBrush}"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+
+                    </Setter.Value>
+                </Setter>
+
             </Style>
         </Style.Resources>
     </Style>

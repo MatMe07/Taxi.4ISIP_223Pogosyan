@@ -42,7 +42,7 @@
                     <TextBlock Text="Госномер *" Style="{DynamicResource AppFieldLabel}"/>
                     <TextBox Style="{StaticResource AppTextBox}"
                                  Margin="0 0 0 5"
-                                 Text="{Binding NewVehicle.LicensePlate, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding NewVehicle.GovNumber, UpdateSourceTrigger=PropertyChanged}"
                                  materialDesign:HintAssist.Hint="А123ВС 77"/>
 
                     <TextBlock Text="Марка *" Style="{DynamicResource AppFieldLabel}"/>
@@ -71,7 +71,8 @@
                                           Margin="0"
                                           materialDesign:HintAssist.Hint="Класс"
                                           ItemsSource="{Binding VehicleClasses}"
-                                          SelectedItem="{Binding NewVehicle.VehicleClass}"/>
+                                      DisplayMemberPath="Name"
+                                          SelectedItem="{Binding NewVehicle.ClassName}"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">
@@ -79,7 +80,7 @@
                             <ComboBox Style="{DynamicResource FilterComboBoxStyle}"
                                           Margin="0"
                                           materialDesign:HintAssist.Hint="Год"
-                                          ItemsSource="{Binding Years}"
+                                          ItemsSource="{Binding lstYears}"
                                           SelectedItem="{Binding NewVehicle.Year}"/>
                         </StackPanel>
                     </Grid>

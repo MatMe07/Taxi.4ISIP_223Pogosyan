@@ -65,5 +65,17 @@ namespace Taxi.API.Server.Services
         }
 
 
+        public async Task<List<VehicleClassDTO>> GetAllVehicleClassesAsync()
+        {
+            var lstClasses =
+                _context.VehicleClasses.Select(vc => new VehicleClassDTO
+                {
+                    Id = vc.Id,
+                    Name = vc.Name,
+                }).ToList();
+                ;
+            return lstClasses;
+        }
+
     }
 }

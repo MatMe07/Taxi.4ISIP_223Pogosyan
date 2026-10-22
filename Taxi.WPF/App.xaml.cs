@@ -58,7 +58,7 @@ namespace Taxi.WPF
             services.AddSingleton<IConfigurationService>(sp=>sp.GetRequiredService<ConfigurationService>());
 
 
-            services.AddTransient<IUserBaseService, ManagerService>();
+            services.AddTransient<VehiclesServices>();
 
 
             services.AddTransient<AuthorizationViewModel>();

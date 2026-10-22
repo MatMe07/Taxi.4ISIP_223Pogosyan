@@ -18,8 +18,8 @@ namespace Taxi.WPF.ViewModels.ProfileViewModels
     public class ProfileEditViewModel : ViewModelBase
     {
 
-        private RelayCommand _openChangePasswordCommand;
-        public RelayCommand OpenChangePasswordCommand
+        private RelayCommand? _openChangePasswordCommand;
+        public RelayCommand? OpenChangePasswordCommand
         {
             get
             {
@@ -37,7 +37,7 @@ namespace Taxi.WPF.ViewModels.ProfileViewModels
         public string PasswordNewConfirm { get; set; }
 
 
-        private string _displayName;
+        private string? _displayName;
         public string DisplayName
         {
             get => _displayName;
@@ -173,10 +173,10 @@ namespace Taxi.WPF.ViewModels.ProfileViewModels
         //private MainViewModel MainViewModel;
         private readonly AuthService _auth;
         private IUserSessionService UserSessionService;
-        public ProfileEditViewModel(IAuthService authService, IUserSessionService userSession)
+        public ProfileEditViewModel(IAuthService authService)
         {
             _auth = authService as AuthService;
-            UserSessionService = userSession;
+            //UserSessionService = userSession;
 
         }
 

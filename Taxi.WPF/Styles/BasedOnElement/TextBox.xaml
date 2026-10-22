@@ -68,10 +68,10 @@
         <Setter Property="materialDesign:HintAssist.Foreground"
                 Value="{DynamicResource TextBlockPlaceholderBrush}"/>
 
-        <Style.Resources>
+        <!--<Style.Resources>
             <SolidColorBrush x:Key="MaterialDesign.Brush.ComboBox.Background"
-                     Color="{Binding Color, Source={StaticResource SurfaceBrush}}"/>
-        </Style.Resources>
+                     Color="{Binding Color, Source={DynamicResource SurfaceBrush}}"/>
+        </Style.Resources>-->
     </Style>
 
     <Style x:Key="AppTextBoxReadOnly" TargetType="TextBox" BasedOn="{StaticResource AppTextBox}">

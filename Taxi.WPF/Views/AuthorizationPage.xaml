@@ -17,7 +17,7 @@
         <local:BoolToVisibilityConverter x:Key="boolToVisibleConverter"/>
     </Page.Resources>
     <Grid VerticalAlignment="Top" >
-        <TabControl Padding="10 0" Style="{DynamicResource  TabControlStyle}" SelectedIndex="{Binding SelectItemTabControl, Mode=TwoWay}">
+        <TabControl Padding="10 0" Style="{DynamicResource  TabControlAuthStyle}" SelectedIndex="{Binding SelectItemTabControl, Mode=TwoWay}">
             <TabItem Header="Войти">
                 <Grid>
                     <Grid.RowDefinitions>

@@ -24,5 +24,36 @@ namespace Taxi.API.Server.Controllers
             List<VehicleDTO> lst = await services.GetAllVehiclesAsync();
             return Ok(lst);
         }
+
+        [HttpGet("getAllClasses")]
+        [Authorize]
+        public async Task<IActionResult> GetAllVehicleClassesAsync()
+        {
+            var lst = await services.GetAllVehicleClassesAsync();
+            return Ok(lst);
+        }
+
+        [HttpPut("updateVehicle")]
+        [Authorize]
+        public IActionResult UpdateVehicle(VehicleDTO vehicle)
+        {
+            return Ok(vehicle);
+        }
+
+
+        [HttpPost("addVehicle")]
+        [Authorize]
+        public IActionResult AddVehicle(VehicleDTO vehicle)
+        {
+            return Ok(vehicle);
+        }
+
+
+        [HttpDelete("deleteVehicle")]
+        [Authorize]
+        public IActionResult DeleteVehicle(VehicleDTO vehicle)
+        {
+            return Ok(vehicle);
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
@@ -18,12 +19,12 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
     public class DataCarsViewModel : ViewModelBase
     {
 
-        ManagerService ManagerService;
+        VehiclesServices vehiclesServices;
         AddCarsUC AddCars;
         EditCarUC EditCarUC;
-        public DataCarsViewModel(IUserBaseService managerService, AddCarsUC addCars, EditCarUC editCarUC)
+        public DataCarsViewModel(VehiclesServices vehiclesServices, AddCarsUC addCars, EditCarUC editCarUC)
         {
-            ManagerService = managerService as ManagerService;
+            this.vehiclesServices = vehiclesServices;
             AddCars = addCars;
             EditCarUC = editCarUC;
         }
@@ -79,10 +80,12 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
             {
                 return _btnAddCar ??
                     (_btnAddCar = new AsyncRelayCommand(
-                        async opj=>
+                        async obj=>
                         {
                             //var view = new AddCarsUC();
-                            await DialogHost.Show(AddCars, "AddVehicleDialog");
+                            var newVehicle = await DialogHost.Show(AddCars, "AddVehicleDialog");
+
+                            if (newVehicle != null) VehicleDTOs.Add(newVehicle as  VehicleDTO);
                         }
                         ));
             }
@@ -102,7 +105,8 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
                             Debug.WriteLine("----------------------------------------");
                             Debug.WriteLine(obj);
                             Debug.WriteLine("----------------------------------------");
-                            await DialogHost.Show(EditCarUC, "AddVehicleDialog");
+                            EditCarUC.SelectVehicle = obj as VehicleDTO;
+                             await DialogHost.Show(EditCarUC, "AddVehicleDialog");
                         }
                         ));
             }
@@ -129,7 +133,7 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
 
         public async void Load()
         {
-            _allVehicleDTOs = await ManagerService.GetAllVehiclesAsync();
+            _allVehicleDTOs = await vehiclesServices.GetAllVehiclesAsync();
             //SortClasses = new ObservableCollection<string>(_allVehicleDTOs.Select(s => s.ClassName).Distinct());
             //VehicleDTOs = new ObservableCollection<VehicleDTO>( await ManagerService.GetAllVehiclesAsync());
             SortClasses.Clear();
