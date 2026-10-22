@@ -94,8 +94,11 @@ namespace Taxi.WPF.ViewModels.DialogsVM
                             MessageBox.Show("Заполните все поля!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
+
                         NewVehicle.ClassId = SelectedVehicleClass.Id;
                         NewVehicle.ClassName = SelectedVehicleClass.Name;
+
+
                         VehicleAddResponse res = await _vehiclesServices.AddVehicleAsync(NewVehicle);
 
                         if (!res.IsAdded)

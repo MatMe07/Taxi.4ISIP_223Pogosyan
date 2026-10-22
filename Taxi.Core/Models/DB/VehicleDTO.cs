@@ -9,6 +9,35 @@ namespace Taxi.Core.Models.DB
 {
     public class VehicleDTO
     {
+
+        public VehicleDTO(VehicleDTO other)
+        {
+            if (other == null) return;
+
+            Id = other.Id;
+            GovNumber = other.GovNumber;
+            Model = other.Model;
+            Brand = other.Brand;
+            ClassId = other.ClassId;
+            ClassName = other.ClassName;
+            Year = other.Year;
+            IsActive = other.IsActive;
+            HasActiveMaintenance = other.HasActiveMaintenance;
+            HasOsago = other.HasOsago;
+            HasTechCheck = other.HasTechCheck;
+            HasPermit = other.HasPermit;
+        }
+
+        public VehicleDTO Clone()
+        {
+            return new VehicleDTO(this);
+        }
+
+        public VehicleDTO()
+        {
+
+        }
+
         [JsonPropertyName("id")]
         public int Id { get; set; }
 

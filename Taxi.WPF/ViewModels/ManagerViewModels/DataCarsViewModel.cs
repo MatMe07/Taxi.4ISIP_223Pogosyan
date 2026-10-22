@@ -87,7 +87,12 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
                             //var view = new AddCarsUC();
                             var newVehicle = await DialogHost.Show(AddCars, "AddVehicleDialog");
 
-                            if (newVehicle != null) VehicleDTOs.Add(newVehicle as  VehicleDTO);
+                            if (newVehicle != null && newVehicle is VehicleDTO newVeh)
+                            {
+                                var newId = VehicleDTOs.LastOrDefault()?.Id + 1;
+                                newVeh.Id = newId ?? 1;
+                                VehicleDTOs.Add(newVeh);
+                            }
                         }   
                         ));
             }

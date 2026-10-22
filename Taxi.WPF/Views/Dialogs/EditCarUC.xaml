@@ -54,7 +54,7 @@
                         <TextBox Grid.Column="1"
                                      Style="{StaticResource AppTextBoxReadOnly}"
                                      Margin="0"
-                                     Text="{Binding EditVehicle.LicensePlate, Mode=OneWay}"/>
+                                     Text="{Binding NewVehicle.GovNumber}"/>
                     </Grid>
 
                     <TextBlock Text="Марка *" Style="{DynamicResource AppFieldLabel}"/>
@@ -78,11 +78,16 @@
 
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="Класс ТС *" Style="{DynamicResource AppFieldLabel}"/>
+                            
+                            
                             <ComboBox Style="{StaticResource FilterComboBoxStyle}"
                                           Margin="0"
                                           materialDesign:HintAssist.Hint="Класс"
-                                          ItemsSource="{Binding VehicleClasses}"
-                                          SelectedItem="{Binding NewVehicle.VehicleClass}"/>
+                                  ItemsSource="{Binding VehicleClasses}"
+                                  DisplayMemberPath="Name"
+                                  SelectedItem="{Binding SelectedVehicleClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        
+                        
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">
@@ -90,13 +95,13 @@
                             <ComboBox Style="{DynamicResource FilterComboBoxStyle}"
                                           Margin="0"
                                           materialDesign:HintAssist.Hint="Год"
-                                          ItemsSource="{Binding Years}"
+                                          ItemsSource="{Binding lstYears}"
                                           SelectedItem="{Binding NewVehicle.Year}"/>
                         </StackPanel>
                     </Grid>
 
                     <TextBlock Text="Статус в системе" Style="{DynamicResource AppFieldLabel}" Margin="0 12 0 2"/>
-                    <CheckBox Content="Активен"
+                    <CheckBox Content="Активен" Style="{DynamicResource MaterialDesignFilterChipSecondaryCheckBox }"
                                          IsChecked="{Binding NewVehicle.IsActive}"/>
 
                 </StackPanel>

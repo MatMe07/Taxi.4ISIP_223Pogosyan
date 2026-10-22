@@ -45,11 +45,11 @@
                     
                     <xctk:MaskedTextBox Style="{DynamicResource TextBoxGosNumber}"
                                  Margin="0 0 0 5"
-                                 Text="{Binding NewVehicle.GovNumber, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding EditVehicle.GovNumber, UpdateSourceTrigger=PropertyChanged}"
                                  materialDesign:HintAssist.Hint="А123ВС 77"/>
 
                     <TextBlock Text="Марка *" Style="{DynamicResource AppFieldLabel}"/>
-                    <TextBox Style="{StaticResource AppTextBox}"
+                    <TextBox Style="{StaticResource AppTextBoxBased}"
                                  Margin="0 0 0 5"
                                  Text="{Binding NewVehicle.Brand, UpdateSourceTrigger=PropertyChanged}"
                                  materialDesign:HintAssist.Hint="Toyota"/>
@@ -89,7 +89,9 @@
 
                     <TextBlock Text="Статус в системе" Style="{DynamicResource AppFieldLabel}" Margin="0 12 0 2"/>
                     <CheckBox Content="Активен" Style="{DynamicResource MaterialDesignFilterChipSecondaryCheckBox }"
-                                         IsChecked="{Binding NewVehicle.IsActive}"/>
+                                         IsChecked="{Binding NewVehicle.IsActive}">
+
+                    </CheckBox>
 
                 </StackPanel>
             </ScrollViewer>

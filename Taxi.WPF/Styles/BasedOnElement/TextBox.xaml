@@ -35,6 +35,30 @@
 
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
     </Style>
+    
+    
+    <Style x:Key="AppTextBoxBased"
+       TargetType="TextBox"
+       BasedOn="{StaticResource AppTextBox}">
+        <Setter Property="Foreground"  Value="{DynamicResource TextBlockPrimaryBrush}"/>
+        <Setter Property="CaretBrush"  Value="{DynamicResource TextBlockPrimaryBrush}"/>
+        <Setter Property="materialDesign:HintAssist.Foreground"
+            Value="{DynamicResource TextBlockPlaceholderBrush}"/>
+
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Height" Value="35"/>
+
+
+        <Setter Property="materialDesign:TextFieldAssist.TextBoxViewMargin" Value="10 0"/>
+        <Setter Property="materialDesign:TextFieldAssist.DecorationVisibility" Value="Collapsed"/>
+        <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True"/>
+        <!--<Setter Property="materialDesign:HintAssist.FloatingScale" Value=".4"/>-->
+
+        <Setter Property="materialDesign:HintAssist.Background"
+            Value="{DynamicResource AppBackgroundBrush}"/>
+        <Setter Property="materialDesign:HintAssist.HintPaddingBrush" Value="{DynamicResource AppBackgroundBrush}"/>
+
+    </Style>
 
     <Style x:Key="TextBoxPhone" TargetType="xctk:MaskedTextBox" BasedOn="{StaticResource AppTextBox}">
 <Setter Property="Mask" Value=""/>
@@ -49,7 +73,7 @@
     </Style>
     
     
-    <Style x:Key="TextBoxGosNumber" TargetType="xctk:MaskedTextBox" BasedOn="{StaticResource AppTextBox}">
+    <Style x:Key="TextBoxGosNumber" TargetType="xctk:MaskedTextBox" BasedOn="{StaticResource AppTextBoxBased}">
         <Setter Property="Mask" Value=""/>
         <Style.Triggers>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
