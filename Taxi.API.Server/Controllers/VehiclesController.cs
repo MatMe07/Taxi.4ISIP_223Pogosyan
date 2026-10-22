@@ -43,9 +43,22 @@ namespace Taxi.API.Server.Controllers
 
         [HttpPost("addVehicle")]
         [Authorize]
-        public IActionResult AddVehicle(VehicleDTO vehicle)
+        public async Task<IActionResult> AddVehicleAsync(VehicleDTO vehicle)
         {
-            return Ok(vehicle);
+            var (message, isAdd) = await services.AddVehicleAsync(vehicle);
+            if (!isAdd)
+            {
+                return BadRequest(new VehicleAddResponse
+                {
+                    message = message,
+                    IsAdded = isAdd
+                });
+            }
+            return Ok(new VehicleAddResponse
+            {
+                message=message,
+                IsAdded=isAdd
+            });
         }
 
 

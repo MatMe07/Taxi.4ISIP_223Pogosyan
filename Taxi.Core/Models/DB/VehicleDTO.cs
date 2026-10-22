@@ -25,14 +25,14 @@ namespace Taxi.Core.Models.DB
         public int ClassId { get; set; }
 
         [JsonPropertyName("className")]
-        public string ClassName { get; set; }
+        public string ClassName { get; set; } = "";
 
 
         [JsonPropertyName("year")]
         public int Year { get; set; }
 
         [JsonPropertyName("isActive")]
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = false;
 
         //public string dopuskText { get; set; }
         public bool HasActiveMaintenance { get; set; }

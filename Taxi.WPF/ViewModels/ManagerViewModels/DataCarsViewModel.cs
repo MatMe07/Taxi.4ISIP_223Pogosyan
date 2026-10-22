@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using Taxi.Core.Models.DB;
 using Taxi.WPF.Commands;
@@ -82,11 +83,12 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
                     (_btnAddCar = new AsyncRelayCommand(
                         async obj=>
                         {
+                            
                             //var view = new AddCarsUC();
                             var newVehicle = await DialogHost.Show(AddCars, "AddVehicleDialog");
 
                             if (newVehicle != null) VehicleDTOs.Add(newVehicle as  VehicleDTO);
-                        }
+                        }   
                         ));
             }
         }

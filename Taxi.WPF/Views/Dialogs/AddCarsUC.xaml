@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Taxi.WPF.ViewModels.DialogsVM"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             
       d:DataContext="{d:DesignInstance {x:Type local:AddCarViewModel}}"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="420">
@@ -40,7 +42,8 @@
                 <StackPanel>
 
                     <TextBlock Text="Госномер *" Style="{DynamicResource AppFieldLabel}"/>
-                    <TextBox Style="{StaticResource AppTextBox}"
+                    
+                    <xctk:MaskedTextBox Style="{DynamicResource TextBoxGosNumber}"
                                  Margin="0 0 0 5"
                                  Text="{Binding NewVehicle.GovNumber, UpdateSourceTrigger=PropertyChanged}"
                                  materialDesign:HintAssist.Hint="А123ВС 77"/>
@@ -56,8 +59,6 @@
                                  Margin="0 0 0 5"
                                  Text="{Binding NewVehicle.Model, UpdateSourceTrigger=PropertyChanged}"
                                  materialDesign:HintAssist.Hint="Camry"/>
-
-                    <!-- Класс ТС + Год выпуска (две колонки) -->
                     <Grid Margin="0 6 0 0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -70,9 +71,10 @@
                             <ComboBox Style="{StaticResource FilterComboBoxStyle}"
                                           Margin="0"
                                           materialDesign:HintAssist.Hint="Класс"
-                                          ItemsSource="{Binding VehicleClasses}"
-                                      DisplayMemberPath="Name"
-                                          SelectedItem="{Binding NewVehicle.ClassName}"/>
+                                  ItemsSource="{Binding VehicleClasses}"
+                                  DisplayMemberPath="Name"
+                                  SelectedValuePath="{Binding}"
+                                  SelectedItem="{Binding SelectedVehicleClass}" />
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">

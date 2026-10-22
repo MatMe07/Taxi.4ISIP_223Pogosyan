@@ -47,6 +47,19 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    
+    
+    <Style x:Key="TextBoxGosNumber" TargetType="xctk:MaskedTextBox" BasedOn="{StaticResource AppTextBox}">
+        <Setter Property="Mask" Value=""/>
+        <Style.Triggers>
+            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter Property="Mask" Value="L000LL 00"/>
+            </Trigger>
+            <Trigger Property="IsMaskCompleted" Value="True">
+                <Setter Property="Mask" Value="L000LL 00"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
     <Style x:Key="SearchTextBoxStyle"
        TargetType="{x:Type TextBox}"

@@ -77,5 +77,24 @@ namespace Taxi.API.Server.Services
             return lstClasses;
         }
 
+        public async Task<(string, bool)> AddVehicleAsync(VehicleDTO veh)
+        {
+            var findVehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.GovNumber == veh.GovNumber);
+            if (findVehicle != null) return ("Машина с такими номерами уже есть",  false);
+
+            await _context.Vehicles.AddAsync(new Vehicle
+            {
+                Id = veh.Id,
+                GovNumber = veh.GovNumber,
+                Model = veh.Model,
+                Brand = veh.Brand,
+                ClassId = veh.ClassId,
+                Year = veh.Year,
+                IsActive = veh.IsActive,
+            });
+            await _context.SaveChangesAsync();
+            return ("Успешно!", true);
+        }
+
     }
 }

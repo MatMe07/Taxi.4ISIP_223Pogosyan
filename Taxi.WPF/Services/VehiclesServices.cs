@@ -38,5 +38,13 @@ namespace Taxi.WPF.Services
             var result = await response.Content.ReadFromJsonAsync<List<VehicleClassDTO>>();
             return result ?? [];
         } 
+
+        public async Task<VehicleAddResponse> AddVehicleAsync(VehicleDTO vehicle)
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/vehicle/addVehicle", vehicle);
+            var result = await response.Content.ReadFromJsonAsync<VehicleAddResponse>();
+            return result;
+
+        }
     }
 }
