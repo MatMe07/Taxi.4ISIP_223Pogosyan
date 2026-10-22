@@ -22,6 +22,8 @@ namespace Taxi.Core.Models.DB
             ClassName = other.ClassName;
             Year = other.Year;
             IsActive = other.IsActive;
+
+
             HasActiveMaintenance = other.HasActiveMaintenance;
             HasOsago = other.HasOsago;
             HasTechCheck = other.HasTechCheck;

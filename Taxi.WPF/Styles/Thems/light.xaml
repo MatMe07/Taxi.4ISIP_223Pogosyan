@@ -16,6 +16,8 @@
         <ResourceDictionary Source="/Styles/BasedOnElement/GridData.xaml"/>
         <ResourceDictionary Source="/Styles/BasedOnElement/TabControl.xaml"/>
         <ResourceDictionary Source="/Styles/BasedOnElement/RadioButton.xaml"/>
+        <ResourceDictionary Source="/Styles/BasedOnElement/CheckBox.xaml"/>
+
 
         <ResourceDictionary Source="/Styles/Thems/ColorsLight.xaml"/>
     </ResourceDictionary.MergedDictionaries>

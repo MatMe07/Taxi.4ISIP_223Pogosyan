@@ -33,11 +33,24 @@ namespace Taxi.API.Server.Controllers
             return Ok(lst);
         }
 
-        [HttpPut("updateVehicle")]
+        [HttpPatch("updateVehicle")]
         [Authorize]
-        public IActionResult UpdateVehicle(VehicleDTO vehicle)
+        public async Task<IActionResult> UpdateVehicle(VehicleDTO vehicle)
         {
-            return Ok(vehicle);
+            var (message, isUpdate) = await services.UpdateVehicleAsync(vehicle);
+            if (!isUpdate)
+            {
+                return BadRequest(new VehicleUpdateResponse
+                {
+                    message = message,
+                    IsUpdateded = isUpdate
+                });
+            }
+            return Ok(new VehicleUpdateResponse
+            {
+                message = message,
+                IsUpdateded = isUpdate
+            });
         }
 
 
@@ -62,11 +75,24 @@ namespace Taxi.API.Server.Controllers
         }
 
 
-        [HttpDelete("deleteVehicle")]
+        [HttpDelete("deleteVehicle/{id}")]
         [Authorize]
-        public IActionResult DeleteVehicle(VehicleDTO vehicle)
+        public async Task<IActionResult> DeleteVehicleAsync(int id)
         {
-            return Ok(vehicle);
+            var (message, isDelete) = await services.DeleteVehicleAsync(id);
+            if (!isDelete)
+            {
+                return BadRequest(new VehicleDeleteResponse
+                {
+                    message = message,
+                    IsDeleted = isDelete
+                });
+            }
+            return Ok(new VehicleDeleteResponse
+            {
+                message = message,
+                IsDeleted = isDelete
+            });
         }
     }
 }

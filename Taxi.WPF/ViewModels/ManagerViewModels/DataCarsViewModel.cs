@@ -113,12 +113,54 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
                             Debug.WriteLine(obj);
                             Debug.WriteLine("----------------------------------------");
                             EditCarUC.SelectVehicle = obj as VehicleDTO;
-                             await DialogHost.Show(EditCarUC, "AddVehicleDialog");
+                            VehicleDTO editVehicle;bool isDelete;
+                            
+                            var result= await DialogHost.Show(EditCarUC, "AddVehicleDialog") as (VehicleDTO editVehicle, bool isDelete)?;
+                            if (result != null)
+                            {
+                                isDelete = result.Value.isDelete;
+                                editVehicle = result.Value.editVehicle;
+
+                                if (!isDelete)
+                                    VehicleDTOs[VehicleDTOs.IndexOf(obj as VehicleDTO)] = editVehicle;
+                                else
+                                    VehicleDTOs.Remove(obj as VehicleDTO);
+                            }
                         }
                         ));
             }
         }
 
+
+        private AsyncRelayCommand _deleteSelVehicleCommand;
+        public AsyncRelayCommand DeleteSelVehicleCommand
+        {
+            get => _deleteSelVehicleCommand ??
+                (_deleteSelVehicleCommand = new AsyncRelayCommand(async obj =>
+                {
+                    var res = MessageBox.Show(
+                        "Действительно ходите удалить?",
+                        "Подтверждение",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+
+                    if (res != MessageBoxResult.Yes)
+                        return;
+
+
+                    var result = await vehiclesServices.DeleteVehicleAsync(obj as VehicleDTO);
+                    MessageBox.Show(
+                        result.message,
+                        result.IsDeleted ? "Готово" : "Ошибка",
+                        MessageBoxButton.OK,
+                        result.IsDeleted ? MessageBoxImage.Information : MessageBoxImage.Warning);
+                    if (result.IsDeleted)
+                    {
+                        VehicleDTOs.Remove(obj as VehicleDTO);
+
+                    }
+                }));
+        }
 
         private void SearchFilt()
         {

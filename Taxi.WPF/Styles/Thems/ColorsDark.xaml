@@ -43,6 +43,11 @@
     <SolidColorBrush x:Key="RoleAdminBrush"        Color="#90A4AE"/>
 
 
+    <SolidColorBrush x:Key="CheckBoxBackgroundBrush"         Color="#242C36"/>
+    <SolidColorBrush x:Key="CheckBoxForegroundBrush"         Color="#E8EDF2"/>
+    <SolidColorBrush x:Key="CheckBoxActiveBackgroundBrush"   Color="#4A90E2"/>
+    <SolidColorBrush x:Key="CheckBoxActiveForegroundBrush"   Color="#0F1419"/>
+
     <SolidColorBrush x:Key="ButtonPrimaryBackgroundBrush"        Color="#1E5AA8"/>
     <SolidColorBrush x:Key="ButtonPrimaryHoverBackgroundBrush"   Color="#164A8C"/>
     <SolidColorBrush x:Key="ButtonPrimaryPressedBackgroundBrush" Color="#0F3A70"/>

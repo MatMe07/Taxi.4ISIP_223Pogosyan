@@ -26,7 +26,7 @@
                             HorizontalAlignment="Right"
                             Width="32" Height="32"
                             Foreground="{DynamicResource IconBrush}"
-                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                            Command="{Binding CancelCommand}">
                     <materialDesign:PackIcon Kind="Close" Width="18" Height="18"/>
                 </Button>
             </Grid>
@@ -101,9 +101,16 @@
                     </Grid>
 
                     <TextBlock Text="Статус в системе" Style="{DynamicResource AppFieldLabel}" Margin="0 12 0 2"/>
-                    <CheckBox Content="Активен" Style="{DynamicResource MaterialDesignFilterChipSecondaryCheckBox }"
-                                         IsChecked="{Binding NewVehicle.IsActive}"/>
-
+                    <CheckBox Content="Активен" Style="{DynamicResource checkBoxActive}"
+                                         IsChecked="{Binding NewVehicle.IsActive}">
+                        <!--<CheckBox.Style >
+                            <Style  TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignFilterChipSecondaryCheckBox }">
+                                
+                            </Style>
+                            
+                        </CheckBox.Style>-->
+                    </CheckBox>
+                    
                 </StackPanel>
             </ScrollViewer>
 
@@ -122,17 +129,17 @@
                 <Button Grid.Column="0"
                             Content="Удалить"
                             Style="{StaticResource DialogDangerButtonStyle}"
-                            Command="{Binding DeleteVehicleCommand}"/>
+                            Command="{Binding DeleteCommand}"/>
 
                 <Button Grid.Column="2"
                             Content="Отмена" Margin="10 0 0 0"
                             Style="{StaticResource DialogCancelButtonStyle}"
-                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                            Command="{Binding CancelCommand}"/>
 
                 <Button Grid.Column="3"
                             Content="Сохранить изменения"
                             Style="{StaticResource DialogButtonStyle}"
-                            Command="{Binding SaveVehicleCommand}"/>
+                            Command="{Binding SaveCommand}"/>
             </Grid>
         </Grid>
     </Border>

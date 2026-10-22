@@ -45,7 +45,7 @@
                     
                     <xctk:MaskedTextBox Style="{DynamicResource TextBoxGosNumber}"
                                  Margin="0 0 0 5"
-                                 Text="{Binding EditVehicle.GovNumber, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding NewVehicle.GovNumber, UpdateSourceTrigger=PropertyChanged}"
                                  materialDesign:HintAssist.Hint="А123ВС 77"/>
 
                     <TextBlock Text="Марка *" Style="{DynamicResource AppFieldLabel}"/>
@@ -106,8 +106,7 @@
                             Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
                 <Button Content="Сохранить"
                             Style="{DynamicResource DialogButtonStyle}"
-                            Command="{Binding SaveVehicleCommand}"
-                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:DialogHost}}"/>
+                            Command="{Binding SaveVehicleCommand}"/>
             </StackPanel>
         </Grid>
     </Border>

@@ -108,11 +108,22 @@ namespace Taxi.WPF.ViewModels.DialogsVM
                         }
 
                         MessageBox.Show(res.message, "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
                         DialogHost.Close("AddVehicleDialog", NewVehicle);
+                        Reset();
                     }
 
                     ));
                 
+        }
+
+        private void Reset()
+        {
+            NewVehicle = new VehicleDTO();
+            _selectedVehicleClass = null;
+            _saveCommand = null;
+
+            OnPropertyChanged(nameof(SaveVehicleCommand));
         }
 
     }

@@ -46,5 +46,17 @@ namespace Taxi.WPF.Services
             return result;
 
         }
+        public async Task<VehicleUpdateResponse> UpdateVehicleAsync(VehicleDTO vehicle)
+        {
+            var response = await _httpClient.PatchAsJsonAsync("api/vehicle/updateVehicle", vehicle);
+            var result = await response.Content.ReadFromJsonAsync<VehicleUpdateResponse>();
+            return result;
+        }
+        public async Task<VehicleDeleteResponse> DeleteVehicleAsync(VehicleDTO vehicle)
+        {
+            var response = await _httpClient.DeleteFromJsonAsync<VehicleDeleteResponse>($"api/vehicle/deleteVehicle/{vehicle.Id}");
+            
+            return response;
+        }
     }
 }

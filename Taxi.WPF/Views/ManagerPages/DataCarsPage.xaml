@@ -124,7 +124,7 @@
                                 Height="32"
                                 Width="32"
                                     ToolTip="Удалить ТС"
-                                    Command="{Binding DataContext.BtnDeleteCar, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                    Command="{Binding DataContext.DeleteSelVehicleCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                     CommandParameter="{Binding}"
                                     Style="{DynamicResource MaterialDesignIconForegroundButton}">
                                     <Button.Content>

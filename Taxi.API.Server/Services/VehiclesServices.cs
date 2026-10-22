@@ -79,12 +79,11 @@ namespace Taxi.API.Server.Services
 
         public async Task<(string, bool)> AddVehicleAsync(VehicleDTO veh)
         {
-            var findVehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.GovNumber == veh.GovNumber);
-            if (findVehicle != null) return ("Машина с такими номерами уже есть",  false);
+            if (await _context.Vehicles.AnyAsync(v => v.GovNumber == veh.GovNumber))
+                return ("Автомобиль с таким госномером уже существует.", false);
 
             await _context.Vehicles.AddAsync(new Vehicle
             {
-                Id = veh.Id,
                 GovNumber = veh.GovNumber,
                 Model = veh.Model,
                 Brand = veh.Brand,
@@ -93,7 +92,53 @@ namespace Taxi.API.Server.Services
                 IsActive = veh.IsActive,
             });
             await _context.SaveChangesAsync();
-            return ("Успешно!", true);
+
+            return ("Автомобиль успешно добавлен.", true);
+        }
+
+        public async Task<(string, bool)> UpdateVehicleAsync(VehicleDTO veh)
+        {
+            var findVehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.GovNumber == veh.GovNumber);
+            if (findVehicle == null) return ("Автомобиль с таким госномером не найден.", false);
+            findVehicle.Model = veh.Model;
+            findVehicle.Brand = veh.Brand;
+            findVehicle.Year = veh.Year;
+            findVehicle.IsActive = veh.IsActive;
+            findVehicle.ClassId = veh.ClassId;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return ("Не удалось обновить данные автомобиля.", false);
+            }
+            return ("Данные автомобиля обновлены.", true);
+        }
+
+        private async Task<Vehicle> GetVehicleAsync(int id)
+        {
+            return await _context.Vehicles.FirstOrDefaultAsync(v => v.Id == id);
+        }
+
+        public async Task<(string, bool)> DeleteVehicleAsync(int id)
+        {
+            var vehicle = await GetVehicleAsync(id);
+            if (vehicle == null)
+                return ("Автомобиль с таким госномером не найден.", false);
+
+            _context.Vehicles.Remove(vehicle);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return ("Не удалось удалить автомобиль.", false);
+            }
+            return ("Автомобиль удалён.", true);
         }
 
     }
