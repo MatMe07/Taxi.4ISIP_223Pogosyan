@@ -21,7 +21,7 @@ namespace Taxi.WPF.Views
     /// </summary>
     public partial class ManagerAutoPage : Page
     {
-        public ManagerAutoPage(DataCarsPage dataCars)
+        public ManagerAutoPage(ReportsManagerPage dataCars)
         {
             InitializeComponent();
             frameVehicles.Navigate(dataCars);

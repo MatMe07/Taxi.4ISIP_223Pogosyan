@@ -93,6 +93,9 @@ namespace Taxi.WPF
             services.AddTransient<EditCarUC>();
             services.AddTransient<EditCarViewModel>();
 
+            services.AddTransient<ReportsManagerPage>();
+            services.AddTransient<ReportsManagerViewModel>();
+
 
 
 

@@ -71,6 +71,7 @@ builder.Services.AddDbContext<TaxiBaseContext>();
 builder.Services.AddTransient<CaptchaService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddTransient<VehiclesServices>();
+builder.Services.AddTransient<PoesdkaService>();
 
 var app = builder.Build();
 
