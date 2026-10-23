@@ -15,7 +15,9 @@ namespace Taxi.Core.Models.DB
         public int VehicleId { get; set; }
 
         public string VehicleGosNumber { get; set; }
-        
+
+        public string VehicleClassName { get; set; }
+
         public DateTime StartedAt { get; set; }
 
         public DateTime? FinishedAt { get; set; }

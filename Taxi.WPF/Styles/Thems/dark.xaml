@@ -17,6 +17,7 @@
         <ResourceDictionary Source="/Styles/BasedOnElement/GridData.xaml"/>
         <ResourceDictionary Source="/Styles/BasedOnElement/RadioButton.xaml"/>
         <ResourceDictionary Source="/Styles/BasedOnElement/CheckBox.xaml"/>
+        <ResourceDictionary Source="/Styles/BasedOnElement/Menu.xaml"/>
 
         <ResourceDictionary Source="/Styles/Thems/ColorsDark.xaml"/>
     </ResourceDictionary.MergedDictionaries>

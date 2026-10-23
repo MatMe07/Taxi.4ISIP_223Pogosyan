@@ -10,6 +10,8 @@
     <SolidColorBrush x:Key="SurfaceAltBrush"       Color="#242C36"/>
     <SolidColorBrush x:Key="SidebarBrush"          Color="#0A0E13"/>
 
+    
+
     <SolidColorBrush x:Key="BorderBrush"           Color="#2D3742"/>
     <SolidColorBrush x:Key="DividerBrush"          Color="#232B34"/>
 

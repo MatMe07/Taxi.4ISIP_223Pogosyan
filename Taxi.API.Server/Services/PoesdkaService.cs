@@ -20,6 +20,7 @@ namespace Taxi.API.Server.Services
                     StartedAt = vc.StartedAt,
                     FinishedAt = vc.FinishedAt,
                     DriverEarning= vc.DriverEarning,
+                    VehicleClassName=vc.Vehicle.Class.Name,
                     OrderEarning=vc.Order.PaymentAmount
                 }).ToList();
             ;

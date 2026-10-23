@@ -54,5 +54,31 @@
         <Setter Property="Foreground"  Value="{DynamicResource TextBlockPrimaryBrush}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
+    <Style x:Key="AppKpiValue" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
+        <Setter Property="FontSize" Value="26"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBlockPrimaryBrush}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0 4 0 0"/>
+    </Style>
 
+    <Style x:Key="AppKpiCaption" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBlockSecondaryBrush}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+
+    <Style x:Key="KpiTitle" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBlockSecondaryBrush}"/>
+        <Setter Property="Margin" Value="0 0 0 6"/>
+    </Style>
+
+    <Style x:Key="KpiValue" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBlockPrimaryBrush}"/>
+    </Style>
 </ResourceDictionary>

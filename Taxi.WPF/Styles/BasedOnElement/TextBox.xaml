@@ -99,16 +99,15 @@
     <Style x:Key="FilterComboBoxStyle"
            TargetType="{x:Type ComboBox}"
            BasedOn="{StaticResource MaterialDesignOutlinedComboBox}">
-        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource AppBackgroundBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource TextBlockPrimaryBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
         <Setter Property="materialDesign:HintAssist.Foreground"
                 Value="{DynamicResource TextBlockPlaceholderBrush}"/>
+        <Setter Property="materialDesign:HintAssist.Background"
+            Value="{DynamicResource AppBackgroundBrush}"/>
+        <Setter Property="materialDesign:HintAssist.HintPaddingBrush" Value="{DynamicResource AppBackgroundBrush}"/>
 
-        <!--<Style.Resources>
-            <SolidColorBrush x:Key="MaterialDesign.Brush.ComboBox.Background"
-                     Color="{Binding Color, Source={DynamicResource SurfaceBrush}}"/>
-        </Style.Resources>-->
     </Style>
 
     <Style x:Key="AppTextBoxReadOnly" TargetType="TextBox" BasedOn="{StaticResource AppTextBox}">
@@ -116,4 +115,47 @@
         <Setter Property="Foreground" Value="{DynamicResource TextBlockSecondaryBrush}"/>
         <Setter Property="CaretBrush" Value="Transparent"/>
     </Style>
+
+    <Style x:Key="AppDatePicker"
+       TargetType="DatePicker"
+       BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}">
+        <Setter Property="Foreground" Value="{DynamicResource TextBlockPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+        <Setter Property="materialDesign:HintAssist.Foreground"
+            Value="{DynamicResource TextBlockPlaceholderBrush}"/>
+        
+        <Setter Property="materialDesign:HintAssist.Background"
+            Value="{DynamicResource AppBackgroundBrush}"/>
+        
+        <Setter Property="CalendarStyle">
+            <Setter.Value>
+                <Style TargetType="Calendar" BasedOn="{StaticResource MaterialDesignCalendarPortrait}">
+                    <Setter Property="Background"  Value="{DynamicResource SurfaceBrush}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+
+                    <Setter Property="CalendarDayButtonStyle">
+                        <Setter.Value>
+                            <Style TargetType="CalendarDayButton"
+                               BasedOn="{StaticResource MaterialDesignCalendarDayButton}">
+                                <Setter Property="Foreground" Value="{DynamicResource TextBlockPrimaryBrush}"/>
+                            </Style>
+                        </Setter.Value>
+                    </Setter>
+
+                    <Setter Property="CalendarButtonStyle">
+                        <Setter.Value>
+                            <Style TargetType="CalendarButton"
+                               BasedOn="{StaticResource MaterialDesignCalendarButton}">
+                                <Setter Property="Foreground" Value="{DynamicResource TextBlockPrimaryBrush}"/>
+                            </Style>
+                        </Setter.Value>
+                    </Setter>
+
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    
 </ResourceDictionary>

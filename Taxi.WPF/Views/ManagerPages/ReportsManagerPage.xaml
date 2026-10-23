@@ -34,16 +34,20 @@
         </Grid>
 
         <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
+            <!--<Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
+            </Grid.RowDefinitions>-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Период" Margin="0 0 10 5" Style="{DynamicResource AppTextBlockBody}" VerticalAlignment="Bottom"/>
                 <DatePicker x:Name="StartDatePicker"
                 Width="150"
                 Margin="5"
-                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                Style="{StaticResource AppDatePicker}"
                 materialDesign:HintAssist.Hint="Дата начала"
                 SelectedDateChanged="StartDatePicker_SelectedDateChanged"
                             SelectedDate="{Binding SelectStartDate}"
@@ -52,7 +56,7 @@
                 <DatePicker x:Name="EndDatePicker"
                 Width="150"
                 Margin="5"
-                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                Style="{StaticResource AppDatePicker}"
                 materialDesign:HintAssist.Hint="Дата окончания"
                 SelectedDateChanged="EndDatePicker_SelectedDateChanged"
                             SelectedDate="{Binding SelectEndDate}"
@@ -67,13 +71,17 @@
                 </StackPanel>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0 10">
-                <Button Content="Сформировать" Height="35" Padding="20 0" Style="{DynamicResource buttonBased}"/>
-                <Menu Margin="15 0 0 0" BorderBrush="#FFCA3E3E" BorderThickness="1" Visibility="{Binding VisibleDiagramBtn, Converter={StaticResource boolToVisibilityConverter}}">
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Grid.Row="1" Margin="10 0 0 0" HorizontalAlignment="Right">
+                <Button Content="Сформировать" Height="35"
+                        Command="{Binding MakeDiagrammsCommand}"
+                        Padding="20 0" Style="{DynamicResource buttonBased}"/>
+                <Menu Style="{DynamicResource MenuExport}"
+                      Margin="15 0 0 0" 
+                      Visibility="{Binding VisibleDiagramBtn, Converter={StaticResource boolToVisibilityConverter}}">
                     <MenuItem Header="Экспорт">
-                        <MenuItem Header="В Excel (.xlsx)"/>
-                        <MenuItem Header="В PDF (.pdf)"/>
-                        <MenuItem Header="В Word (.docx)"/>
+                        <MenuItem Header="Excel" Tag="Excel" Command="{Binding ExportToFileCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                        <MenuItem Header="PDF" Tag="PDF"  Command="{Binding ExportToFileCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                        <MenuItem Header="Word" Tag="Word" Command="{Binding ExportToFileCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
                     </MenuItem>
                 </Menu>
             </StackPanel>
@@ -87,25 +95,23 @@
                 <RowDefinition />
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Grid Width="300" HorizontalAlignment="Left">
-                <Grid.ColumnDefinitions >
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            <UniformGrid Columns="3" HorizontalAlignment="Left">
 
-                <materialDesign:Card Margin="10">
-                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10 20">
-                        <TextBlock Text="Заказов"/>
-                        <TextBlock Text="{Binding TotalCountOrder}"/>
+                <Border Style="{DynamicResource KpiCard}">
+                    <StackPanel>
+                        <TextBlock Text="Заказов" Style="{DynamicResource KpiTitle}"/>
+                        <TextBlock Text="{Binding TotalCountOrder}" Style="{DynamicResource KpiValue}"/>
                     </StackPanel>
-                </materialDesign:Card>
-                <materialDesign:Card Margin="10" Grid.Column="1">
-                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10 20">
-                        <TextBlock Text="Выручка"/>
-                        <TextBlock Text="{Binding TotalEarning, StringFormat='\{0:F2} ₽'}"/>
+                </Border>
+
+                <Border Style="{DynamicResource KpiCard}">
+                    <StackPanel>
+                        <TextBlock Text="Выручка" Style="{DynamicResource KpiTitle}"/>
+                        <TextBlock Text="{Binding TotalEarning, StringFormat='\{0:F2} ₽'}" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
-                </materialDesign:Card>
-            </Grid>
+                </Border>
+
+            </UniformGrid>
 
             <lvc:CartesianChart Grid.Row="1">
 
@@ -122,6 +128,7 @@
                     <lvc:AxesCollection>
                         <lvc:XamlAxis
                     AxisName="Госномер"
+                            
                     Labels="{Binding Labels}"/>
                     </lvc:AxesCollection>
                 </lvc:CartesianChart.XAxes>
@@ -129,8 +136,7 @@
                 <lvc:CartesianChart.YAxes>
                     <lvc:AxesCollection>
                         <lvc:XamlAxis
-                    AxisName="Кол-во заказов"
-                    NamePadding="0,15"
+                    AxisName="Выручка"
                     Labeler="{Binding Labeler}"
                     LabelsPaint="{lvc:SolidColorPaint
                         Color='#00f',

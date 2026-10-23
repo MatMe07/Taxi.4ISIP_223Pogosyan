@@ -1,5 +1,6 @@
 ﻿using dotenv.net;
 using Microsoft.Extensions.DependencyInjection;
+using OfficeOpenXml;
 using System.Windows;
 using Taxi.Core.Models.Auth;
 using Taxi.src.Services;
@@ -28,6 +29,7 @@ namespace Taxi.WPF
             DotEnv.Load();
 
             base.OnStartup(e);
+
 
             await AppCache.Cache.LoadAsync();
 
@@ -60,6 +62,7 @@ namespace Taxi.WPF
 
             services.AddTransient<VehiclesServices>();
             services.AddTransient<PoezdkaService>();
+            services.AddTransient<GenerationFilesService>();
 
 
             services.AddTransient<AuthorizationViewModel>();
