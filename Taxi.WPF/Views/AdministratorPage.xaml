@@ -12,6 +12,6 @@
       Title="AdministratorPage">
 
     <Grid>
-
+        <Frame NavigationUIVisibility="Hidden" x:Name="frameMain" />
     </Grid>
 </Page>

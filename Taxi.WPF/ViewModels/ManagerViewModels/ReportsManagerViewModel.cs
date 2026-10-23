@@ -47,7 +47,7 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
             }
         }
 
-        private string _selectedClassSort = "Все";
+        private string _selectedClassSort;
         public string SelectedClassSort
         {
             get => _selectedClassSort;
@@ -58,7 +58,7 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
             }
         }
 
-        private bool _clikedBtn = false;
+        private bool _clikedBtn = true;
         public bool ClikedBtn
         {
             get
@@ -74,7 +74,7 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
 
 
 
-        private bool _visibleDiagramBtn = true;
+        private bool _visibleDiagramBtn = false;
         public bool VisibleDiagramBtn
         {
             get
@@ -110,6 +110,7 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
             get => _makeDiagrammsCommand ??
                 (_makeDiagrammsCommand = new RelayCommand(obj =>
                 {
+                    if (poezdkaDTOs == null) return;
                     _rangePoezdka = poezdkaDTOs.Where(p => p.StartedAt >= SelectStartDate && p.FinishedAt <= SelectEndDate).ToList();
                     if (SelectedClassSort != "Все") _rangePoezdka = _rangePoezdka.Where(p => p.VehicleClassName == SelectedClassSort).ToList();
                     var gosNumbers = _rangePoezdka.Select(s => s.VehicleGosNumber);
@@ -123,6 +124,8 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
 
                     OnPropertyChanged(nameof(TotalCountOrder));
                     OnPropertyChanged(nameof(TotalEarning));
+                    ClikedBtn = false;
+                    VisibleDiagramBtn = true;
                 }));
         }
 
@@ -221,15 +224,15 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
         {
             poezdkaDTOs = await _poezdkaService.GetAllPoezdkasAsync();
             var sort_cl = await _vehiclesServices.GetAllVehicleClassesAsync();
-            _clikedBtn = true;
-            _visibleDiagramBtn = false;
+            ClikedBtn = true;
+            VisibleDiagramBtn = false;
 
             SortClasses.Clear();
             foreach (var s in sort_cl.Select(c=>c.Name))
                 SortClasses.Add(s);
             SortClasses.Insert(0, "Все");
 
-
+            SelectedClassSort = "Все";
 
         }
     }

@@ -247,6 +247,8 @@ namespace Taxi.WPF.ViewModels
                         }
 
 
+
+
                         var newUserReguest = new RegisterRequest(txtLoginRegister, txtPasswordRegister, txtLastNameRegister, 
                             txtFirstNameRegister, txtMiddleRegister, txtPhoneRegister);
 

@@ -72,6 +72,7 @@ builder.Services.AddTransient<CaptchaService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddTransient<VehiclesServices>();
 builder.Services.AddTransient<PoesdkaService>();
+builder.Services.AddTransient<UsersService>();
 
 var app = builder.Build();
 

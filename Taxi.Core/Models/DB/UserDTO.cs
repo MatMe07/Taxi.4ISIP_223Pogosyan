@@ -18,6 +18,8 @@ namespace Taxi.Core.Models.DB
 
         public string Phone { get; set; }
         public int RoleId { get; set; }
+        public string RoleName { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         public bool isActive { get; set; }
     }

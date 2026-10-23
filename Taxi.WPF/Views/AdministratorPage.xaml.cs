@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Taxi.WPF.ViewModels;
 
 namespace Taxi.WPF.Views
 {
@@ -20,9 +21,12 @@ namespace Taxi.WPF.Views
     /// </summary>
     public partial class AdministratorPage : Page
     {
-        public AdministratorPage()
+        public AdministratorPage(AdministratorViewModel viewModel)
         {
             InitializeComponent();
+            viewModel.frameMain = frameMain;
+            DataContext = viewModel;
+            Loaded += (_, _) => viewModel.Load();
         }
     }
 }

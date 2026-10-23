@@ -7,10 +7,12 @@ using Taxi.src.Services;
 using Taxi.WPF.Services;
 using Taxi.WPF.Services.Interfaces;
 using Taxi.WPF.ViewModels;
+using Taxi.WPF.ViewModels.AdminViewModels;
 using Taxi.WPF.ViewModels.DialogsVM;
 using Taxi.WPF.ViewModels.ManagerViewModels;
 using Taxi.WPF.ViewModels.ProfileViewModels;
 using Taxi.WPF.Views;
+using Taxi.WPF.Views.AdminPages;
 using Taxi.WPF.Views.Dialogs;
 using Taxi.WPF.Views.ManagerPages;
 using Taxi.WPF.Views.ProfilePages;
@@ -63,6 +65,7 @@ namespace Taxi.WPF
             services.AddTransient<VehiclesServices>();
             services.AddTransient<PoezdkaService>();
             services.AddTransient<GenerationFilesService>();
+            services.AddTransient<UsersServices>();
 
 
             services.AddTransient<AuthorizationViewModel>();
@@ -101,6 +104,16 @@ namespace Taxi.WPF
             services.AddTransient<ReportsManagerViewModel>();
 
 
+
+
+            services.AddTransient<UsersViewModel>();
+            services.AddTransient<UsersPage>();
+
+            services.AddTransient<AdministratorViewModel>();
+            services.AddTransient<AdministratorPage>();
+
+            services.AddTransient<UserEditViewModel>();
+            services.AddTransient<UserEditUC>();
 
 
 

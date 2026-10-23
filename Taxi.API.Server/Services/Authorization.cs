@@ -99,6 +99,8 @@ namespace Taxi.API.Server.Services
                 Phone= account.Phone,
                 isActive= account.IsActive,
                 RoleId = account.RoleId,
+                RoleName = account.Role?.Name ?? "",
+                CreatedAt = account.CreatedAt,
             });
         }
 
