@@ -7,7 +7,7 @@
       xmlns:localConvert="clr-namespace:Taxi.WPF.Converters"
       
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      
+      xmlns:uc="clr-namespace:Taxi.WPF.Views.Diagramms"
       xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
 
       d:DataContext="{d:DesignInstance {x:Type local:ReportsManagerViewModel}}"
@@ -69,7 +69,7 @@
 
             <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0 10">
                 <Button Content="Сформировать" Height="35" Padding="20 0" Style="{DynamicResource buttonBased}"/>
-                <Menu Margin="15 0 0 0" BorderBrush="#FFCA3E3E" BorderThickness="1" >
+                <Menu Margin="15 0 0 0" BorderBrush="#FFCA3E3E" BorderThickness="1" Visibility="{Binding VisibleDiagramBtn, Converter={StaticResource boolToVisibilityConverter}}">
                     <MenuItem Header="Экспорт">
                         <MenuItem Header="В Excel (.xlsx)"/>
                         <MenuItem Header="В PDF (.pdf)"/>
@@ -96,31 +96,53 @@
                 <materialDesign:Card Margin="10">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10 20">
                         <TextBlock Text="Заказов"/>
-                        <TextBlock Text="320"/>
+                        <TextBlock Text="{Binding TotalCountOrder}"/>
                     </StackPanel>
                 </materialDesign:Card>
                 <materialDesign:Card Margin="10" Grid.Column="1">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10 20">
                         <TextBlock Text="Выручка"/>
-                        <TextBlock Text="1 245 000 ₽"/>
+                        <TextBlock Text="{Binding TotalEarning, StringFormat='\{0:F2} ₽'}"/>
                     </StackPanel>
                 </materialDesign:Card>
             </Grid>
-        
-            <lvc:CartesianChart Grid.Row="1"
-            LegendPosition="Right" >
-                <lvc:CartesianChart.Series >
+
+            <lvc:CartesianChart Grid.Row="1">
+
+                <lvc:CartesianChart.Series>
                     <lvc:SeriesCollection>
-                        <lvc:XamlLineSeries
-                        SeriesName="Mary"
-                        Values="5, 10, 8, 4"/>
                         <lvc:XamlColumnSeries
-                        SeriesName="Ana"
-                        Values="4, 7, 3, 8"/>
+                    Values="{Binding Values1}"
+                            />
+                        
                     </lvc:SeriesCollection>
                 </lvc:CartesianChart.Series>
+
+                <lvc:CartesianChart.XAxes>
+                    <lvc:AxesCollection>
+                        <lvc:XamlAxis
+                    AxisName="Госномер"
+                    Labels="{Binding Labels}"/>
+                    </lvc:AxesCollection>
+                </lvc:CartesianChart.XAxes>
+
+                <lvc:CartesianChart.YAxes>
+                    <lvc:AxesCollection>
+                        <lvc:XamlAxis
+                    AxisName="Кол-во заказов"
+                    NamePadding="0,15"
+                    Labeler="{Binding Labeler}"
+                    LabelsPaint="{lvc:SolidColorPaint
+                        Color='#00f',
+                        FontFamily='Times New Roman',
+                        FontWeight=ExtraBold,
+                        FontWidth=Normal,
+                        FontSlant=Italic}"/>
+                    </lvc:AxesCollection>
+                </lvc:CartesianChart.YAxes>
+
             </lvc:CartesianChart>
-            
+
         </Grid>
 
         <Grid Grid.Row="2" d:Visibility="Collapsed" Visibility="{Binding ClikedBtn, Converter={StaticResource boolToVisibilityConverter}}"

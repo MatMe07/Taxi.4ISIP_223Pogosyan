@@ -59,6 +59,7 @@ namespace Taxi.WPF
 
 
             services.AddTransient<VehiclesServices>();
+            services.AddTransient<PoezdkaService>();
 
 
             services.AddTransient<AuthorizationViewModel>();

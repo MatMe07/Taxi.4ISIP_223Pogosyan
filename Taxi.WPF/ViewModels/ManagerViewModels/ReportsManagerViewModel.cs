@@ -6,15 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Taxi.Core.Models.DB;
 using Taxi.WPF.Services;
+using Windows.Foundation.Collections;
 
 namespace Taxi.WPF.ViewModels.ManagerViewModels
 {
     public class ReportsManagerViewModel : ViewModelBase
     {
         VehiclesServices _vehiclesServices;
-        public ReportsManagerViewModel(VehiclesServices vehiclesServices)
+        PoezdkaService _poezdkaService;
+        public ReportsManagerViewModel(VehiclesServices vehiclesServices, PoezdkaService poezdkaService)
         {
             _vehiclesServices = vehiclesServices;
+            _poezdkaService = poezdkaService;
 
         }
         public ObservableCollection<string> SortClasses { get; } = new ObservableCollection<string>();
@@ -49,7 +52,7 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
             }
         }
 
-        private bool _clikedBtn = true;
+        private bool _clikedBtn = false;
         public bool ClikedBtn
         {
             get
@@ -63,7 +66,9 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
             }
         }
 
-        private bool _visibleDiagramBtn = false;
+
+
+        private bool _visibleDiagramBtn = true;
         public bool VisibleDiagramBtn
         {
             get
@@ -77,9 +82,23 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
             }
         }
 
+        public List<PoezdkaDTO> poezdkaDTOs { get; set; }
+
+
+        public decimal TotalEarning => poezdkaDTOs?.Sum(p => p.Earnings) ?? 0;
+
+        public int TotalCountOrder  => poezdkaDTOs?.Sum(p => p.OrderId) ?? 0;
+
+        public ObservableCollection<decimal> Values1 { get; set; } = new ObservableCollection<decimal>();
+
+        public ObservableCollection<string> Labels { get; } = new ObservableCollection<string>();
+
+        public Func<double, string> Labeler { get; set; } =
+            value => value.ToString();
+
         public async Task Load()
         {
-            //_allVehicleDTOs = await vehiclesServices.GetAllVehiclesAsync();
+            poezdkaDTOs = await _poezdkaService.GetAllPoezdkasAsync();
             var sort_cl = await _vehiclesServices.GetAllVehicleClassesAsync();
             _clikedBtn = true;
             _visibleDiagramBtn = false;
@@ -88,6 +107,17 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
                 SortClasses.Add(s);
             SortClasses.Insert(0, "Все");
 
+            var gosNumbers = poezdkaDTOs.Select(s => s.VehicleGosNumber);
+            Labels.Clear();
+            foreach (var g in gosNumbers)
+                Labels.Add(g);
+
+            var viruchkaVehicles = poezdkaDTOs.Select(s => s.Earnings);
+            Values1.Clear();
+            foreach ( var v in viruchkaVehicles) Values1.Add(v);
+
+            OnPropertyChanged(nameof(TotalCountOrder));
+            OnPropertyChanged(nameof(TotalEarning));
         }
     }
 }
