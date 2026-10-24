@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Taxi.Core.Models.Export
 {
-    public class ExportWordRequest
+    public class ExportWordRequest : ExportFileData
     {
+
     }
 }

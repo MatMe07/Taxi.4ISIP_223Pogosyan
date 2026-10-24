@@ -81,7 +81,18 @@ namespace Taxi.WPF.ViewModels.AdminViewModels
                         ok ? MessageBoxImage.Information : MessageBoxImage.Warning);
 
                     if (ok)
-                        Users.Remove(user);
+                    {
+                        //Users.Remove(user);
+                        user.isActive = false;
+                        var us = Users.FirstOrDefault(u => u.Id == user.Id);
+                        if (us != null)
+                        {
+                            var ind = Users.IndexOf(us);
+                            Users.Remove(us);
+                            Users.Insert(ind, us);
+                            OnPropertyChanged(nameof(Users));
+                        }
+                    }
                 }));
         }
     }

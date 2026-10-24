@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -145,11 +146,18 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
 
             var request = new ExportExcelRequest
             {
-
+                fileName = filePath,
+                ColumnNames = new List<string> { "Госномер", "Выручка", "Заказов"},
+                DataEarnings = _rangePoezdka.Select(p => new DataEarnings { Earnings = p.Earnings, GosNumber = p.VehicleGosNumber, totalOrder = _rangePoezdka.Count(a => a.OrderId == p.OrderId) }).ToList()
             };
+
             byte[] excelBytes = await _generationFilesService.GenerateExcelAsync(request);
+            Debug.WriteLine(excelBytes);
+
             await File.WriteAllBytesAsync(filePath, excelBytes);
         }
+
+
         private async Task GenPDFAsync(string filePath)
         {
 
@@ -170,6 +178,8 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
             byte[] excelBytes = await _generationFilesService.GenerateWordAsync(request);
             await File.WriteAllBytesAsync(filePath, excelBytes);
         }
+
+
 
 
         private AsyncRelayCommand _exportToFile;

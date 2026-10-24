@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Taxi.Core.Models.Export
 {
-    public class ExportExcelRequest
+    public class ExportExcelRequest : ExportFileData
     {
+
 
     }
 }

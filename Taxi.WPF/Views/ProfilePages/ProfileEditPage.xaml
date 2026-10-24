@@ -64,7 +64,6 @@
 
                     <Button Content="Сохранить изменения"
                 Style="{StaticResource buttonBased}"
-                Command="{Binding SaveProfileCommand}"
                 IsEnabled="{Binding IsEnabledButton}"
                 HorizontalAlignment="Left"
                 Margin="0 15 0 0"/>

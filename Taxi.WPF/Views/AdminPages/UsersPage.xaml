@@ -8,14 +8,14 @@
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="1800"
       Title="UsersPage">
-    <Grid>
-        <DataGrid Margin="0 10 0 0"
+    <Grid Margin="10">
+        <DataGrid
                   AutoGenerateColumns="False"
                   GridLinesVisibility="Horizontal"
                   HorizontalContentAlignment="Stretch"
                   Style="{DynamicResource dataGrid}"
                   d:ItemsSource="{d:SampleData ItemCount=5}"
-                  ItemsSource="{Binding Users}"
+                  ItemsSource="{Binding Users, UpdateSourceTrigger=PropertyChanged}"
                   ColumnHeaderStyle="{DynamicResource dataGridTextColumn}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" IsReadOnly="True"/>
@@ -44,8 +44,7 @@
                                     </Button.Content>
                                 </Button>
                                 <Button Height="32"
-            Width="32"
-            ToolTip="Удалить пользователя"
+            Width="32" ToolTip="Удалить пользователя"
             Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
             CommandParameter="{Binding}"
             Style="{DynamicResource MaterialDesignIconForegroundButton}">

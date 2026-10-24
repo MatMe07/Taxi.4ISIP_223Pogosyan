@@ -35,6 +35,7 @@ namespace Taxi.WPF
 
             await AppCache.Cache.LoadAsync();
 
+            ExcelPackage.License.SetNonCommercialPersonal("MatMe");
 
 
             var services = new ServiceCollection();

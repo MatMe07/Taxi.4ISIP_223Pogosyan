@@ -57,32 +57,7 @@ namespace Taxi.WPF.ViewModels.DialogsVM
                    NewUser.isActive != EditUser.isActive;
         }
 
-        private AsyncRelayCommand _deleteCommand;
-        public AsyncRelayCommand DeleteCommand
-        {
-            get => _deleteCommand ??
-                (_deleteCommand = new AsyncRelayCommand(async obj =>
-                {
-                    var res = MessageBox.Show(
-                        "Действительно хотите удалить?",
-                        "Подтверждение",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question);
 
-                    if (res != MessageBoxResult.Yes)
-                        return;
-
-                    var result = await _usersServices.DeleteUserAsync(NewUser.Id);
-                    MessageBox.Show(
-                        result ? "Пользователь удалён" : "Не удалось удалить пользователя",
-                        result ? "Готово" : "Ошибка",
-                        MessageBoxButton.OK,
-                        result ? MessageBoxImage.Information : MessageBoxImage.Warning);
-
-                    if (result)
-                        DialogHost.Close("AddVehicleDialog", (EditUser, true));
-                }));
-        }
 
         private RelayCommand _cancelCommand;
         public RelayCommand CancelCommand

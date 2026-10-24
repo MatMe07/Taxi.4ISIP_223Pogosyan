@@ -90,12 +90,24 @@
 
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="Роль *" Style="{DynamicResource AppFieldLabel}"/>
-                            <ComboBox Style="{StaticResource FilterComboBoxStyle}"
+                            <ComboBox
                                       Margin="0"
                                       materialDesign:HintAssist.Hint="Роль"
                                       ItemsSource="{Binding Roles}"
                                       DisplayMemberPath="RoleName"
-                                      SelectedItem="{Binding SelectedRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                      SelectedItem="{Binding SelectedRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox.Style>
+                                    <Style TargetType="ComboBox" BasedOn="{StaticResource FilterComboBoxStyle}">
+                                        <Setter Property="IsEnabled" Value="True"/>
+
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding NewUser.RoleId}" Value="4">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ComboBox.Style>
+                            </ComboBox>
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">
@@ -125,10 +137,6 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0"
-                        Content="Удалить"
-                        Style="{StaticResource DialogDangerButtonStyle}"
-                        Command="{Binding DeleteCommand}"/>
 
                 <Button Grid.Column="2"
                         Content="Отмена" Margin="10 0 0 0"

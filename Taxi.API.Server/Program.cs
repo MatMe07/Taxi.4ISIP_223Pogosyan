@@ -2,6 +2,7 @@ using dotenv.net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
+using OfficeOpenXml;
 using System.Text;
 using Taxi;
 using Taxi.API.Server;
@@ -11,6 +12,7 @@ using Taxi.API.Server.Services;
 DotEnv.Load();
 
 var builder = WebApplication.CreateBuilder(args);
+ExcelPackage.License.SetNonCommercialPersonal("MatMe");
 
 builder.Services.Configure<JwtOptions>(
     builder.Configuration.GetSection(JwtOptions.SectionName));
@@ -73,6 +75,7 @@ builder.Services.AddMemoryCache();
 builder.Services.AddTransient<VehiclesServices>();
 builder.Services.AddTransient<PoesdkaService>();
 builder.Services.AddTransient<UsersService>();
+builder.Services.AddTransient<GenerationFilesService>();
 
 var app = builder.Build();
 
