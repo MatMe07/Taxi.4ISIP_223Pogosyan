@@ -30,14 +30,9 @@ namespace Taxi.API.Server.Controllers
         [Authorize]
         public async Task<IActionResult> GeneratePDF(ExportPDFRequest pDFRequest)
         {
-            return null;
+            var d = await generationFilesService.GeneratePDF(pDFRequest);
+            return File(d, "application/pdf", pDFRequest.fileName);
 
-        }
-        [HttpPost("generate-word")]
-        [Authorize]
-        public async Task<IActionResult> GenerateWord(ExportWordRequest exportWord)
-        {
-            return null;
         }
 
 

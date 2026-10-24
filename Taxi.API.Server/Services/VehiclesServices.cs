@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Taxi.API.Server.Models;
 using Taxi.Core.Models.DB;
+using static Taxi.API.Server.Services.GenerationFilesService;
 
 namespace Taxi.API.Server.Services
 {
@@ -14,7 +15,7 @@ namespace Taxi.API.Server.Services
             var lstVehiclesDTO = new List<VehicleDTO>();
             var docsType = _context.VehicleDocumentTypes.ToList();
 
-            var vehicles = _context.Vehicles.Include(v => v.Maintenances).Include(v => v.VehicleDocuments).ThenInclude(d=>d.DocType).ToList();
+            //var vehicles = _context.Vehicles.Include(v => v.Maintenances).Include(v => v.VehicleDocuments).ThenInclude(d=>d.DocType).ToList();
             foreach (var v in _context.Vehicles.Select(v=> new {
             v.Id,
             Class = v.Class.Name,
@@ -128,16 +129,10 @@ namespace Taxi.API.Server.Services
             if (vehicle == null)
                 return ("Автомобиль с таким госномером не найден.", false);
 
-            _context.Vehicles.Remove(vehicle);
+            vehicle.IsActive = false;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                return ("Не удалось удалить автомобиль.", false);
-            }
+            await _context.SaveChangesAsync();
+
             return ("Автомобиль удалён.", true);
         }
 

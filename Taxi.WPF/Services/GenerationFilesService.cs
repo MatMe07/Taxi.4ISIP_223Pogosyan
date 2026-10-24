@@ -32,11 +32,5 @@ namespace Taxi.WPF.Services
             return await response.Content.ReadAsByteArrayAsync();
         }
 
-        public async Task<byte[]> GenerateWordAsync(ExportWordRequest request)
-        {
-            var response = await _httpClient.PostAsJsonAsync("api/export/generate-word", request);
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsByteArrayAsync();
-        }
     }
 }

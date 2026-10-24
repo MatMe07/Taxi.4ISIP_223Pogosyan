@@ -113,8 +113,9 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
                             Debug.WriteLine(obj);
                             Debug.WriteLine("----------------------------------------");
                             EditCarUC.SelectVehicle = obj as VehicleDTO;
-                            VehicleDTO editVehicle;bool isDelete;
-                            
+                            VehicleDTO editVehicle;
+                            bool isDelete;
+                            var selVeh = obj as VehicleDTO;
                             var result= await DialogHost.Show(EditCarUC, "AddVehicleDialog") as (VehicleDTO editVehicle, bool isDelete)?;
                             if (result != null)
                             {
@@ -122,9 +123,21 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
                                 editVehicle = result.Value.editVehicle;
 
                                 if (!isDelete)
-                                    VehicleDTOs[VehicleDTOs.IndexOf(obj as VehicleDTO)] = editVehicle;
+                                    VehicleDTOs[VehicleDTOs.IndexOf(selVeh)] = editVehicle;
                                 else
-                                    VehicleDTOs.Remove(obj as VehicleDTO);
+                                {
+                                    selVeh.IsActive = false;
+                                    var us = VehicleDTOs.FirstOrDefault(u => u.Id == selVeh.Id);
+                                    if (us != null)
+                                    {
+                                        var ind = VehicleDTOs.IndexOf(us);
+                                        VehicleDTOs.Remove(us);
+                                        VehicleDTOs.Insert(ind, us);
+                                        OnPropertyChanged(nameof(VehicleDTOs));
+                                    }
+
+                                }
+                                    //VehicleDTOs.Remove(obj as VehicleDTO);
                             }
                         }
                         ));
@@ -138,6 +151,17 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
             get => _deleteSelVehicleCommand ??
                 (_deleteSelVehicleCommand = new AsyncRelayCommand(async obj =>
                 {
+
+                    var selVeh = obj as VehicleDTO; 
+                    if (!selVeh.IsActive)
+                    {
+                        MessageBox.Show(
+                        "Автомобиль уже удален!",
+                        "Предупреждение",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                        return;
+                    }
                     var res = MessageBox.Show(
                         "Действительно ходите удалить?",
                         "Подтверждение",
@@ -147,8 +171,7 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
                     if (res != MessageBoxResult.Yes)
                         return;
 
-
-                    var result = await vehiclesServices.DeleteVehicleAsync(obj as VehicleDTO);
+                    var result = await vehiclesServices.DeleteVehicleAsync(selVeh);
                     MessageBox.Show(
                         result.message,
                         result.IsDeleted ? "Готово" : "Ошибка",
@@ -156,23 +179,33 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
                         result.IsDeleted ? MessageBoxImage.Information : MessageBoxImage.Warning);
                     if (result.IsDeleted)
                     {
-                        VehicleDTOs.Remove(obj as VehicleDTO);
 
+                        //VehicleDTOs.Remove(obj as VehicleDTO);
+
+                        selVeh.IsActive = false;
+                        var us = VehicleDTOs.FirstOrDefault(u => u.Id == selVeh.Id);
+                        if (us != null)
+                        {
+                            var ind = VehicleDTOs.IndexOf(us);
+                            VehicleDTOs.Remove(us);
+                            VehicleDTOs.Insert(ind, us);
+                            OnPropertyChanged(nameof(VehicleDTOs));
+                        }
                     }
                 }));
         }
 
         private void SearchFilt()
         {
-            var list = _allVehicleDTOs.Where(v => v.GovNumber.ToLower().Contains(Search.ToLower()) || v.Model.ToLower().Contains(Search?.ToLower()));
+            var list = _allVehicleDTOs.Where(v => v.GovNumber.ToLower().Contains(Search.ToLower()) || v.Model.ToLower().Contains(Search?.ToLower())).ToList();
 
             if (SelectedClassSort != "Все")
             {
-                list = list.Where(v=>v.ClassName ==  SelectedClassSort);
+                list = list.Where(v=>v.ClassName ==  SelectedClassSort).ToList();
             }
             if (SelectedDopuskSort != "Все")
             {
-                list = list.Where(v=>v.AdmissionStatus == SelectedDopuskSort);
+                list = list.Where(v=>v.AdmissionStatus == SelectedDopuskSort).ToList();
             }
 
             VehicleDTOs.Clear();

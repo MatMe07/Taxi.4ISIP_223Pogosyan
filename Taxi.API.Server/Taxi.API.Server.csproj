@@ -24,6 +24,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.21" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4258.31" />
+    <PackageReference Include="QuestPDF" Version="2026.9.1" />
     <PackageReference Include="SkiaSharp" Version="4.153.1" />
   </ItemGroup>
 

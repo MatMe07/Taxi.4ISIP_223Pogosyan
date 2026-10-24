@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Taxi.Core.Models.DB;
 using Taxi.Core.Models.Export;
 using Taxi.WPF.Commands;
+using Taxi.WPF.Models;
 using Taxi.WPF.Services;
 using Windows.Foundation.Collections;
 
@@ -163,20 +164,18 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
 
             var request = new ExportPDFRequest
             {
+                fileName = filePath,
+                TtleFile = "Выручка за определенный период",
+                Period = $"{SelectStartDate.ToString("dd.MM.yyyy")} - {SelectEndDate.ToString("dd.MM.yyyy")}",
+                ClassVehicle = SelectedClassSort,
+                WhoSform = AppSettings.Instance.userSession.User.FIO,
+                isCreated = DateTime.Now.ToString("g"),
+                ColumnNames = new List<string> { "Госномер", "Выручка", "Заказов" },
+                DataEarnings = _rangePoezdka.Select(p => new DataEarnings { Earnings = p.Earnings, GosNumber = p.VehicleGosNumber, totalOrder = _rangePoezdka.Count(a => a.OrderId == p.OrderId) }).ToList()
 
             };
-            byte[] excelBytes = await _generationFilesService.GeneratePdfAsync(request);
-            await File.WriteAllBytesAsync(filePath, excelBytes);
-        }
-        private async Task GenWordAsync(string filePath)
-        {
-
-            var request = new ExportWordRequest
-            {
-
-            };
-            byte[] excelBytes = await _generationFilesService.GenerateWordAsync(request);
-            await File.WriteAllBytesAsync(filePath, excelBytes);
+            byte[] pdfBytes = await _generationFilesService.GeneratePdfAsync(request);
+            await File.WriteAllBytesAsync(filePath, pdfBytes);
         }
 
 
@@ -199,6 +198,7 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
                                     return;
                                 }
                                 await GenExcelAsync(askUsFilePath);
+                                
                                 break;
                             }
                         case "PDF":
@@ -209,18 +209,6 @@ namespace Taxi.WPF.ViewModels.ManagerViewModels
                                     return;
                                 }
                                 await GenPDFAsync(askUsFilePath);
-
-                                break;
-                            }
-                        case "Word":
-                            {
-                                askUsFilePath = AskUserFIlePath("Word (*.docx)|*docx", ".docx");
-                                if (askUsFilePath == null)
-                                {
-                                    return;
-                                }
-
-                                await GenWordAsync(askUsFilePath);
 
                                 break;
                             }

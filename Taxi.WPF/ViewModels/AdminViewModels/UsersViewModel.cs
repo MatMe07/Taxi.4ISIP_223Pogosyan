@@ -47,10 +47,8 @@ namespace Taxi.WPF.ViewModels.AdminViewModels
                     var result = await DialogHost.Show(_userEditUC, "AddVehicleDialog") as (UserDTO editUser, bool isDelete)?;
                     if (result != null)
                     {
-                        if (result.Value.isDelete)
-                            Users.Remove(user);
-                        else
-                            Users[Users.IndexOf(user)] = result.Value.editUser;
+                        
+                        Users[Users.IndexOf(user)] = result.Value.editUser;
                     }
                 }));
         }
@@ -61,6 +59,15 @@ namespace Taxi.WPF.ViewModels.AdminViewModels
             get => _deleteUserCommand ??
                 (_deleteUserCommand = new AsyncRelayCommand(async obj =>
                 {
+                    if (!(obj as UserDTO).isActive)
+                    {
+                        MessageBox.Show(
+                        "Пользователь уже удален!",
+                        "Предупреждение",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                        return;
+                    }
                     var res = MessageBox.Show(
                         "Действительно хотите удалить пользователя?",
                         "Подтверждение",

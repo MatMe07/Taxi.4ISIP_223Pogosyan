@@ -81,7 +81,6 @@
                     <MenuItem Header="Экспорт">
                         <MenuItem Header="Excel" Tag="Excel" Command="{Binding ExportToFileCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
                         <MenuItem Header="PDF" Tag="PDF"  Command="{Binding ExportToFileCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
-                        <MenuItem Header="Word" Tag="Word" Command="{Binding ExportToFileCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
                     </MenuItem>
                 </Menu>
             </StackPanel>

@@ -4,7 +4,10 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Taxi.WPF.Views"
+      xmlns:uc="clr-namespace:Taxi.WPF.ViewModels.ManagerViewModels"
+      
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      d:DataContext="{d:DesignInstance {x:Type uc:ManagerViewModel}}"
       
       mc:Ignorable="d" 
       d:Background="{StaticResource AppBackgroundBrush}"
@@ -19,6 +22,7 @@
         <TabControl  Grid.Column="0" 
                           Style="{StaticResource TabControlStyle}"
                           TabStripPlacement="Left"
+                     SelectedIndex="{Binding SelectedIndexTC}"
                      ItemContainerStyle="{StaticResource CustomTabItemStyle}"
                      >
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using OfficeOpenXml;
+using QuestPDF.Infrastructure;
 using System.Text;
 using Taxi;
 using Taxi.API.Server;
@@ -13,6 +14,7 @@ DotEnv.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 ExcelPackage.License.SetNonCommercialPersonal("MatMe");
+QuestPDF.Settings.License = LicenseType.Community;
 
 builder.Services.Configure<JwtOptions>(
     builder.Configuration.GetSection(JwtOptions.SectionName));

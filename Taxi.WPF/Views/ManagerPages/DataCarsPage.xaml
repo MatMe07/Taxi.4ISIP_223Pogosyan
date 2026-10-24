@@ -7,7 +7,7 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       d:DataContext="{d:DesignInstance {x:Type local:DataCarsViewModel}}"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="1000"
       Title="DataAuto"
        
       Background="{DynamicResource AppBackgroundBrush}"
@@ -88,6 +88,7 @@
                 <DataGridTextColumn Header="Бренд" Binding="{Binding Brand}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Класс машины" Binding="{Binding ClassName}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Год" Binding="{Binding Year}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Активен" Binding="{Binding IsActive}" MinWidth="80" IsReadOnly="True"/>
 
                 <DataGridTextColumn Header="Допуск" Binding="{Binding AdmissionStatus}" MinWidth="80" IsReadOnly="True"/>
                 <!--<DataGridTemplateColumn Header="Допуск" MinWidth="80" IsReadOnly="True">

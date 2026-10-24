@@ -22,5 +22,7 @@ namespace Taxi.Core.Models.DB
         public DateTime CreatedAt { get; set; }
 
         public bool isActive { get; set; }
+
+        public string FIO => $"{FirstName} {LastName} {MiddleName}";
     }
 }
