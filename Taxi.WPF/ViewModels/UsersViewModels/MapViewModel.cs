@@ -64,6 +64,43 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
             return Math.Max(routeLengthKm * DeliveryTariff, MinimumCost);
         }
 
+        public async Task WebMessage(JsonElement root)
+        {
+            if (!root.TryGetProperty("type", out JsonElement typeElement))
+                return;
+
+            switch (typeElement.GetString())
+            {
+                case "ready":
+                    //await viewModel.SetDefaultFromAsync();
+                    break;
+
+                case "destinationSelected":
+                    await SelectPointAsync(root.GetProperty("address").GetString(), "to");
+                    break;
+
+
+                case "destinationSelectedKuda":
+                    await SelectPointAsync(root.GetProperty("address").GetString(), "to");
+                    break;
+
+
+                case "destinationSelectedOtkuda":
+                    await SelectPointAsync(root.GetProperty("address").GetString(), "from");
+                    break;
+
+                case "destinationOtkudaCoord":
+                    await SelectPointAsync(root.GetProperty("address_coord").Deserialize<List<double>>(), "from", IsCoord: true);
+                    break;
+
+
+                case "getUserLocation":
+                    await UserCurrentPointAsync();
+                    break;
+            }
+            //await UpdateRouteAsync();
+        }
+
 
 
         //public async Task SetDefaultFromAsync()
@@ -76,7 +113,7 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
 
         //public async Task SetDefaultPointAsync(string which, string address)
         //{
-        //    RoutePoint point = await geocodeService.GeocodeAsync(address);
+        //RoutePoint point = await geocodeService.GeocodeAsync(address);
         //    if (point == null)
         //    {
         //        Debug.WriteLine("Точка по умолчанию не найдена: " + address);
@@ -117,10 +154,11 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
                 JsonSerializer.Serialize(new[] { _to.Lat, _to.Lon }, JsHelper.JsonOptions));
 
             await CallJsAsync("showRoute", args);
+            Debug.WriteLine($"showRoute = {args}");
 
         }
 
-        public async void ButtonClickAsync()
+        public async Task UserCurrentPointAsync()
         {
             Debug.WriteLine("hello________________________________");
             var pos = await GeolocationService.GetLocationAsync();
@@ -132,19 +170,17 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
                 await ShowNoticeAsync("Местоположение недоступно");
                 return;
             }
-
-            await SetPointAsync("from", new RoutePoint
+            RoutePoint pointUser = await geocodeService.GeocodeAddressAsync(new List<double>
             {
-                Lat = lat,
-                Lon = lon,
-                Address = "Моё местоположение"
+                lat,lon
             });
+            await SetPointAsync("from", pointUser, true);
 
             await UpdateRouteAsync();
         }
 
 
-        public async Task SelectKudaAsync(object address, string napravlenie, bool IsCoord = false)
+        public async Task SelectPointAsync(object address, string napravlenie, bool IsCoord = false)
         {
             try
             {
@@ -156,6 +192,7 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
                 }
 
                 await SetPointAsync(napravlenie, point, IsCoord);
+
                 await UpdateRouteAsync();
             }
             catch (Exception ex)

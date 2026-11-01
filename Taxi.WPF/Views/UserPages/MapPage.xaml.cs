@@ -63,40 +63,13 @@ namespace Taxi.WPF.Views
 
         private async void WebView_WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
-            using (JsonDocument doc = JsonDocument.Parse(e.TryGetWebMessageAsString()))
-            {
-                JsonElement root = doc.RootElement;
+            using JsonDocument doc = JsonDocument.Parse(e.TryGetWebMessageAsString());
 
-                if (!root.TryGetProperty("type", out JsonElement typeElement))
-                    return;
+            JsonElement root = doc.RootElement;
 
-                switch (typeElement.GetString())
-                {
-                    case "ready":
-                        //await viewModel.SetDefaultFromAsync();
-                        break;
-
-                    case "destinationSelected":
-                        await viewModel.SelectKudaAsync(root.GetProperty("address").GetString(), "to");
-                        break;
-                    case "destinationSelectedKuda":
-                        await viewModel.SelectKudaAsync(root.GetProperty("address").GetString(), "to");
-                        break;
-                    case "destinationSelectedOtkuda":
-                        await viewModel.SelectKudaAsync(root.GetProperty("address").GetString(), "from");
-                        break;
-                    case "destinationOtkudaCoord":
-                        await viewModel.SelectKudaAsync(root.GetProperty("address_coord").Deserialize<List<double>>(), "from", IsCoord: true);
-                        break;
-                }
-            }
+            await viewModel.WebMessage(root);
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            viewModel.ButtonClickAsync();
-
-        }
 
     }
 }

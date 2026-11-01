@@ -46,7 +46,7 @@ namespace Taxi.src.Services
                     to= to,
                     useMapbox= useMapbox,
             };
-            var response = await httpClient.PostAsJsonAsync("api/geo/GetAddressToGeocode", route);
+            var response = await httpClient.PostAsJsonAsync("api/geo/GetRoute", route);
             var result = await response.Content.ReadFromJsonAsync<RouteInfo>();
             return result;
         }
@@ -66,7 +66,7 @@ namespace Taxi.src.Services
 
             if (_cache.TryGet(cacheKey, out RouteInfo cachedResult))
             {
-                Debug.WriteLine($"Использовал кэш {cacheKey}");
+                Debug.WriteLine($"[GetRouteAsync:wpf]Использовал кэш {cacheKey}");
                 return cachedResult;
             }
 
@@ -78,7 +78,7 @@ namespace Taxi.src.Services
                 CacheExpiration
             );
 
-            Debug.WriteLine($"Кэшировал - {info}");
+            Debug.WriteLine($"[GetRouteAsync:wpf]Кэшировал - {info}");
             Debug.WriteLine(
                 $"Маршрут: {info.DistanceMeters} м, {info.DurationSeconds} с, точек геометрии: {info.Coordinates.Count}");
 

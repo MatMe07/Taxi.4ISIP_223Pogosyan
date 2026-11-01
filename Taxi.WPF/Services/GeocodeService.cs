@@ -57,7 +57,7 @@ namespace Taxi.src.Services
 
             if (_cache.TryGet(address.ToLowerInvariant(), out RoutePoint cachedResult))
             {
-                Debug.WriteLine("Использовал кэш");
+                Debug.WriteLine("[GeocodeAddressAsync:wpf]Использовал кэш");
                 return cachedResult;
             }
 
@@ -68,7 +68,7 @@ namespace Taxi.src.Services
                 value: result,
                 CacheExpiration
             );
-            Debug.WriteLine($"Кэшировал - {result}");
+            Debug.WriteLine($"[GeocodeAddressAsync:wpf]Кэшировал - {result}");
 
             return result;
 

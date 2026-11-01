@@ -62,28 +62,29 @@ function hideNotice(elementId) {
 }
 
 function getUserLocation(map) {
-    ymaps.geolocation.get({
-        provider: 'browser',
-        autoReverseGeocode: false, 
+    postToHost({type:"getUserLocation"});
+    // ymaps.geolocation.get({
+    //     provider: 'browser',
+    //     autoReverseGeocode: false, 
 
-        mapStateAutoApply: true
-    }).then(function (result) {
-        // map.geoObjects.add(result.geoObjects);
-        var coord = result.geoObjects.get(0).geometry.getCoordinates();
-        postToHost({ type: 'destinationOtkudaCoord', address_coord:  coord});
+    //     mapStateAutoApply: true
+    // }).then(function (result) {
+    //     // map.geoObjects.add(result.geoObjects);
+    //     var coord = result.geoObjects.get(0).geometry.getCoordinates();
+    //     postToHost({ type: 'destinationOtkudaCoord', address_coord:  coord});
 
-        console.log(result.geoObjects);
-        console.log("Точные координаты (Браузер):", coord);
-    }, function (err) {
-        console.warn("Браузер заблокировал гео или выдал ошибку.", err);
+    //     console.log(result.geoObjects);
+    //     console.log("Точные координаты (Браузер):", coord);
+    // }, function (err) {
+    //     console.warn("Браузер заблокировал гео или выдал ошибку.", err);
 
-    });
+    // });
 }
 
 function init() {
     inti_Traffics();
-input_seach1 = document.getElementById("search");
-input_seach2 = document.getElementById("search2");
+    input_seach1 = document.getElementById("search");
+    input_seach2 = document.getElementById("search2");
 
     map = new ymaps.Map('map', {
         center: [55.75, 37.65],
@@ -104,9 +105,12 @@ input_seach2 = document.getElementById("search2");
     suggestView.events.add('select', function (e) {
         hideNotice("search");
         addressOtkuda = e.get('item').value;
-        map.geoObjects.add(result.geoObjects);
+        console.info(addressOtkuda)
 
-        postToHost({ type: 'destinationSelectedOtkuda', address: e.get('item').value });
+        // map.geoObjects.add(addressOtkuda);
+        // applyPoint("from", )
+
+        postToHost({ type: 'destinationSelectedOtkuda', address: addressOtkuda });
     });
 
     suggestView2 = new ymaps.SuggestView('search2');
@@ -115,9 +119,11 @@ input_seach2 = document.getElementById("search2");
         addressKuda = e.get('item').value;
         console.info(addressKuda)
         // geocodeAddress(addressKuda);
-        postToHost({ type: 'destinationSelectedKuda', address: e.get('item').value });
+        postToHost({ type: 'destinationSelectedKuda', address: addressKuda });
     });
+
     postToHost({ type: 'ready' });
+
     map.controls.remove('geolocationControl');
     map.controls.remove('searchControl');
     map.controls.remove('trafficControl');
@@ -125,7 +131,6 @@ input_seach2 = document.getElementById("search2");
     map.controls.remove('fullscreenControl');
     map.controls.remove('zoomControl');
     map.controls.remove('rulerControl');
-
 
     modelWindow = document.querySelector(".Modal");
 
@@ -199,7 +204,7 @@ function applyPoint(which, coords, address) {
         balloonContent: address
     }, {
         preset: which === 'from' ? 'islands#bluePersonIcon' : 'islands#redCircleDotIcon',
-        zIndex: which === 'from' ? 500 : 600
+        zIndex: which === 'from' ? 600 : 700
     });
 
     pm.properties.set('hint', address);
@@ -282,12 +287,14 @@ window.setPoint = function (which, lat, lon, address) {
         console.warn('Неизвестная точка:', which);
         return;
     }
+    addressOtkuda = address;
+    input_seach2.value = address;
     applyPoint(which, [lat, lon], address);
 };
 window.setAddressOtkuda = function (which, lat, lon, address) {
     hideNotice('search');
-    var search = document.getElementById('search');
-    console.info(search);
+    // var search = document.getElementById('search');
+    // console.info(search);
 
     if (!map) {
         console.warn('Карта ещё не инициализирована');
@@ -297,9 +304,9 @@ window.setAddressOtkuda = function (which, lat, lon, address) {
     //     console.warn('Неизвестная точка:', which);
     //     return;
     // }
-    applyPoint(which, [lat, lon], address);
     addressOtkuda = address;
-    search.value  = address;
+    input_seach1.value  = address;
+    applyPoint(which, [lat, lon], address);
 
 
 };

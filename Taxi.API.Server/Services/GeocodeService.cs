@@ -42,7 +42,7 @@ namespace Taxi.API.Server.Services
 
             if (_cache.TryGet(address.ToLowerInvariant(), out RoutePoint cachedResult))
             {
-                Debug.WriteLine("Использовал кэш");
+                Debug.WriteLine("[GeocodeAsync:server]Использовал кэш");
                 return cachedResult;
             }
 
@@ -76,7 +76,7 @@ namespace Taxi.API.Server.Services
                     value: result,
                     CacheExpiration
                 );
-                Debug.WriteLine($"Кэшировал - {result}");
+                Debug.WriteLine($"[GeocodeAsync:server]Кэшировал - {result}");
 
                 return result;
             }

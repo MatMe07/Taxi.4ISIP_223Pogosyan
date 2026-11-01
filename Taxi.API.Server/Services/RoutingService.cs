@@ -25,7 +25,7 @@ namespace Taxi.API.Server.Services
         private string RoutingApiKey = "";
         private string RoutingMapboxToken = "";
         private const string RoutingUrl = "https://api.routing.yandex.net/v1/route/";
-        private const string RoutingMapboxUrl = "https://api.mapbox.com/directions/v5/mapbox/cycling/";
+        private const string RoutingMapboxUrl = "https://api.mapbox.com/directions/v5/mapbox/driving/";
         private const string RoutingMode = "driving";
         private readonly MemoryCache _cache;
         private static readonly TimeSpan CacheExpiration = TimeSpan.FromHours(24);
@@ -62,7 +62,7 @@ namespace Taxi.API.Server.Services
 
             if (_cache.TryGet(cacheKey, out RouteInfo cachedResult))
             {
-                Debug.WriteLine($"Использовал кэш {cacheKey}");
+                Debug.WriteLine($"[GetRouteAsync:server]Использовал кэш {cacheKey}");
                 return cachedResult;
             }
 
@@ -76,7 +76,7 @@ namespace Taxi.API.Server.Services
                 CacheExpiration
             );
 
-            Debug.WriteLine($"Кэшировал - {info}");
+            Debug.WriteLine($"[GetRouteAsync:server]Кэшировал - {info}");
             Debug.WriteLine(
                 $"Маршрут: {info.DistanceMeters} м, {info.DurationSeconds} с, точек геометрии: {info.Coordinates.Count}");
 
@@ -85,13 +85,13 @@ namespace Taxi.API.Server.Services
 
         private async Task<RouteInfo> BuildRouteViaMapboxAsync(RoutePoint from, RoutePoint to)
         {
-            from = new RoutePoint { Lat = from.Lat, Lon = from.Lon, Address = from.Address };
-            to = new RoutePoint { Lat = to.Lat, Lon = to.Lon, Address = to.Address };
+            from = new RoutePoint { Lon = from.Lat, Lat = from.Lon, Address = from.Address };
+            to = new RoutePoint { Lon = to.Lat, Lat = to.Lon, Address = to.Address };
             //string coords = $"{ from.Lon.ToString(CultureInfo.InvariantCulture)},{from.Lat.ToString(CultureInfo.InvariantCulture)};" +
             //        $"{to.Lon.ToString(CultureInfo.InvariantCulture)},{to.Lat.ToString(CultureInfo.InvariantCulture)}";
             string coords = $"{FormatCoord(from)};{FormatCoord(to)}";
-            string url = $"{RoutingMapboxUrl}{coords}?geometries=geojson&access_token={RoutingMapboxToken}";
-
+            string url = $"{RoutingMapboxUrl}{coords}?geometries=geojson&overview=full&access_token={RoutingMapboxToken}";
+            
             using var response = await httpClient.GetAsync(url);
 
             if (!response.IsSuccessStatusCode)
@@ -99,6 +99,7 @@ namespace Taxi.API.Server.Services
 
             var result = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
             JsonElement root = result.RootElement;
+            Debug.WriteLine($"------------------{root}-------------------");
 
             if (!root.TryGetProperty("routes", out var route) ||
                 !route[0].TryGetProperty("geometry", out var geometry) ||
@@ -119,7 +120,8 @@ namespace Taxi.API.Server.Services
                 DurationSeconds = durSec,
                 DistanceMeters = durMet
             };
-
+            Debug.WriteLine(route[0]);
+            Debug.WriteLine(url);
             var shapesToList = JsonSerializer.Deserialize<List<List<double>>>(coordinates);
             foreach (List<double> point in shapesToList)
             {
@@ -130,7 +132,7 @@ namespace Taxi.API.Server.Services
                 if (last >= 0 && info.Coordinates[last][0] == lat && info.Coordinates[last][1] == lon)
                     continue;
 
-                info.Coordinates.Add(new[] { lat, lon });
+                info.Coordinates.Add([lat, lon]);
             }
             //info.Coordinates = shapesToList;
 
@@ -181,7 +183,7 @@ namespace Taxi.API.Server.Services
                         if (point.Count < 2)
                             continue;
 
-                        info.Coordinates.Add(new[] { point[0], point[1] });
+                        info.Coordinates.Add([point[0], point[1]]);
                     }
                 }
 

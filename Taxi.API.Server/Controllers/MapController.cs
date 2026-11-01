@@ -35,7 +35,7 @@ namespace Taxi.API.Server.Controllers
         //        );
         //}
         [HttpPost("GetRoute")]
-        public async Task<IActionResult> GetRoutAsync([FromQuery] RouteRequest routeRequest)
+        public async Task<IActionResult> GetRoutAsync(RouteRequest routeRequest)
         {
             return Ok(await _routingService.GetRouteAsync(
                 routeRequest.from.Lat,
