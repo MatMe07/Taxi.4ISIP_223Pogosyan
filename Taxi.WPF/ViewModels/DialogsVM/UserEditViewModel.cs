@@ -45,6 +45,8 @@ namespace Taxi.WPF.ViewModels.DialogsVM
                 Roles.Add(r);
 
             SelectedRole = Roles.FirstOrDefault(r => r.Id == NewUser.RoleId);
+
+            Phone = NewUser.Phone;
         }
 
         private bool CheckField()
@@ -53,11 +55,26 @@ namespace Taxi.WPF.ViewModels.DialogsVM
                    !string.Equals(NewUser.FirstName, EditUser.FirstName) ||
                    !string.Equals(NewUser.MiddleName, EditUser.MiddleName) ||
                    !string.Equals(NewUser.Phone, EditUser.Phone) ||
+                   !string.Equals(Phone, EditUser.Phone) ||
                    NewUser.RoleId != EditUser.RoleId ||
                    NewUser.isActive != EditUser.isActive;
         }
 
 
+        private string phone;
+        public string Phone
+        {
+            get
+            {
+                return phone ?? "";
+            }
+            set
+            {
+                if (value == "+7 (___) ___-__-__") return;
+                phone = value;
+                OnPropertyChanged(nameof(phone));
+            }
+        }
 
         private RelayCommand _cancelCommand;
         public RelayCommand CancelCommand
@@ -87,7 +104,7 @@ namespace Taxi.WPF.ViewModels.DialogsVM
                 {
                     if (string.IsNullOrWhiteSpace(NewUser.LastName) ||
                         string.IsNullOrWhiteSpace(NewUser.FirstName) ||
-                        string.IsNullOrWhiteSpace(NewUser.Phone) ||
+                        string.IsNullOrWhiteSpace(Phone) ||
                         SelectedRole == null)
                     {
                         MessageBox.Show(
@@ -106,7 +123,7 @@ namespace Taxi.WPF.ViewModels.DialogsVM
 
                     if (res != MessageBoxResult.Yes)
                         return;
-
+                    NewUser.Phone = Phone;
                     var result = await _usersServices.UpdateUserAsync(NewUser);
                     MessageBox.Show(
                         result ? "Данные сохранены" : "Не удалось сохранить изменения",

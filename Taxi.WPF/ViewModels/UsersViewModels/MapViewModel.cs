@@ -12,7 +12,7 @@ using Taxi.Core.Models.Map;
 using Taxi.src.Taxi.Map.Helpers;
 using Taxi.src.Services;
 
-namespace Taxi.WPF.ViewModels
+namespace Taxi.WPF.ViewModels.UsersViewModels
 {
     public class MapViewModel : ViewModelBase
     {
@@ -48,16 +48,15 @@ namespace Taxi.WPF.ViewModels
             await CallJsAsync("showNotice", JsHelper.JsStr(message));
         }
 
-        public Task SetPointAsync(string which, RoutePoint point, ref RoutePoint _from, ref RoutePoint _to)
+        public async Task SetPointAsync(string which, RoutePoint point, bool addressName = false)
         {
             if (which == "from")
                 _from = point;
             else
                 _to = point;
             var jsArgs = $"{JsHelper.JsStr(which)},{JsHelper.JsNum(point.Lat)},{JsHelper.JsNum(point.Lon)},{JsHelper.JsStr(point.Address)}";
-            return CallJsAsync("setPoint", jsArgs);
+            await CallJsAsync( addressName? "setAddressOtkuda" : "setPoint", jsArgs);
         }
-
 
 
         private double Calculate(double routeLengthKm)
@@ -67,26 +66,26 @@ namespace Taxi.WPF.ViewModels
 
 
 
-        public async Task SetDefaultFromAsync()
-        {
-            await SetDefaultPointAsync("from", DefaultFromAddress);
-            await SetDefaultPointAsync("to", DefaultToAddress);
+        //public async Task SetDefaultFromAsync()
+        //{
+        //    await SetDefaultPointAsync("from", DefaultFromAddress);
+        //    await SetDefaultPointAsync("to", DefaultToAddress);
 
-            await UpdateRouteAsync();
-        }
+        //    await UpdateRouteAsync();
+        //}
 
-        public async Task SetDefaultPointAsync(string which, string address)
-        {
-            RoutePoint point = await geocodeService.GeocodeAsync(address);
-            if (point == null)
-            {
-                Debug.WriteLine("Точка по умолчанию не найдена: " + address);
-                return;
-            }
+        //public async Task SetDefaultPointAsync(string which, string address)
+        //{
+        //    RoutePoint point = await geocodeService.GeocodeAsync(address);
+        //    if (point == null)
+        //    {
+        //        Debug.WriteLine("Точка по умолчанию не найдена: " + address);
+        //        return;
+        //    }
 
-            await SetPointAsync(which, point, ref _from, ref _to);
+        //    await SetPointAsync(which, point, ref _from, ref _to);
 
-        }
+        //}
 
         private async Task UpdateRouteAsync()
         {
@@ -139,22 +138,24 @@ namespace Taxi.WPF.ViewModels
                 Lat = lat,
                 Lon = lon,
                 Address = "Моё местоположение"
-            }, ref _from, ref _to);
+            });
 
             await UpdateRouteAsync();
         }
-        public async Task SelectKudaAsync(string address)
+
+
+        public async Task SelectKudaAsync(object address, string napravlenie, bool IsCoord = false)
         {
             try
             {
-                RoutePoint point = await geocodeService.GeocodeAsync(address);
+                RoutePoint point = await geocodeService.GeocodeAddressAsync(address);
                 if (point == null)
                 {
                     await ShowNoticeAsync("Адрес не найден");
                     return;
                 }
 
-                await SetPointAsync("to", point, ref _from, ref _to);
+                await SetPointAsync(napravlenie, point, IsCoord);
                 await UpdateRouteAsync();
             }
             catch (Exception ex)
@@ -162,6 +163,27 @@ namespace Taxi.WPF.ViewModels
                 Debug.WriteLine("Ошибка геокодера: " + ex);
             }
         }
+
+    
+        //public async Task SelectKudaAsync(List<double> address, string napravlenie, bool IsCoord = false)
+        //{
+        //    try
+        //    {
+        //        RoutePoint point = await geocodeService.GeocodeAddressAsync(address);
+        //        if (point == null)
+        //        {
+        //            await ShowNoticeAsync("Адрес не найден");
+        //            return;
+        //        }
+
+        //        await SetPointAsync(napravlenie, point);
+        //        await UpdateRouteAsync();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine("Ошибка геокодера: " + ex);
+        //    }
+        //}
 
     }
 

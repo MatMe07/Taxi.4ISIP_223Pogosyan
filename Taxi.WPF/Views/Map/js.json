@@ -1,0 +1,88 @@
+{
+    "metaDataProperty": {
+        "GeocoderMetaData": {
+            "precision": "exact",
+            "text": "Россия, Московская область, Химки, микрорайон Сходня, Овражная улица, 24к8",
+            "kind": "house",
+            "Address": {
+                "country_code": "RU",
+                "formatted": "Россия, Московская область, Химки, микрорайон Сходня, Овражная улица, 24к8",
+                "postal_code": "141420",
+                "Components": [
+                    {
+                        "kind": "country",
+                        "name": "Россия"
+                    },
+                    {
+                        "kind": "province",
+                        "name": "Центральный федеральный округ"
+                    },
+                    {
+                        "kind": "province",
+                        "name": "Московская область"
+                    },
+                    {
+                        "kind": "area",
+                        "name": "городской округ Химки"
+                    },
+                    {
+                        "kind": "locality",
+                        "name": "Химки"
+                    },
+                    {
+                        "kind": "district",
+                        "name": "микрорайон Сходня"
+                    },
+                    {
+                        "kind": "street",
+                        "name": "Овражная улица"
+                    },
+                    {
+                        "kind": "house",
+                        "name": "24к8"
+                    }
+                ]
+            },
+            "AddressDetails": {
+                "Country": {
+                    "AddressLine": "Россия, Московская область, Химки, микрорайон Сходня, Овражная улица, 24к8",
+                    "CountryNameCode": "RU",
+                    "CountryName": "Россия",
+                    "AdministrativeArea": {
+                        "AdministrativeAreaName": "Московская область",
+                        "SubAdministrativeArea": {
+                            "SubAdministrativeAreaName": "городской округ Химки",
+                            "Locality": {
+                                "LocalityName": "Химки",
+                                "DependentLocality": {
+                                    "DependentLocalityName": "микрорайон Сходня",
+                                    "Thoroughfare": {
+                                        "ThoroughfareName": "Овражная улица",
+                                        "Premise": {
+                                            "PremiseNumber": "24к8",
+                                            "PostalCode": {
+                                                "PostalCodeNumber": "141420"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "name": "Овражная улица, 24к8",
+    "description": "микрорайон Сходня, Химки, Московская область, Россия",
+    "boundedBy": {
+        "Envelope": {
+            "lowerCorner": "37.314831 55.940911",
+            "upperCorner": "37.323042 55.945519"
+        }
+    },
+    "uri": "ymapsbm1://geo?data=IgoN7kYVQhUKxl9C",
+    "Point": {
+        "pos": "37.318936 55.943215"
+    }
+}

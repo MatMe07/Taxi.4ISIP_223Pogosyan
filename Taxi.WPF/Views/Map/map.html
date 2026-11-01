@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Тест</title>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=60445215-6d3a-4f88-87fe-8d52b72e5bc9"
+            type="text/javascript"></script>
+    <!-- <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=6cedb00d-4db3-4244-a76b-ada1d1945685&suggest_apikey=60445215-6d3a-4f88-87fe-8d52b72e5bc9" type="text/javascript"></script> -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <script src="script.js" defer></script>
+    <div id="map"></div>
+    <div id="boxMain">
+        <div id="searchBox">
+            <input id="search" class="searchDefault" placeholder="Откуда?" autocomplete="off">
+            <p id="notice"></p>
+
+            <input id="search2" class="searchDefault2" placeholder="Куда?" autocomplete="off">
+        </div>
+
+
+        <div>
+            <fieldset role="radiogroup" aria-busy="false" class="tariffWrapper">
+            </fieldset>
+
+        </div>
+        <button class="btnPaymentMethod" onclick="btnModelOpen()">
+            <div class="boxPaymentMethod">
+                <p class="">Способ оплаты</p>
+                <span id="methodPayment">Наличные</span>
+                <span class="select-Payment"></span>
+            </div>
+
+        </button>
+        <dialog>
+        </dialog>
+
+
+
+        <div class="boxBtn-confirm">
+            <button class="btn-confirm" onclick="btnClickConfrim()" id="btn-confirm" aria-disabled="false" aria-busy="false" aria-pressed="false" type="button"
+                    data-react-aria-pressable="true" tabindex="0">
+                Заказать
+            </button>
+        </div>
+
+
+
+    </div>
+
+    <div class="Modal modal-overlay">
+        <div class="modal-container">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Способ оплаты</h2>
+                    <button class="modal-close" aria-label="Закрыть" onclick="closeModel()">
+                        <svg class="icon--J9Shg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                  d="M12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22ZM7.403 7.403C7.59053 7.21553 7.84484 7.11021 8.11 7.11021C8.37516 7.11021 8.62947 7.21553 8.817 7.403L12 10.586L15.183 7.403C15.2752 7.30749 15.3856 7.23131 15.5076 7.1789C15.6296 7.12649 15.7608 7.0989 15.8936 7.09775C16.0264 7.0966 16.1581 7.1219 16.281 7.17218C16.4039 7.22246 16.5155 7.29671 16.6094 7.3906C16.7033 7.4845 16.7775 7.59615 16.8278 7.71905C16.8781 7.84194 16.9034 7.97362 16.9023 8.1064C16.9011 8.23918 16.8735 8.3704 16.8211 8.4924C16.7687 8.61441 16.6925 8.72475 16.597 8.817L13.414 12L16.597 15.183C16.7792 15.3716 16.88 15.6242 16.8777 15.8864C16.8754 16.1486 16.7702 16.3994 16.5848 16.5848C16.3994 16.7702 16.1486 16.8754 15.8864 16.8777C15.6242 16.88 15.3716 16.7792 15.183 16.597L12 13.414L8.817 16.597C8.6284 16.7792 8.3758 16.88 8.1136 16.8777C7.8514 16.8754 7.60059 16.7702 7.41518 16.5848C7.22977 16.3994 7.1246 16.1486 7.12233 15.8864C7.12005 15.6242 7.22084 15.3716 7.403 15.183L10.586 12L7.403 8.817C7.21553 8.62947 7.11021 8.37516 7.11021 8.11C7.11021 7.84484 7.21553 7.59053 7.403 7.403Z"
+                                  fill="currentColor"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="payment-list">
+
+
+                    <div class="payment-row selected" data-method="cash">
+                        <div class="payment-info">
+                            <img src="imgs/paymentMethod/cash.svg" alt="Наличные" class="payment-icon">
+                            <span class="payment-name">Наличные</span>
+                        </div>
+                        <div class="custom-radio"></div>
+                    </div>
+
+                    <!-- <div class="payment-row" data-method="card">
+                        <div class="payment-info">
+                            <img src="imgs/paymentMethod/card.svg" alt="bank-cards" style="width: 40px; height: 40px;"  alt="Банковская карта" class="payment-icon">
+                            <div class="payment-text-wrapper">
+                                <span class="payment-name">Банковская карта</span>
+                            </div>
+                        </div>
+                        <div class="custom-radio"></div>
+                    </div> -->
+
+
+                    <div class="payment-row" data-method="sbp">
+                        <div class="payment-info">
+                            <img src="imgs/paymentMethod/mir.png" alt="Онлайн (СБП)" class="payment-icon">
+                            <div class="payment-text-wrapper">
+                                <span class="payment-name">Онлайн (СБП)</span>
+                            </div>
+                        </div>
+                        <div class="custom-radio"></div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="modal-footer modal-close" onclick="closeModel()">
+                <button class="btn-primary-close">Закрыть</button>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

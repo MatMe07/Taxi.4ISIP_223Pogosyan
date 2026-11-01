@@ -11,6 +11,7 @@ using Taxi.WPF.ViewModels.AdminViewModels;
 using Taxi.WPF.ViewModels.DialogsVM;
 using Taxi.WPF.ViewModels.ManagerViewModels;
 using Taxi.WPF.ViewModels.ProfileViewModels;
+using Taxi.WPF.ViewModels.UsersViewModels;
 using Taxi.WPF.Views;
 using Taxi.WPF.Views.AdminPages;
 using Taxi.WPF.Views.Dialogs;

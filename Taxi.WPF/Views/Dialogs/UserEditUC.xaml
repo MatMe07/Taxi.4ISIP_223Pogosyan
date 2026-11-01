@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Taxi.WPF.ViewModels.DialogsVM"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             
              d:DataContext="{d:DesignInstance {x:Type local:UserEditViewModel}}"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="480">
@@ -54,6 +56,8 @@
                         <TextBox Grid.Column="1"
                                  Style="{StaticResource AppTextBoxReadOnly}"
                                  Margin="0"
+                                     IsEnabled="False"
+                                 
                                  Text="{Binding NewUser.Login}"/>
                     </Grid>
 
@@ -76,10 +80,10 @@
                              materialDesign:HintAssist.Hint="Иванович"/>
 
                     <TextBlock Text="Телефон *" Style="{DynamicResource AppFieldLabel}"/>
-                    <TextBox Style="{StaticResource AppTextBox}"
+                    <xctk:MaskedTextBox Style="{StaticResource TextBoxPhone}"
                              Margin="0 0 0 5"
-                             Text="{Binding NewUser.Phone, UpdateSourceTrigger=PropertyChanged}"
-                             materialDesign:HintAssist.Hint="+7 (999) 123-45-67"/>
+                             Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"
+                             materialDesign:HintAssist.Hint="{Binding NewUser.Phone}"/>
 
                     <Grid Margin="0 6 0 0">
                         <Grid.ColumnDefinitions>
@@ -114,6 +118,8 @@
                             <TextBlock Text="Дата регистрации" Style="{DynamicResource AppFieldLabel}"/>
                             <TextBox Style="{StaticResource AppTextBoxReadOnly}"
                                      Margin="0"
+                                     IsEnabled="False"
+
                                      Text="{Binding NewUser.CreatedAt, StringFormat={}{0:dd.MM.yyyy HH:mm}}"/>
                         </StackPanel>
                     </Grid>

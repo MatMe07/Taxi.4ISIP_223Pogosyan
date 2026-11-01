@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -17,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Taxi.WPF.ViewModels;
+using Taxi.WPF.ViewModels.UsersViewModels;
 
 namespace Taxi.WPF.Views
 {
@@ -41,7 +43,8 @@ namespace Taxi.WPF.Views
             MyWebView.CoreWebView2.Settings.IsZoomControlEnabled = false;
 
 
-            string htmlPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "map.html");
+            string htmlPath = System.IO.Path.Combine(Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName, "Views/Map/map.html");
+
             Debug.WriteLine(htmlPath);
 
 
@@ -70,11 +73,20 @@ namespace Taxi.WPF.Views
                 switch (typeElement.GetString())
                 {
                     case "ready":
-                        await viewModel.SetDefaultFromAsync();
+                        //await viewModel.SetDefaultFromAsync();
                         break;
 
                     case "destinationSelected":
-                        await viewModel.SelectKudaAsync(root.GetProperty("address").GetString());
+                        await viewModel.SelectKudaAsync(root.GetProperty("address").GetString(), "to");
+                        break;
+                    case "destinationSelectedKuda":
+                        await viewModel.SelectKudaAsync(root.GetProperty("address").GetString(), "to");
+                        break;
+                    case "destinationSelectedOtkuda":
+                        await viewModel.SelectKudaAsync(root.GetProperty("address").GetString(), "from");
+                        break;
+                    case "destinationOtkudaCoord":
+                        await viewModel.SelectKudaAsync(root.GetProperty("address_coord").Deserialize<List<double>>(), "from", IsCoord: true);
                         break;
                 }
             }

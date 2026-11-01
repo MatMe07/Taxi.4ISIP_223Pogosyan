@@ -40,8 +40,15 @@ namespace Taxi.src.Services
         {
             string url = $"/getRoute?from_Lat={from.Lon.ToString(CultureInfo.InvariantCulture)}&from_Lon={from.Lat.ToString(CultureInfo.InvariantCulture)}&from_Address={from.Address}&" +
                 $"to_Lat={to.Lon.ToString(CultureInfo.InvariantCulture)}&to_Lon={to.Lat.ToString(CultureInfo.InvariantCulture)}&to_Address={to.Address}&mode={mode}&useMapbox={useMapbox}";
-            var pointInfo = await httpClient.GetFromJsonAsync<RouteInfo>(url);
-            return pointInfo;
+            RouteRequest route = new RouteRequest
+            {
+                    from= from,
+                    to= to,
+                    useMapbox= useMapbox,
+            };
+            var response = await httpClient.PostAsJsonAsync("api/geo/GetAddressToGeocode", route);
+            var result = await response.Content.ReadFromJsonAsync<RouteInfo>();
+            return result;
         }
 
 

@@ -32,6 +32,8 @@ namespace Taxi.WPF.Views.Dialogs
             {
                 userEditView.EditUser = SelectUser;
                 await userEditView.LoadAsync();
+            
+            
             };
         }
     }

@@ -9,15 +9,12 @@ namespace Taxi.Core.Models.Map
 {
     public class RoutePoint
     {
-        [JsonRequired]
         [JsonPropertyName("lat")]
         public double Lat { get; set; }
 
-        [JsonRequired]
         [JsonPropertyName("lon")]
         public double Lon { get; set; }
 
-        [JsonIgnore]
         [JsonPropertyName("address")]
         public string Address { get; set; }
     }

@@ -18,7 +18,7 @@ using static System.Net.WebRequestMethods;
 
 namespace Taxi.API.Server.Services
 {
-    internal class RoutingService
+    public class RoutingService
     {
         static HttpClient httpClient;
 

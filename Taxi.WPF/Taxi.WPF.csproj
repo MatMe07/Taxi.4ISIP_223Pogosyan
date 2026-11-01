@@ -57,12 +57,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Include="map.html">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="dotenv.net" Version="4.2.0" />
 		<PackageReference Include="EPPlus" Version="8.7.2" />
 		<PackageReference Include="Extended.Wpf.Toolkit" Version="5.1.2" />
@@ -81,6 +75,13 @@
 	<ItemGroup>
 	  <None Update=".env">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Views\Map\map.html">
+	    <Generator>MSBuild:Compile</Generator>
+	  </None>
+	  <None Update="Views\Map\map.html">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	    <Generator></Generator>
 	  </None>
 	</ItemGroup>
 

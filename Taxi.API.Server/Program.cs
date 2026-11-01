@@ -47,19 +47,6 @@ builder.Services
     {
         options.MapInboundClaims = true;
         options.TokenValidationParameters = validation;
-        options.Events = new JwtBearerEvents
-        {
-            OnAuthenticationFailed = ctx =>
-            {
-                Console.WriteLine($"JWT FAIL: {ctx.Exception.Message}");
-                return Task.CompletedTask;
-            },
-            OnTokenValidated = ctx =>
-            {
-                Console.WriteLine($"JWT OK: {ctx.Principal?.Identity?.Name}");
-                return Task.CompletedTask;
-            }
-        };
     });
 
 
@@ -71,6 +58,11 @@ builder.Services.AddScoped<Authorization>();
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<TaxiBaseContext>();
+
+
+
+builder.Services.AddHttpClient<GeocodeService>();
+builder.Services.AddHttpClient<RoutingService>();
 
 builder.Services.AddTransient<CaptchaService>();
 builder.Services.AddMemoryCache();
@@ -86,12 +78,12 @@ app.UseAuthorization();
 
 
 // Configure the HTTP request pipeline.
-var httpClient = new HttpClient();
-var geocodeService = new GeocodeService(httpClient);
-var routingService = new RoutingService(httpClient);
+//var httpClient = new HttpClient();
+//var geocodeService = new GeocodeService(httpClient);
+//var routingService = new RoutingService(httpClient);
 
-app.MapGet("/geocode", geocodeService.GeocodeAsync);
-app.MapGet("/getRoute", routingService.GetRouteAsync);
+//app.MapGet("/geocode", geocodeService.GeocodeAsync);
+//app.MapGet("/getRoute", routingService.GetRouteAsync);
 
 app.MapControllers();
 
