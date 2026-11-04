@@ -37,7 +37,22 @@ var addressOtkuda = null;
 var input_seach1 = null;
 var input_seach2 = null;
 
-ymaps.ready(init);
+const suggestList1 = document.getElementById('suggest-list1');
+const suggestList2 = document.getElementById('suggest-list2');
+
+function debounce(func, delay) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+
+
+
+// ymaps.ready(init);
+init();
+
 
 function postToHost(message) {
     if (window.chrome && window.chrome.webview) {
@@ -81,16 +96,42 @@ function getUserLocation(map) {
     // });
 }
 
-function init() {
+async function init() {
+    await ymaps3.ready;
+
+    const {YMap, YMapDefaultSchemeLayer} = ymaps3;
+    // ymaps3.getDefaultConfig().setApikeys({
+    //     suggest: "6cedb00d-4db3-4244-a76b-ada1d1945685"
+    // });
+
+    // Иницилиазируем карту
+    const map = new YMap(
+        // Передаём ссылку на HTMLElement контейнера
+        document.getElementById('map'),
+
+        // Передаём параметры инициализации карты
+        {
+            location: {
+                // Координаты центра карты
+                center: [37.588144, 55.733842],
+
+                // Уровень масштабирования
+                zoom: 10
+            }
+        }
+    );
+
+    // Добавляем слой для отображения схематической карты
+    map.addChild(new YMapDefaultSchemeLayer());
     inti_Traffics();
     input_seach1 = document.getElementById("search");
     input_seach2 = document.getElementById("search2");
 
-    map = new ymaps.Map('map', {
-        center: [55.75, 37.65],
-        zoom: 12,
-        controlls: []
-    });
+    // map = new ymaps.Map('map', {
+    //     center: [55.75, 37.65],
+    //     zoom: 12,
+    //     controlls: []
+    // });
 
     getUserLocation(map);
 
@@ -101,9 +142,17 @@ function init() {
     //    }
     //});
 
-    suggestView = new ymaps.SuggestView('search');
+//       const items = await ymaps3.suggest({
+//             text: 'Москва, ул. Вертолетчиков', // Поисковый запрос
+//             limit: 5,                          // Максимальное количество результатов
+//             type: 'toponyms'                   // Тип объектов ('toponyms' или 'biz')
+//         });
+
+//   console.log(items);
+
+    suggestView = await ymaps3.suggest('search');
     suggestView.events.add('select', function (e) {
-        hideNotice("search");
+        hideNotice("search"); 
         addressOtkuda = e.get('item').value;
         console.info(addressOtkuda)
 
@@ -191,6 +240,20 @@ function init_RBPaymentMethod(){
 
 function btnModelOpen(){
     modelWindow.classList.add("open");
+    var multiRoute = new ymaps.multiRouter.MultiRoute({   
+    // Точки маршрута. Точки могут быть заданы как координатами, так и адресом. 
+    referencePoints: [
+        'Москва, метро Смоленская',
+        'Москва, метро Арбатская',
+        [55.734876, 37.59308], // улица Льва Толстого.
+    ]
+}, {
+      // Автоматически устанавливать границы карты так,
+      // чтобы маршрут был виден целиком.
+      boundsAutoApply: true
+});
+console.info(multiRoute);
+map.geoObjects.add(multiRoute);
 }
 
 function closeModel(){
@@ -236,7 +299,7 @@ window.showRoute = function (coords, from, to) {
 
     var line = [];
 
-    if (coords && coords.length) {
+    if (coords && coords.length) { 
         for (var i = 0; i < coords.length; i++) {
             var p = coords[i];
             if (!p || p.length < 2 || !isFinite(p[0]) || !isFinite(p[1])) {

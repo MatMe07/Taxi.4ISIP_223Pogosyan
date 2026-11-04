@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using Taxi.API.Server.Services;
 using Taxi.Core.Models.Map;
 
@@ -18,22 +19,24 @@ namespace Taxi.API.Server.Controllers
         }
 
         [HttpGet("GetAddressGeocode")]
-        public async Task<IActionResult> GetAddressToGeocodeAsync(string address)
+        public async Task<IActionResult> GetAddressToGeocodeAsync(string address, string uri)
         {
             return Ok(
-                await _geocodeService.GeocodeAsync(address)
+                await _geocodeService.GeocodeAsync(address, uri)
                 
                 );
         }
 
-        //[HttpGet("GetAddressFromGeocode")]
-        //public async Task<IActionResult> GetAddressFromGeocodeAsync(string address_coord)
-        //{
-        //    return Ok(
-        //        await _geocodeService.GeocodeAsync(address)
+        [HttpPost("GetAddressFromGeocode")]
+        public async Task<IActionResult> GetAddressFromGeocodeAsync(RoutePoint address_coord)
+        {
+            return Ok(
+                await _geocodeService.GeocodeAsync($"{address_coord.Lat.ToString(CultureInfo.InvariantCulture)},{address_coord.Lon.ToString(CultureInfo.InvariantCulture)}", null)
 
-        //        );
-        //}
+                );
+        }
+
+
         [HttpPost("GetRoute")]
         public async Task<IActionResult> GetRoutAsync(RouteRequest routeRequest)
         {

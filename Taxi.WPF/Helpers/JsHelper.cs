@@ -17,7 +17,8 @@ namespace Taxi.src.Taxi.Map.Helpers
 
         public static JsonSerializerOptions JsonOptions = new JsonSerializerOptions
         {
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
     }
 }

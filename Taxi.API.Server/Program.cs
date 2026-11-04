@@ -67,6 +67,9 @@ builder.Services.AddHttpClient<RoutingService>();
 builder.Services.AddTransient<CaptchaService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddTransient<VehiclesServices>();
+builder.Services.AddTransient<TariffService>();
+
+
 builder.Services.AddTransient<PoesdkaService>();
 builder.Services.AddTransient<UsersService>();
 builder.Services.AddTransient<GenerationFilesService>();

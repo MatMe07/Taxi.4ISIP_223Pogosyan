@@ -1,13 +1,12 @@
 {
     "metaDataProperty": {
         "GeocoderMetaData": {
-            "precision": "exact",
-            "text": "Россия, Московская область, Химки, микрорайон Сходня, Овражная улица, 24к8",
-            "kind": "house",
+            "precision": "other",
+            "text": "Россия, Москва, Северный административный округ, Головинский район",
+            "kind": "district",
             "Address": {
                 "country_code": "RU",
-                "formatted": "Россия, Московская область, Химки, микрорайон Сходня, Овражная улица, 24к8",
-                "postal_code": "141420",
+                "formatted": "Россия, Москва, Северный административный округ, Головинский район",
                 "Components": [
                     {
                         "kind": "country",
@@ -19,52 +18,35 @@
                     },
                     {
                         "kind": "province",
-                        "name": "Московская область"
-                    },
-                    {
-                        "kind": "area",
-                        "name": "городской округ Химки"
+                        "name": "Москва"
                     },
                     {
                         "kind": "locality",
-                        "name": "Химки"
+                        "name": "Москва"
                     },
                     {
                         "kind": "district",
-                        "name": "микрорайон Сходня"
+                        "name": "Северный административный округ"
                     },
                     {
-                        "kind": "street",
-                        "name": "Овражная улица"
-                    },
-                    {
-                        "kind": "house",
-                        "name": "24к8"
+                        "kind": "district",
+                        "name": "Головинский район"
                     }
                 ]
             },
             "AddressDetails": {
                 "Country": {
-                    "AddressLine": "Россия, Московская область, Химки, микрорайон Сходня, Овражная улица, 24к8",
+                    "AddressLine": "Россия, Москва, Северный административный округ, Головинский район",
                     "CountryNameCode": "RU",
                     "CountryName": "Россия",
                     "AdministrativeArea": {
-                        "AdministrativeAreaName": "Московская область",
-                        "SubAdministrativeArea": {
-                            "SubAdministrativeAreaName": "городской округ Химки",
-                            "Locality": {
-                                "LocalityName": "Химки",
+                        "AdministrativeAreaName": "Москва",
+                        "Locality": {
+                            "LocalityName": "Москва",
+                            "DependentLocality": {
+                                "DependentLocalityName": "Северный административный округ",
                                 "DependentLocality": {
-                                    "DependentLocalityName": "микрорайон Сходня",
-                                    "Thoroughfare": {
-                                        "ThoroughfareName": "Овражная улица",
-                                        "Premise": {
-                                            "PremiseNumber": "24к8",
-                                            "PostalCode": {
-                                                "PostalCodeNumber": "141420"
-                                            }
-                                        }
-                                    }
+                                    "DependentLocalityName": "Головинский район"
                                 }
                             }
                         }
@@ -73,16 +55,16 @@
             }
         }
     },
-    "name": "Овражная улица, 24к8",
-    "description": "микрорайон Сходня, Химки, Московская область, Россия",
+    "name": "Головинский район",
+    "description": "Северный административный округ, Москва, Россия",
     "boundedBy": {
         "Envelope": {
-            "lowerCorner": "37.314831 55.940911",
-            "upperCorner": "37.323042 55.945519"
+            "lowerCorner": "37.466233 55.837186",
+            "upperCorner": "37.55513 55.867561"
         }
     },
-    "uri": "ymapsbm1://geo?data=IgoN7kYVQhUKxl9C",
+    "uri": "ymapsbm1://geo?data=Cgg1MzIxMTY3MhJ70KDQvtGB0YHQuNGPLCDQnNC-0YHQutCy0LAsINCh0LXQstC10YDQvdGL0Lkg0LDQtNC80LjQvdC40YHRgtGA0LDRgtC40LLQvdGL0Lkg0L7QutGA0YPQsywg0JPQvtC70L7QstC40L3RgdC60LjQuSDRgNCw0LnQvtC9IgoN3AoWQhUXY19C",
     "Point": {
-        "pos": "37.318936 55.943215"
+        "pos": "37.51061 55.846765"
     }
 }

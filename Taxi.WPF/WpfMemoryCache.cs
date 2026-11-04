@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Taxi.src.Taxi.Map.Helpers;
 using Windows.System;
 using Windows.UI.Xaml;
 //using static Taxi.MainWindow;
@@ -31,13 +32,13 @@ namespace Taxi
         private readonly string _filePath = "local_cache.json";
 
 
-        public bool TryGet<TItem>(string key, out TItem item)
+        public bool TryGet<TItem>(string key, out TItem item, bool IsGeoPoint=false)
         {
             item = default;
             JsonElement json;
             if (!_cache.TryGetValue(key, out json)) return false;
             DateTimeOffset? exp;
-            if (_expiry.TryGetValue(key, out exp) && exp.HasValue && exp.Value <= DateTimeOffset.UtcNow)
+            if (!IsGeoPoint && _expiry.TryGetValue(key, out exp) && exp.HasValue && exp.Value <= DateTimeOffset.UtcNow)
             {
                 Remove(key);
                 return false;
@@ -45,7 +46,7 @@ namespace Taxi
 
             item = JsonSerializer.Deserialize<TItem>(json);
             Debug.WriteLine(json);
-            Debug.WriteLine(JsonSerializer.Serialize( item));
+            Debug.WriteLine(JsonSerializer.Serialize( item, options: JsHelper.JsonOptions));
             return true;
         } 
 
@@ -57,7 +58,7 @@ namespace Taxi
 
         public void Set<TItem>(string key,  TItem value, TimeSpan? ttl = null)
         {
-            _cache[key] = JsonSerializer.SerializeToElement(value);
+            _cache[key] = JsonSerializer.SerializeToElement(value, options:JsHelper.JsonOptions );
             _expiry[key] = ttl is null ? null : DateTimeOffset.UtcNow + ttl;
         }
 
@@ -87,7 +88,7 @@ namespace Taxi
 
             Directory.CreateDirectory(getPath);
             //var tmp = _filePath + ".tmp";
-            string jsonString = JsonSerializer.Serialize(snapshot);
+            string jsonString = JsonSerializer.Serialize(snapshot, options: JsHelper.JsonOptions);
             File.WriteAllText(_filePath, jsonString);
         }
 

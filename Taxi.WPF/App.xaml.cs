@@ -57,8 +57,8 @@ namespace Taxi.WPF
             });
 
             services.AddHttpClient<IAuthService, AuthService>();
-            services.AddHttpClient<IGeocodeService, GeocodeService>();
-            services.AddHttpClient<IRoutingService, RoutingService>();
+            services.AddHttpClient<GeocodeService>();
+            services.AddHttpClient<RoutingService>();
 
             services.AddSingleton<ConfigurationService>();
             services.AddSingleton<IConfigurationService>(sp=>sp.GetRequiredService<ConfigurationService>());
@@ -75,6 +75,7 @@ namespace Taxi.WPF
 
             services.AddTransient<MapViewModel>();
             services.AddTransient<MapPage>();
+            services.AddTransient<TariffService>();
 
 
             services.AddSingleton<ConfigurationService>();

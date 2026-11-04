@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Taxi.Core.Models.Map;
 using Taxi.src.Taxi.Map.Helpers;
-using Taxi.src.Services;
+using Taxi.WPF.Services;
 
 namespace Taxi.WPF.ViewModels.UsersViewModels
 {
@@ -23,21 +23,22 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
 
         private GeocodeService geocodeService;
         private RoutingService routingService;
-        private string TypeRoute;
-        private HttpClient httpClient;
+        private readonly TariffService tariffService;
 
-        public Func<string, string, Task<string>> CallJsAsync {  get; set; }
+        private string TypeRoute;
+
+        public Action<string, object> CallJsAsync {  get; set; }
 
         private RoutePoint _from;
         private RoutePoint _to;
         public WebView2 MyWebView {  get; set; }
-        public MapViewModel(HttpClient http)
+        public MapViewModel(GeocodeService _geocodeService, RoutingService _routingService, TariffService _tariffService)
         {
             //MyWebView = webView;
             var baseAddress = Environment.GetEnvironmentVariable("BaseAddress");
-            httpClient = http;
-            geocodeService = new GeocodeService(httpClient);
-            routingService = new RoutingService(httpClient);
+            geocodeService = _geocodeService;
+            routingService = _routingService;
+            tariffService = _tariffService;
             TypeRoute = Environment.GetEnvironmentVariable("TypeRoute");
             _from = new RoutePoint();
             _to = new RoutePoint();
@@ -45,17 +46,25 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
 
         public async Task ShowNoticeAsync(string message)
         {
-            await CallJsAsync("showNotice", JsHelper.JsStr(message));
+            
+            CallJsAsync("showNotice", new { Text = JsHelper.JsStr(message) });
         }
 
-        public async Task SetPointAsync(string which, RoutePoint point, bool addressName = false)
+        public void SetPointAsync(string which, RoutePoint point, bool addressName = false)
         {
             if (which == "from")
                 _from = point;
             else
                 _to = point;
-            var jsArgs = $"{JsHelper.JsStr(which)},{JsHelper.JsNum(point.Lat)},{JsHelper.JsNum(point.Lon)},{JsHelper.JsStr(point.Address)}";
-            await CallJsAsync( addressName? "setAddressOtkuda" : "setPoint", jsArgs);
+            var messageData = new
+            {
+                Which = which,
+                Lat = point.Lat,
+                Lon = point.Lon,
+                Address = point.Address
+            };
+            //var jsArgs = $"{JsHelper.JsStr(which)},{JsHelper.JsNum(point.Lat)},{JsHelper.JsNum(point.Lon)},{JsHelper.JsStr(point.Address)}";
+            CallJsAsync( addressName ? "setAddressOtkuda" : "setPoint", messageData);
         }
 
 
@@ -76,26 +85,26 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
                     break;
 
                 case "destinationSelected":
-                    await SelectPointAsync(root.GetProperty("address").GetString(), "to");
+                    await SelectPointAsync(root.GetProperty("address").GetString(), "to", root.GetProperty("uri").GetString());
                     break;
 
 
                 case "destinationSelectedKuda":
-                    await SelectPointAsync(root.GetProperty("address").GetString(), "to");
+                    await SelectPointAsync(root.GetProperty("address").GetString(), "to", root.GetProperty("uri").GetString());
                     break;
 
 
                 case "destinationSelectedOtkuda":
-                    await SelectPointAsync(root.GetProperty("address").GetString(), "from");
+                    await SelectPointAsync(root.GetProperty("address").GetString(), "from", root.GetProperty("uri").GetString());
                     break;
 
                 case "destinationOtkudaCoord":
-                    await SelectPointAsync(root.GetProperty("address_coord").Deserialize<List<double>>(), "from", IsCoord: true);
+                    await SelectPointAsync(root.GetProperty("address_coord").Deserialize<List<double>>(), "from", "", IsCoord: true);
                     break;
 
 
                 case "getUserLocation":
-                    await UserCurrentPointAsync();
+                    //await UserCurrentPointAsync();
                     break;
             }
             //await UpdateRouteAsync();
@@ -148,50 +157,53 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
             }
             double price = Calculate(route.DistanceMeters / 1000.0);
 
-            var args = string.Join(",",
-                JsonSerializer.Serialize(route.Coordinates, JsHelper.JsonOptions),
-                JsonSerializer.Serialize(new[] { _from.Lat, _from.Lon }, JsHelper.JsonOptions),
-                JsonSerializer.Serialize(new[] { _to.Lat, _to.Lon }, JsHelper.JsonOptions));
+            var routeData = new
+            {
+                Coordinates = route.Coordinates,         // Массив координат
+                StartPoint = new[] { _from.Lat, _from.Lon }, // Массив [lat, lon]
+                EndPoint = new[] { _to.Lat, _to.Lon }       // Массив [lat, lon]
+            };
 
-            await CallJsAsync("showRoute", args);
-            Debug.WriteLine($"showRoute = {args}");
+
+            CallJsAsync("showRoute", routeData);
+            //Debug.WriteLine($"showRoute = {routeData}");
 
         }
 
-        public async Task UserCurrentPointAsync()
-        {
-            Debug.WriteLine("hello________________________________");
-            var pos = await GeolocationService.GetLocationAsync();
-            double lat = pos.Coordinate.Point.Position.Latitude;
-            double lon = pos.Coordinate.Point.Position.Longitude;
+        //public async Task UserCurrentPointAsync()
+        //{
+        //    Debug.WriteLine("hello________________________________");
+        //    var pos = await GeolocationService.GetLocationAsync();
+        //    double lat = pos.Coordinate.Point.Position.Latitude;
+        //    double lon = pos.Coordinate.Point.Position.Longitude;
 
-            if (lat == 0 && lon == 0)
-            {
-                await ShowNoticeAsync("Местоположение недоступно");
-                return;
-            }
-            RoutePoint pointUser = await geocodeService.GeocodeAddressAsync(new List<double>
-            {
-                lat,lon
-            });
-            await SetPointAsync("from", pointUser, true);
+        //    if (lat == 0 && lon == 0)
+        //    {
+        //        await ShowNoticeAsync("Местоположение недоступно");
+        //        return;
+        //    }
+        //    RoutePoint pointUser = await geocodeService.GeocodeAddressAsync(new List<double>
+        //    {
+        //        lat,lon
+        //    });
+        //    await SetPointAsync("from", pointUser, true);
 
-            await UpdateRouteAsync();
-        }
+        //    await UpdateRouteAsync();
+        //}
 
 
-        public async Task SelectPointAsync(object address, string napravlenie, bool IsCoord = false)
+        public async Task SelectPointAsync(object address, string napravlenie, string uri, bool IsCoord = false)
         {
             try
             {
-                RoutePoint point = await geocodeService.GeocodeAddressAsync(address);
+                RoutePoint point = await geocodeService.GeocodeAddressAsync(address, uri);
                 if (point == null)
                 {
                     await ShowNoticeAsync("Адрес не найден");
                     return;
                 }
 
-                await SetPointAsync(napravlenie, point, IsCoord);
+                SetPointAsync(napravlenie, point, IsCoord);
 
                 await UpdateRouteAsync();
             }
@@ -201,26 +213,22 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
             }
         }
 
-    
-        //public async Task SelectKudaAsync(List<double> address, string napravlenie, bool IsCoord = false)
-        //{
-        //    try
-        //    {
-        //        RoutePoint point = await geocodeService.GeocodeAddressAsync(address);
-        //        if (point == null)
-        //        {
-        //            await ShowNoticeAsync("Адрес не найден");
-        //            return;
-        //        }
 
-        //        await SetPointAsync(napravlenie, point);
-        //        await UpdateRouteAsync();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine("Ошибка геокодера: " + ex);
-        //    }
-        //}
+        public async Task AllTariffs()
+        {
+            var tariffs_ = await tariffService.GetAllTariffsAsync();
+            
+            CallJsAsync("SetAllTariff", 
+                new
+                {
+                    tariffs = tariffs_,
+                }
+                
+                );
+        }
+
+
+
 
     }
 

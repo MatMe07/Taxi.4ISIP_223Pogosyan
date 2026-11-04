@@ -34,7 +34,7 @@ namespace Taxi.API.Server.Services
             GeocodeApiKey = Environment.GetEnvironmentVariable("GeocodeApiKey");
             GeoSuggestUrl = Environment.GetEnvironmentVariable("GeoSuggestUrl");
         }
-        public async Task<RoutePoint?> GeocodeAsync(string address)
+        public async Task<RoutePoint?> GeocodeAsync(string address, string? uri)
         {
 
             if (string.IsNullOrWhiteSpace(address))
@@ -45,8 +45,18 @@ namespace Taxi.API.Server.Services
                 Debug.WriteLine("[GeocodeAsync:server]Использовал кэш");
                 return cachedResult;
             }
+            string url = "";
+            if (string.IsNullOrWhiteSpace(uri))
+            {
+                url = GeocodeUrl + "?apikey=" + GeocodeApiKey + "&geocode=" + Uri.EscapeDataString(address) + "&format=json&results=1";
 
-            string url = GeocodeUrl + "?apikey=" + GeocodeApiKey + "&geocode=" + Uri.EscapeDataString(address) + "&format=json&results=1";
+            }
+            else
+            {
+                 url = GeocodeUrl + "?apikey=" + GeocodeApiKey + "&uri=" + Uri.EscapeDataString(uri) + "&format=json&results=1";
+
+            }
+            //string url = GeocodeUrl + "?apikey=" + GeocodeApiKey + "&geocode=" + Uri.EscapeDataString(address) + "&format=json&results=1";
             using (HttpResponseMessage response = await _http.GetAsync(url))
             using (JsonDocument doc = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
             {
@@ -61,7 +71,7 @@ namespace Taxi.API.Server.Services
 
                 JsonElement obj = members[0].GetProperty("GeoObject");
                 Debug.WriteLine(obj);
-                string addressName = obj.GetProperty("metaDataProperty").GetProperty("GeocoderMetaData").GetProperty("text").ToString();
+                string addressName = obj.GetProperty("name").ToString();
 
                 string[] pos = obj.GetProperty("Point").GetProperty("pos").GetString().Split(' ');
 

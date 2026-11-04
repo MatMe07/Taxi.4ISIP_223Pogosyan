@@ -16,7 +16,9 @@ namespace Taxi.Core.Models.Map
         public double Lon { get; set; }
 
         [JsonPropertyName("address")]
-        public string Address { get; set; }
+        public string Address { get; set; } = "";
+
+        //public string uri { get; set; }
     }
 
     public class RouteInfo

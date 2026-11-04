@@ -99,7 +99,7 @@ namespace Taxi.API.Server.Services
 
             var result = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
             JsonElement root = result.RootElement;
-            Debug.WriteLine($"------------------{root}-------------------");
+            //Debug.WriteLine($"------------------{root}-------------------");
 
             if (!root.TryGetProperty("routes", out var route) ||
                 !route[0].TryGetProperty("geometry", out var geometry) ||
@@ -120,8 +120,8 @@ namespace Taxi.API.Server.Services
                 DurationSeconds = durSec,
                 DistanceMeters = durMet
             };
-            Debug.WriteLine(route[0]);
-            Debug.WriteLine(url);
+            //Debug.WriteLine(route[0]);
+            //Debug.WriteLine(url);
             var shapesToList = JsonSerializer.Deserialize<List<List<double>>>(coordinates);
             foreach (List<double> point in shapesToList)
             {

@@ -15,9 +15,9 @@ using System.Threading.Tasks;
 using Taxi.Core.Models.Map;
 using Taxi.WPF.Services.Interfaces;
 
-namespace Taxi.src.Services
+namespace Taxi.WPF.Services
 {
-    internal class RoutingService : IRoutingService
+    public class RoutingService : IRoutingService
     {
         static HttpClient httpClient;
 
