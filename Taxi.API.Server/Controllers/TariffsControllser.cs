@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taxi.API.Server.Services;
+using Taxi.Core.Models.Map;
 
 namespace Taxi.API.Server.Controllers
 {
@@ -15,10 +16,10 @@ namespace Taxi.API.Server.Controllers
             _tariffService = tariffService;
         }
 
-        [HttpGet("GetAllCurrentTariffs")]
-        public async Task<IActionResult> GetAllCurrentTariffsAsync()
+        [HttpPost("GetAllCurrentTariffs")]
+        public async Task<IActionResult> GetAllCurrentTariffsAsync(TariffRequest tariffRequest)
         {
-            return Ok( await _tariffService.GetAllCurrentTariffsAsync());
+            return Ok( await _tariffService.GetAllCurrentTariffsAsync(tariffRequest.routeInfo, tariffRequest.IsRoute));
         }
 
     }

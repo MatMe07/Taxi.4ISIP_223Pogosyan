@@ -27,7 +27,7 @@ namespace Taxi.WPF.Models
                 _instance = value;
             }
         }
-        public bool IsAuth => userSession?.access_token != null;
+        public bool IsAuth => userSession?.access_token?.AccesToken != null;
 
         public string Theme { get; set; } = "light";
         public UserSession userSession { get; set; }

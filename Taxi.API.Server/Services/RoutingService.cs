@@ -99,8 +99,9 @@ namespace Taxi.API.Server.Services
 
             var result = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
             JsonElement root = result.RootElement;
-            //Debug.WriteLine($"------------------{root}-------------------");
+            Debug.WriteLine($"------------------{root}-------------------");
 
+            if (root.TryGetProperty("code", out var code) && code.ToString() == "NoRoute") return new RouteInfo { DistanceMeters = -1, Coordinates = [], DurationSeconds = 0 };
             if (!root.TryGetProperty("routes", out var route) ||
                 !route[0].TryGetProperty("geometry", out var geometry) ||
                 !geometry.TryGetProperty("coordinates", out var coordinates))
@@ -112,8 +113,8 @@ namespace Taxi.API.Server.Services
             if (!double.TryParse(route[0].GetProperty("distance").ToString(), CultureInfo.InvariantCulture, out double durMet))
                 throw new InvalidOperationException("cost Error");
 
-            Debug.WriteLine("cost = " + durSec);
-            Debug.WriteLine("time = " + durMet);
+            Debug.WriteLine("cost = " + durMet);
+            Debug.WriteLine("time = " + durSec);
 
             var info = new RouteInfo
             {

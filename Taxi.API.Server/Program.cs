@@ -74,6 +74,8 @@ builder.Services.AddTransient<PoesdkaService>();
 builder.Services.AddTransient<UsersService>();
 builder.Services.AddTransient<GenerationFilesService>();
 
+builder.Services.AddSingleton<TariffCalculator>();
+
 var app = builder.Build();
 
 app.UseAuthentication();

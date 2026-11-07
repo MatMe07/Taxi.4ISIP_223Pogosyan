@@ -65,7 +65,7 @@ public partial class TaxiBaseContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=TaxiBase;Integrated Security=True");
+        => optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=TaxiBase;Integrated Security=True;Encrypt=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -609,6 +609,7 @@ public partial class TaxiBaseContext : DbContext
                 .IsRequired()
                 .HasColumnName("passwordHashe");
             entity.Property(e => e.Phone)
+                .IsRequired()
                 .HasMaxLength(20)
                 .HasColumnName("phone");
             entity.Property(e => e.RoleId).HasColumnName("role_id");
@@ -659,6 +660,7 @@ public partial class TaxiBaseContext : DbContext
                 .IsRequired()
                 .HasMaxLength(255)
                 .HasColumnName("name");
+            entity.Property(e => e.PathVehicleClass).HasColumnName("pathVehicleClass");
         });
 
         modelBuilder.Entity<VehicleDocument>(entity =>

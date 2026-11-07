@@ -1,4 +1,4 @@
-window.showRoute = async function (coords, from, to) {
+async function showRoute(coords, from, to) {
     await ymaps3.ready;
     console.info('Вызвана функция showRoute');
     console.log(coords);
@@ -21,8 +21,9 @@ window.showRoute = async function (coords, from, to) {
     }
 
     if (line.length < 2) {
-        console.warn('Геометрия не получена, рисуем прямую между точками');
-        line = [from, to];
+        console.warn('Геометрия не получена');
+        return;
+        // line = [from, to];
     }
 
     if (routeLine) {

@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
+using Taxi.Core.Models.DB;
 using Taxi.Core.Models.Map;
 using Taxi.src.Taxi.Map.Helpers;
 using Taxi.WPF.Services;
@@ -31,6 +32,8 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
 
         private RoutePoint _from;
         private RoutePoint _to;
+        private RouteInfo _routeInfeFromTo;
+
         public WebView2 MyWebView {  get; set; }
         public MapViewModel(GeocodeService _geocodeService, RoutingService _routingService, TariffService _tariffService)
         {
@@ -42,6 +45,7 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
             TypeRoute = Environment.GetEnvironmentVariable("TypeRoute");
             _from = new RoutePoint();
             _to = new RoutePoint();
+            _routeInfeFromTo = new();
         }
 
         public async Task ShowNoticeAsync(string message)
@@ -50,21 +54,34 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
             CallJsAsync("showNotice", new { Text = JsHelper.JsStr(message) });
         }
 
-        public void SetPointAsync(string which, RoutePoint point, bool addressName = false)
+        public async Task<IEnumerable<TariffDTO>> GetTariffDTOs()
         {
+            return await tariffService.GetAllTariffsAsync(_routeInfeFromTo, _to.Lat!= 0.0); 
+        }
+
+
+        public async Task SetPointAsync(string which, RoutePoint point, bool addressName = false)
+        {
+
+
             if (which == "from")
                 _from = point;
             else
                 _to = point;
+
+            var tariffs_ = await GetTariffDTOs();
+            
             var messageData = new
             {
                 Which = which,
                 Lat = point.Lat,
                 Lon = point.Lon,
-                Address = point.Address
+                Address = point.Address,
+                tariffs = tariffs_.ToList(),
+                routeInfo = _routeInfeFromTo
             };
             //var jsArgs = $"{JsHelper.JsStr(which)},{JsHelper.JsNum(point.Lat)},{JsHelper.JsNum(point.Lon)},{JsHelper.JsStr(point.Address)}";
-            CallJsAsync( addressName ? "setAddressOtkuda" : "setPoint", messageData);
+            CallJsAsync( "setPoint", messageData);
         }
 
 
@@ -138,31 +155,37 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
             if (!RoutingService.IsValidPoint(_from) || !RoutingService.IsValidPoint(_to))
             {
                 await ShowNoticeAsync("Сначала выберите обе точки");
+
                 return;
             }
-            RouteInfo route = new RouteInfo();
+            _routeInfeFromTo = new RouteInfo();
             switch (TypeRoute)
             {
                 case "Yandex":
                     {
-                        route = await routingService.GetRouteAsync(_from, _to);
+                        _routeInfeFromTo = await routingService.GetRouteAsync(_from, _to);
 
                         break;
                     }
                 case "Mapbox":
                     {
-                        route = await routingService.GetRouteAsync(_from, _to, useMapbox: true);
+                        _routeInfeFromTo = await routingService.GetRouteAsync(_from, _to, useMapbox: true);
                         break;
                     }
             }
-            double price = Calculate(route.DistanceMeters / 1000.0);
+            double price = Calculate(_routeInfeFromTo.DistanceMeters / 1000.0);
 
+
+            var tariffs_ = await GetTariffDTOs();
             var routeData = new
             {
-                Coordinates = route.Coordinates,         // Массив координат
-                StartPoint = new[] { _from.Lat, _from.Lon }, // Массив [lat, lon]
-                EndPoint = new[] { _to.Lat, _to.Lon }       // Массив [lat, lon]
+                _routeInfeFromTo.Coordinates,     
+                StartPoint = new[] { _from.Lat, _from.Lon },
+                EndPoint = new[] { _to.Lat, _to.Lon } ,
+                tariffs = tariffs_.ToList(),
+                routeInfo = _routeInfeFromTo
             };
+
 
 
             CallJsAsync("showRoute", routeData);
@@ -205,6 +228,8 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
 
                 SetPointAsync(napravlenie, point, IsCoord);
 
+                //await 
+
                 await UpdateRouteAsync();
             }
             catch (Exception ex)
@@ -213,19 +238,6 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
             }
         }
 
-
-        public async Task AllTariffs()
-        {
-            var tariffs_ = await tariffService.GetAllTariffsAsync();
-            
-            CallJsAsync("SetAllTariff", 
-                new
-                {
-                    tariffs = tariffs_,
-                }
-                
-                );
-        }
 
 
 

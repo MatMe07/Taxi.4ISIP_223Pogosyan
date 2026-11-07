@@ -20,6 +20,8 @@ async function setPoint(which, lat, lon, address) {
 
         console.info("Новый адрес: " + JSON.stringify(addressOtkudaCoord));
         input_seach1.value = address;
+        placeholderSearch1.classList.add('active');
+
 
     } else {
         addressKuda = address;
@@ -51,8 +53,13 @@ function showNoticeFunc(text) {
 };
 
 
-function SetAllTariff(tariffs) {
-    console.info(tariffs.data)
+function SetAllTariff(tariffs, routeInfo) {
+
+    tariffsList= [];
+    tariffs.forEach(tar => {
+        tariffsList.push(new Tariff(tar.tariffId, tar.className, tar.totalPrice, tar.displayTotalTime, tar.classPathVehicle, routeInfo?.distanceMeters !== -1))
+    });
+    UpdateTariff();
 }
 
 window.chrome.webview.addEventListener('message', async event => {
@@ -60,17 +67,27 @@ window.chrome.webview.addEventListener('message', async event => {
     const { type, payload } = command;
     switch (type) {
         case 'setPoint':
+            console.info('payload_setPoint= ');
+            console.info(payload);
             await setPoint(payload.which, payload.lat, payload.lon, payload.address);
+            SetAllTariff(payload.tariffs, payload.routeInfo);
             break;
         case 'setAddressOtkuda':
+            console.info('payload_setPoint= '+ payload);
             await setAddressOtkuda(payload.which, payload.lat, payload.lon, payload.address);
-            break;
-        case 'SetAllTariff':
-            SetAllTariff(payload.tariffs);
+            SetAllTariff(payload.tariffs, payload.routeInfo);
             break;
         case 'showNotice':
             console.info(payload);
             showNoticeFunc(payload.text);
+            break;
+        case 'showRoute':
+            console.info("-------------------------------------------------dsfsdfsdf----sdf");
+            console.info(payload);
+            
+            await showRoute(payload.coordinates, payload.startPoint, payload.endPoint);
+            SetAllTariff(payload.tariffs, payload.routeInfo);
+
             break;
     }
 

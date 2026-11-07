@@ -28,13 +28,14 @@ namespace Taxi
     {
         private readonly ConcurrentDictionary<string, JsonElement> _cache = new ConcurrentDictionary<string, JsonElement>();
         private readonly ConcurrentDictionary<string, DateTimeOffset?> _expiry = new ConcurrentDictionary<string, DateTimeOffset?>();
-        //private static readonly JsonSerializerOptions Opts = new JsonSerializerOptions();
+        //private static readonly JsonSerializerOptions Opts = JsHelper.JsonOptions;
         private readonly string _filePath = "local_cache.json";
 
 
         public bool TryGet<TItem>(string key, out TItem item, bool IsGeoPoint=false)
         {
             item = default;
+
             JsonElement json;
             if (!_cache.TryGetValue(key, out json)) return false;
             DateTimeOffset? exp;
@@ -44,7 +45,7 @@ namespace Taxi
                 return false;
             }
 
-            item = JsonSerializer.Deserialize<TItem>(json);
+            item = JsonSerializer.Deserialize<TItem>(json, JsHelper.JsonOptions);
             Debug.WriteLine(json);
             Debug.WriteLine(JsonSerializer.Serialize( item, options: JsHelper.JsonOptions));
             return true;
@@ -97,10 +98,12 @@ namespace Taxi
             if (!File.Exists(_filePath)) return;
             var now = DateTimeOffset.UtcNow;
             List<CacheEntry> items;
+
             using (var fs = File.OpenRead(_filePath))
             {
-                items = await JsonSerializer.DeserializeAsync<List<CacheEntry>>(fs);
+                items = await JsonSerializer.DeserializeAsync<List<CacheEntry>>(fs, options: JsHelper.JsonOptions);
             }
+
             foreach (var item in items)
             {
                 if (item.ExpiresAt <= now) continue;

@@ -94,5 +94,6 @@ async function onSelectAddress(suggestItem, type) {
     } else if (type === 'to') {
         postToHost({ type: 'destinationSelectedKuda', address: fullAddress, uri: suggestItem.uri });
     }
+    showTariffsSkeleton();
 
 }

@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Taxi.Core.Models.DB;
+using Taxi.Core.Models.Map;
 
 namespace Taxi.WPF.Services
 {
@@ -18,10 +19,15 @@ namespace Taxi.WPF.Services
         }
 
 
-        public async Task<List<TariffDTO>> GetAllTariffsAsync()
+        public async Task<IEnumerable<TariffDTO>> GetAllTariffsAsync(RouteInfo routeInfo, bool isRoute)
         {
-            var response = await _http.GetFromJsonAsync<List<TariffDTO>>("api/tariff/GetAllCurrentTariffs");
-            return response ?? [];
+            TariffRequest request = new() {
+                routeInfo = routeInfo,
+                IsRoute = isRoute
+            };
+            var response = await _http.PostAsJsonAsync("api/tariff/GetAllCurrentTariffs", request);
+            var result = await response.Content.ReadFromJsonAsync<IEnumerable<TariffDTO>>();
+            return result ?? [];
         }
     }
 }

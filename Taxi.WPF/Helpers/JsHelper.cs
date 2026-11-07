@@ -11,7 +11,7 @@ namespace Taxi.src.Taxi.Map.Helpers
 {
     public static class JsHelper
     {
-        public static string JsStr(string s) => JsonSerializer.Serialize(s ?? string.Empty);
+        public static string JsStr(string s) => JsonSerializer.Serialize(s ?? string.Empty, JsonOptions);
 
         public static string JsNum(double d) => d.ToString(CultureInfo.InvariantCulture);
 
