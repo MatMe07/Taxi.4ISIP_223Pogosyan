@@ -49,7 +49,17 @@ namespace Taxi.API.Server.Services
 
             user.PasswordHashe = hasher.HashPassword(user, request.password);
 
-            _context.Users.Add(user);
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            var clientProfile = new ClientProfile
+            {   
+                User = user,
+                Rating = 5,
+                CreatedAt = DateTime.Now
+            };
+
+            await _context.ClientProfiles.AddAsync(clientProfile);
             await _context.SaveChangesAsync();
 
             return user;
@@ -75,7 +85,7 @@ namespace Taxi.API.Server.Services
 
         public async Task<(string, UserDTO)?> LoginUserAsync(LoginRequest request)
         {
-            var account = await _context.Users.FirstOrDefaultAsync(a => a.Login == request.login);
+            var account = await _context.Users.Include(u=>u.Role).FirstOrDefaultAsync(a => a.Login == request.login);
 
             if (account == null ||
                 string.IsNullOrWhiteSpace(request.password))
@@ -88,20 +98,52 @@ namespace Taxi.API.Server.Services
                 return null;
 
             string token = CreateToken(account);
-            return (token, new UserDTO
+            var userDto = new UserDTO
             {
                 Id = account.Id,
                 Login = account.Login,
                 LastName = account.LastName,
-                FirstName   = account.FirstName,
+                FirstName = account.FirstName,
                 MiddleName = account.MiddleName,
-                Phone= account.Phone,
-                isActive= account.IsActive,
+                Phone = account.Phone,
+                isActive = account.IsActive,
                 RoleId = account.RoleId,
                 RoleName = account.Role?.Name ?? "",
-                CreatedAt = account.CreatedAt,
-            });
+                CreatedAt = account.CreatedAt
+            };
+            if (userDto.RoleName == "Клиент")
+            {
+                var clientProf = await _context.ClientProfiles.FirstOrDefaultAsync(a => a.UserId == account.Id);
+                if (clientProf == null) return null;
+                userDto.ClientProfile = new ClientProfileDTO
+                {
+                    Id= clientProf.Id,
+                    DefaultPaymentMethodId = clientProf.DefaultPaymentMethodId ?? -1,
+                    DefaultPaymentMethodName = clientProf?.DefaultPaymentMethod?.Name ?? "",
+                    Rating = clientProf.Rating,
+                    CreatedAt = clientProf.CreatedAt
+                };
+            }
+            else if (userDto.RoleName == "Водитель")
+            {
+                var driverProf = await _context.DriverProfiles.FirstOrDefaultAsync(d=>d.UserId == account.Id);  
+                if (driverProf == null) return null;
+                userDto.DriverProfile = new DriverProfileDTO
+                {
+                    PassportSeries = driverProf.PassportSeries,
+                    PassportNumber = driverProf.PassportNumber,
+                    LicenseCategories = driverProf.LicenseCategories,
+                    LicenseNumber = driverProf.LicenseNumber,
+                    ExperienceYears = driverProf.ExperienceYears,
+                    DateNaima = driverProf.DateNaima,
+                    IsActive = driverProf.IsActive,
+                    SalaryRate = driverProf.SalaryRate,
+                    Rating = driverProf.Rating,
+                };
+            }
+            return (token, userDto);
         }
+
 
 
 

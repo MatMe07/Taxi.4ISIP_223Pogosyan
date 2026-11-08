@@ -59,6 +59,10 @@ function setupSearchInput(input, placeholder, getAddress, onBlurExtra) {
     input.addEventListener('input', () => {
         if (input.value.trim() !== '') {
             placeholder.classList.add('hidden');
+            if (input.id === 'search' && input.value.trim().length > 0){
+                console.info('Уже пишется');
+                IsSearchInput1 = true;
+            }
         } else {
             placeholder.classList.remove('hidden');
         }
@@ -77,6 +81,11 @@ function setupSearchInput(input, placeholder, getAddress, onBlurExtra) {
             placeholder.classList.add('active');
         } else {
             placeholder.classList.remove('active', 'hidden');
+            if (input.id === 'search'){
+                console.info('Вышел из фокуса');
+
+                IsSearchInput1 = false;
+            }
         }
 
         if (typeof onBlurExtra === 'function') {

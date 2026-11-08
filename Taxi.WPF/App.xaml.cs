@@ -76,6 +76,7 @@ namespace Taxi.WPF
             services.AddTransient<MapViewModel>();
             services.AddTransient<MapPage>();
             services.AddTransient<TariffService>();
+            services.AddTransient<PaymentMethodService>();
 
 
             services.AddSingleton<ConfigurationService>();
@@ -106,6 +107,8 @@ namespace Taxi.WPF
             services.AddTransient<ReportsManagerPage>();
             services.AddTransient<ReportsManagerViewModel>();
 
+
+            services.AddTransient<ProfileService>();
 
 
 

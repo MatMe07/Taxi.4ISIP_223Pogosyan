@@ -9,6 +9,8 @@ public partial class PaymentMethod
 {
     public int Id { get; set; }
 
+    public string PaymentIconPath { get; set; }
+
     public string Name { get; set; }
 
     public virtual ICollection<ClientProfile> ClientProfiles { get; set; } = new List<ClientProfile>();

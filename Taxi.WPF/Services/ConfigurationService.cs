@@ -53,7 +53,7 @@ namespace Taxi.WPF.Services
             ChangeSettings();
         }
 
-        public void ChangeSettings()
+        public static void ChangeSettings()
         {
             //AppSettings.Instance = appSettings ??
                 //throw new ArgumentNullException(nameof(appSettings));

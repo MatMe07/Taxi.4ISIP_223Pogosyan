@@ -12,7 +12,7 @@ namespace Taxi.WPF.Services
 {
     public class TariffService
     {
-        private readonly HttpClient _http;
+        private readonly HttpClient _http;  
         public TariffService(HttpClient http)
         {
             _http = http;

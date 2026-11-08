@@ -8,23 +8,23 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using Taxi.Core.Models.DB;
 using Taxi.Core.Models.Map;
 using Taxi.src.Taxi.Map.Helpers;
+using Taxi.WPF.Models;
 using Taxi.WPF.Services;
 
 namespace Taxi.WPF.ViewModels.UsersViewModels
 {
     public class MapViewModel : ViewModelBase
     {
-        private string DefaultFromAddress = "Москва, Льва Толстого, 16";
-        private string DefaultToAddress = "Москва, Льва Толстого, 10";
-        private double DeliveryTariff = 20;
-        private double MinimumCost = 500;
 
-        private GeocodeService geocodeService;
-        private RoutingService routingService;
+        private readonly GeocodeService geocodeService;
+        private readonly RoutingService routingService;
         private readonly TariffService tariffService;
+        private readonly PaymentMethodService paymentMethodService;
+        private readonly ProfileService profileService;
 
         private string TypeRoute;
 
@@ -35,13 +35,16 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
         private RouteInfo _routeInfeFromTo;
 
         public WebView2 MyWebView {  get; set; }
-        public MapViewModel(GeocodeService _geocodeService, RoutingService _routingService, TariffService _tariffService)
+        public MapViewModel(GeocodeService _geocodeService, RoutingService _routingService, 
+            TariffService _tariffService, PaymentMethodService _paymentMethod, ProfileService _profileSerivce)
         {
             //MyWebView = webView;
             var baseAddress = Environment.GetEnvironmentVariable("BaseAddress");
             geocodeService = _geocodeService;
             routingService = _routingService;
             tariffService = _tariffService;
+            paymentMethodService = _paymentMethod;
+            profileService = _profileSerivce;
             TypeRoute = Environment.GetEnvironmentVariable("TypeRoute");
             _from = new RoutePoint();
             _to = new RoutePoint();
@@ -84,12 +87,6 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
             CallJsAsync( "setPoint", messageData);
         }
 
-
-        private double Calculate(double routeLengthKm)
-        {
-            return Math.Max(routeLengthKm * DeliveryTariff, MinimumCost);
-        }
-
         public async Task WebMessage(JsonElement root)
         {
             if (!root.TryGetProperty("type", out JsonElement typeElement))
@@ -99,6 +96,7 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
             {
                 case "ready":
                     //await viewModel.SetDefaultFromAsync();
+                    await SentDefaultSettings();
                     break;
 
                 case "destinationSelected":
@@ -112,14 +110,21 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
 
 
                 case "destinationSelectedOtkuda":
-                    await SelectPointAsync(root.GetProperty("address").GetString(), "from", root.GetProperty("uri").GetString());
+                    await SelectPointAsync(root.GetProperty("address").GetString() ?? "", "from", root.GetProperty("uri").GetString());
                     break;
 
                 case "destinationOtkudaCoord":
-                    await SelectPointAsync(root.GetProperty("address_coord").Deserialize<List<double>>(), "from", "", IsCoord: true);
+                    await SelectPointAsync(root.GetProperty("address_coord").Deserialize<List<double>>() ?? [], "from", "", IsCoord: true);
                     break;
 
+                case "changePaymentMethod":
+                    string rawValue = root.GetProperty("selectedPaymentMethodId").GetString();
 
+                    if (int.TryParse(rawValue, out int paymentMethodId))
+                    {
+                        await profileService.ChangePaymentMethod(AppSettings.Instance.userSession.User.ClientProfile?.Id ?? 0, paymentMethodId);
+                    }
+                    break;
                 case "getUserLocation":
                     //await UserCurrentPointAsync();
                     break;
@@ -150,6 +155,18 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
 
         //}
 
+        private async Task SentDefaultSettings()
+        {
+            var allPaymentsMethod = await paymentMethodService.GetPaymentMethods();
+            var dataMess = new
+            {
+                allPaymentsMethod = allPaymentsMethod.ToList(),
+                //coutnPaymet = allPaymentsMethod.Count(),
+                selectPaymentMethod = AppSettings.Instance.userSession.User.ClientProfile?.DefaultPaymentMethodId,
+            };
+            CallJsAsync("SetDefaultSet", dataMess);
+        }
+
         private async Task UpdateRouteAsync()
         {
             if (!RoutingService.IsValidPoint(_from) || !RoutingService.IsValidPoint(_to))
@@ -173,8 +190,6 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
                         break;
                     }
             }
-            double price = Calculate(_routeInfeFromTo.DistanceMeters / 1000.0);
-
 
             var tariffs_ = await GetTariffDTOs();
             var routeData = new
@@ -226,7 +241,7 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
                     return;
                 }
 
-                SetPointAsync(napravlenie, point, IsCoord);
+                await SetPointAsync(napravlenie, point, IsCoord);
 
                 //await 
 

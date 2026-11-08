@@ -2,6 +2,7 @@
 async function init() {
     await ymaps3.ready;
 
+    outputFieldPayMethod = document.getElementById("methodPayment");
     initSuggest('search', 'suggest-list1', 'from');
     initSuggest('search2', 'suggest-list2', 'to');
 

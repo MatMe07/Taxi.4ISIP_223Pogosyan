@@ -5,9 +5,10 @@ var routeLine = null;
 var selectTariff = tariffsList[0] ;
 var modelWindow = null;
 var points = { from: null, to: null };
-var selectedPaymentMethod = "card"; 
-var PaymentMethodList = null; 
-const outputFieldPayMethod = document.getElementById("methodPayment");
+var selectedPaymentMethod = -1; 
+// var PaymentMethodListElement = null; 
+var PaymentMethodList = []; 
+var outputFieldPayMethod = null;
 const paymentNames = {
     cash: 'Наличные',
     sbp: 'Онлайн (СБП)'
@@ -18,7 +19,9 @@ var addressOtkuda = null;
 var addressOtkudaCoord = null
 
 var input_seach1 = null;
+var IsSearchInput1 = false;
 var input_seach2 = null;
+
 
 var addressUser = null;
 

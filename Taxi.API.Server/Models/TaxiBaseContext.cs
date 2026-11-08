@@ -437,6 +437,7 @@ public partial class TaxiBaseContext : DbContext
                 .IsRequired()
                 .HasMaxLength(255)
                 .HasColumnName("name");
+            entity.Property(e => e.PaymentIconPath).HasColumnName("paymentIconPath");
         });
 
         modelBuilder.Entity<Poezdka>(entity =>

@@ -10,7 +10,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         d:DataContext="{d:DesignInstance Type=local:MainViewModel}"
         Title="Taxi App" MinWidth="830" Closed="Window_Closed"
-        MinHeight="610"
+        MinHeight="630"
         d:Background="{DynamicResource AppBackgroundBrush}"
         Style="{DynamicResource WindowStyle}" Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>

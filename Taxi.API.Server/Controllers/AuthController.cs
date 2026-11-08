@@ -19,6 +19,7 @@ namespace Taxi.API.Server.Controllers
 {
     [ApiController]
     [Route("api/auth")]
+    [Authorize]
     public class AuthController : ControllerBase
     {
         private readonly Authorization authorization;
@@ -165,7 +166,6 @@ namespace Taxi.API.Server.Controllers
 
 
         [HttpPost("changePassword")]
-        [Authorize]
         public async Task<IActionResult> ChangePassword(ChangePasswordRequst response)
         {
             if (!string.Equals(response.PasswordNewConfirm, response.PasswordNew))
@@ -205,6 +205,8 @@ namespace Taxi.API.Server.Controllers
                 );
         }
 
+
+            
         private void PLUSFailed(string key, ref int current)
         {
             current++;

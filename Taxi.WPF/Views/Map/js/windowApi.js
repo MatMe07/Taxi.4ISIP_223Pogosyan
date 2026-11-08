@@ -19,7 +19,10 @@ async function setPoint(which, lat, lon, address) {
         addressUser = { lat: addressOtkudaCoord.lat, lon: addressOtkudaCoord.lon };
 
         console.info("Новый адрес: " + JSON.stringify(addressOtkudaCoord));
-        input_seach1.value = address;
+
+        if (!IsSearchInput1)
+            input_seach1.value = address;
+
         placeholderSearch1.classList.add('active');
 
 
@@ -54,7 +57,6 @@ function showNoticeFunc(text) {
 
 
 function SetAllTariff(tariffs, routeInfo) {
-
     tariffsList= [];
     tariffs.forEach(tar => {
         tariffsList.push(new Tariff(tar.tariffId, tar.className, tar.totalPrice, tar.displayTotalTime, tar.classPathVehicle, routeInfo?.distanceMeters !== -1))
@@ -62,10 +64,29 @@ function SetAllTariff(tariffs, routeInfo) {
     UpdateTariff();
 }
 
+
+function SetDefaultSet(paymentMethodsLst, selectPaymentMethod){
+    console.info(paymentMethodsLst);
+    console.info(selectPaymentMethod);
+    selectedPaymentMethod = selectPaymentMethod;
+    PaymentMethodList = []
+    paymentMethodsLst.forEach(element => {
+        PaymentMethodList.push(new PaymentMethod(element.id, element.name, element.paymentIconPath))
+    });
+    
+    UpdateRBPaymentMethod();
+
+}
+
 window.chrome.webview.addEventListener('message', async event => {
     const command = event.data; 
     const { type, payload } = command;
     switch (type) {
+        case 'SetDefaultSet':
+            console.info(payload);
+            console.info("--------------------------");
+            SetDefaultSet(payload.allPaymentsMethod, payload.selectPaymentMethod);
+            break;
         case 'setPoint':
             console.info('payload_setPoint= ');
             console.info(payload);

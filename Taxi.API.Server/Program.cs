@@ -68,6 +68,7 @@ builder.Services.AddTransient<CaptchaService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddTransient<VehiclesServices>();
 builder.Services.AddTransient<TariffService>();
+builder.Services.AddTransient<PaymentsService>();
 
 
 builder.Services.AddTransient<PoesdkaService>();
@@ -75,6 +76,9 @@ builder.Services.AddTransient<UsersService>();
 builder.Services.AddTransient<GenerationFilesService>();
 
 builder.Services.AddSingleton<TariffCalculator>();
+
+
+builder.Services.AddTransient<ProfileService>();
 
 var app = builder.Build();
 

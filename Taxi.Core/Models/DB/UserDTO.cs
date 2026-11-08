@@ -21,6 +21,9 @@ namespace Taxi.Core.Models.DB
         public string RoleName { get; set; }
         public DateTime CreatedAt { get; set; }
 
+        public ClientProfileDTO? ClientProfile { get; set; }
+        public DriverProfileDTO? DriverProfile { get; set; }
+
         public bool isActive { get; set; }
 
         public string FIO => $"{FirstName} {LastName} {MiddleName}";

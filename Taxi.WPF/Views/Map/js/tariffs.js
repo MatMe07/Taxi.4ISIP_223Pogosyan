@@ -57,7 +57,7 @@ function UpdateTariff() {
         <button role="radio" aria-pressed="false" aria-checked="false" id="${tarif.id}" class="btnTariffs disabled" disabled style="opacity: 0.6; cursor: not-allowed;">
             <span style="flex-shrink: 0;" class="box--img">
                 <img src="${tarif.imgPath}" alt="${tarif.title}" width="56" height="20" class="car-img" style="filter: grayscale(100%);">
-                <span class="etaTimes"> -- </span>
+                <span class="etaTimes"> — </span>
             </span>
             <span class="content">
                 <span class="title" style="color: #888;">${tarif.title}</span>
@@ -74,7 +74,7 @@ function UpdateTariff() {
             <button role="radio" aria-pressed="false" aria-checked="false" id="${tarif.id}" class="btnTariffs ${tarif.title == 'Эконом' ? 'active' : ''}">
             <span style="flex-shrink: 0;" class="box--img">
             <img src=${tarif.imgPath} alt="Желтая машина" width="56" height="20" class="car-img">
-            <span class="etaTimes">${tarif.time == "" ? " -- " : tarif.time}</span>
+            <span class="etaTimes">${tarif.time == "" ? " — " : tarif.time}</span>
             </span>
             <span class="content">
             <span class="title">${tarif.title}</span>
@@ -101,11 +101,6 @@ function showTariffsSkeleton() {
         const skeletonHTML = `
         <button role="radio" class="btnTariffs skeleton" disabled style="pointer-events: none;">
             <span style="flex-shrink: 0;" class="box--img">
-                <div class="skeleton-img-box"></div>
-            </span>
-            <span class="content" style="display: flex; flex-direction: column; justify-content: center;">
-                <div class="skeleton-title-box"></div>
-                <div class="skeleton-price-box"></div>
             </span>
         </button>
         `;

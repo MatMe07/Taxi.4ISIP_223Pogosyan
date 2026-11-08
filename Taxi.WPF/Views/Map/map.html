@@ -64,10 +64,10 @@
             </fieldset>
 
         </div>
-        <button class="btnPaymentMethod" onclick="btnModelOpen()">
+        <button class="btnPaymentMethod" onclick="btnModelOpen()" style="display: none;">
             <div class="boxPaymentMethod">
                 <p class="">Способ оплаты</p>
-                <span id="methodPayment">Наличные</span>
+                <span id="methodPayment"></span>
                 <span class="select-Payment"></span>
             </div>
 
@@ -85,6 +85,9 @@
         </div>
 
 
+
+    </div>
+    <div id="snackbar">
 
     </div>
 
@@ -106,25 +109,13 @@
 
                 <div class="payment-list">
 
-
-                    <div class="payment-row selected" data-method="cash">
+                    <!-- <div class="payment-row selected" data-method="cash">
                         <div class="payment-info">
                             <img src="imgs/paymentMethod/cash.svg" alt="Наличные" class="payment-icon">
                             <span class="payment-name">Наличные</span>
                         </div>
                         <div class="custom-radio"></div>
                     </div>
-
-                    <!-- <div class="payment-row" data-method="card">
-                        <div class="payment-info">
-                            <img src="imgs/paymentMethod/card.svg" alt="bank-cards" style="width: 40px; height: 40px;"  alt="Банковская карта" class="payment-icon">
-                            <div class="payment-text-wrapper">
-                                <span class="payment-name">Банковская карта</span>
-                            </div>
-                        </div>
-                        <div class="custom-radio"></div>
-                    </div> -->
-
 
                     <div class="payment-row" data-method="sbp">
                         <div class="payment-info">
@@ -134,7 +125,7 @@
                             </div>
                         </div>
                         <div class="custom-radio"></div>
-                    </div>
+                    </div> -->
 
 
                 </div>
@@ -143,6 +134,7 @@
             <div class="modal-footer modal-close" onclick="closeModel()">
                 <button class="btn-primary-close">Закрыть</button>
             </div>
+
 
         </div>
     </div>
@@ -159,7 +151,7 @@
                 addressUser = { lat: position.coords.latitude, lon: position.coords.longitude };
                 console.info(position);
                 postToHost({ type: 'destinationOtkudaCoord', address_coord: [position.coords.latitude, position.coords.longitude] });
-                
+
                 console.info("posUser: " + JSON.stringify(addressUser));
             }
             else {
