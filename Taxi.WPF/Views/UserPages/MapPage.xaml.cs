@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Taxi.WPF.Commands;
+using Taxi.WPF.Models;
 using Taxi.WPF.Services;
 using Taxi.WPF.ViewModels;
 using Taxi.WPF.ViewModels.UsersViewModels;
@@ -56,7 +57,7 @@ namespace Taxi.WPF.Views
 
 
             //MyWebView.CoreWebView2.Navigate(new Uri(htmlPath).AbsoluteUri);
-            MyWebView.Source = new Uri("http://localhost/map.html");
+            MyWebView.Source = new Uri($"http://localhost/map.html?theme={AppSettings.Instance.Theme}");
             await MyWebView.EnsureCoreWebView2Async();
         }
 

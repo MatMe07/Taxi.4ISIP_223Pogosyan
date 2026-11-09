@@ -70,7 +70,7 @@ function UpdateRBPaymentMethod() {
         `;
         outputFieldPayMethod.textContent = PaymentMethodList.find(p=>p.id==selectedPaymentMethod).name;
 
-        console.info(innerHtml);
+        // console.info(innerHtml);
     });
     PaymentMethodListElement.innerHTML = innerHtml;
 }

@@ -3,10 +3,12 @@ using Taxi.Core.Models.DB;
 
 namespace Taxi.API.Server.Services
 {
-    public class PoesdkaService(TaxiBaseContext context)
-    {
-        private readonly TaxiBaseContext _context = context;
+    public class PoesdkaService : BaseService
 
+    {
+        public PoesdkaService(TaxiBaseContext context) : base(context)
+        {
+        }
 
         public async Task<List<PoezdkaDTO>> GetAllPoezdkasAsync()
         {

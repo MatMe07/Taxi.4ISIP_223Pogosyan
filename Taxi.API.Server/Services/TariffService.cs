@@ -5,13 +5,11 @@ using Taxi.Core.Models.Map;
 
 namespace Taxi.API.Server.Services
 {
-    public class TariffService
+    public class TariffService : BaseService
     {
-        private readonly TaxiBaseContext _context;
         private readonly TariffCalculator _tariffCalculator;
-        public TariffService(TaxiBaseContext context, TariffCalculator tariffCalculator)
+        public TariffService(TaxiBaseContext context, TariffCalculator tariffCalculator):base(context)
         {
-            _context = context;
             _tariffCalculator = tariffCalculator;
         }
 

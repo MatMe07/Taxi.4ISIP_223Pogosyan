@@ -1,0 +1,127 @@
+.tariffWrapper {
+    border: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 8px;
+    background: var(--bg-main-color);
+    flex-wrap: wrap;
+    border-radius: 20px;
+    margin: 5px 0px;
+    padding: 8px 16px;
+}
+
+.btnTariffs {
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 84px;
+    padding: 8px 8px 4px 8px;
+    border: none;
+    border-radius: 16px;
+    background: var(--bg-main-color);
+    text-align: left;
+    width: 104px;
+    cursor: pointer;
+    font-family: var(--fonts-families-main);
+    transition: background-color 0.2s, color 0.2s;
+    outline: none;
+    /* -webkit-tap-highlight-color: transparent; */
+}
+
+.btnTariffs.active,
+.btnTariffs[aria-checked="true"] {
+    background-color: var(--button-minor-color);
+    font-weight: 550;
+    color: var(--text-black-color);
+}
+
+.box--img {
+    position: relative;
+    margin-bottom: 13px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.car-img {
+    width: 56px;
+    height: 20px;
+    display: block;
+}
+
+.btnTariffs.active .etaTimes {
+    color: var(--text-black-color);
+    /* font-weight: 500; */
+}
+
+.etaTimes {
+    position: absolute;
+    bottom: -12px;
+    left: -4px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    background: var(--bg-main-color);
+    border-radius: 4px;
+    font-size: 10px;
+    color: var(--text-minor-color);
+    white-space: nowrap;
+    z-index: 2;
+    font-weight: 500;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 13px;
+    line-height: 15px;
+    color: var(--text-main-color);
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+.btnTariffs.active .title {
+    font-weight: 550;
+}
+
+.price--WnKzJ {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    font-size: 14px;
+    line-height: 20px;
+    width: 100%;
+}
+
+.priceSurge--jcKcC {
+    display: inline-flex;
+    flex-shrink: 0;
+    height: 20px;
+    align-items: center;
+    margin-right: 2px;
+}
+
+.priceText--YA8Je {
+    flex: 1;
+    min-width: 0;
+    white-space: normal;
+    word-break: break-word;
+    color: var(--text-main-color);
+}
+
+.info-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    padding: 8px;
+    background-image: url('data:image/svg+xml;utf8,<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM13 7C13 7.55228 12.5523 8 12 8C11.4477 8 11 7.55228 11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7ZM11 10V18H13V10H11Z" fill="%239E9B98"/></svg>');
+    background-position: center;
+    background-repeat: no-repeat;
+}

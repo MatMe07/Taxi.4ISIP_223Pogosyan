@@ -3,20 +3,17 @@ using Taxi.API.Server.Models;
 
 namespace Taxi.API.Server.Services
 {
-    public class ProfileService
+    public class ProfileService : BaseService
     {
-        private readonly TaxiBaseContext _context;
-        public ProfileService(TaxiBaseContext taxiBaseContext)
+        public ProfileService(TaxiBaseContext context) : base(context)
         {
-            this._context = taxiBaseContext;
         }
-
 
         public async Task<string> ChangePaymentMethod(int idClientProfile, int idPaymentMethod)
         {
-            var clientProfile = await _context.ClientProfiles.FirstOrDefaultAsync(p=>p.Id == idClientProfile);
+            var clientProfile = await _context.ClientProfiles.FirstOrDefaultAsync(p => p.Id == idClientProfile);
             if (clientProfile == null) return "";
-            var payMethods = await _context.PaymentMethods.FirstOrDefaultAsync(p=>p.Id == idPaymentMethod);
+            var payMethods = await _context.PaymentMethods.FirstOrDefaultAsync(p => p.Id == idPaymentMethod);
 
             clientProfile.DefaultPaymentMethod = payMethods;
 

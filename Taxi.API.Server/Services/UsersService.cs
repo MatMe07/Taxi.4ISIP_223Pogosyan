@@ -4,13 +4,10 @@ using Taxi.Core.Models.DB;
 
 namespace Taxi.API.Server.Services
 {
-    public class UsersService
+    public class UsersService : BaseService
     {
-        private readonly TaxiBaseContext _context;
-
-        public UsersService(TaxiBaseContext context)
+        public UsersService(TaxiBaseContext context) : base(context)
         {
-            _context = context;
         }
 
         public async Task<List<UserDTO>> GetAllUsersAsync()

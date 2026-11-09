@@ -6,9 +6,11 @@ using static Taxi.API.Server.Services.GenerationFilesService;
 
 namespace Taxi.API.Server.Services
 {
-    public class VehiclesServices(TaxiBaseContext context)
+    public class VehiclesServices : BaseService
     {
-        private readonly TaxiBaseContext _context = context;
+        public VehiclesServices(TaxiBaseContext context) : base(context)
+        {
+        }
 
         public async Task<List<VehicleDTO>> GetAllVehiclesAsync()
         {
@@ -16,17 +18,17 @@ namespace Taxi.API.Server.Services
             var docsType = _context.VehicleDocumentTypes.ToList();
 
             //var vehicles = _context.Vehicles.Include(v => v.Maintenances).Include(v => v.VehicleDocuments).ThenInclude(d=>d.DocType).ToList();
-            foreach (var v in _context.Vehicles.Select(v=> new {
-            v.Id,
-            Class = v.Class.Name,
-            v.GovNumber,
-            v.Brand,
-            v.Year,
-            v.IsActive,
-            v.Model,
-            v.Maintenances,
-            v.VehicleDocuments,
-            DocTypes = v.VehicleDocuments.Where(v=>v.IsVerified).Select(d=>d.DocType)
+            foreach (var v in _context.Vehicles.Select(v => new {
+                v.Id,
+                Class = v.Class.Name,
+                v.GovNumber,
+                v.Brand,
+                v.Year,
+                v.IsActive,
+                v.Model,
+                v.Maintenances,
+                v.VehicleDocuments,
+                DocTypes = v.VehicleDocuments.Where(v => v.IsVerified).Select(d => d.DocType)
             }))
             {
                 var dop = v.DocTypes.Union(docsType).FirstOrDefault();
@@ -56,8 +58,8 @@ namespace Taxi.API.Server.Services
                     //dopuskText = string.IsNullOrWhiteSpace(dopusk) ? "Готово" : dopusk,
                     HasActiveMaintenance = TO?.IsDone ?? false,
                     HasOsago = (dop?.Id ?? -1) == 3,
-                    HasTechCheck= (dop?.Id ?? -1) == 4,
-                    HasPermit= (dop?.Id ?? -1) == 5
+                    HasTechCheck = (dop?.Id ?? -1) == 4,
+                    HasPermit = (dop?.Id ?? -1) == 5
 
                 });
             }

@@ -1,0 +1,70 @@
+.boxPaymentMethod {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 3px 10px;
+    justify-content: space-between;
+    color: var(--text-main-color);
+}
+
+.btnPaymentMethod {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 32px;
+    background-color: var(--bg-main-color);
+    /* min-height: 40px; */
+    border-radius: 20px;
+    border: none;
+}
+
+.btnPaymentMethod:hover {
+    cursor: pointer;
+}
+
+#methodPayment {
+    align-items: end;
+    margin-left: auto;
+    color: var(--text-minor-color);
+}
+
+.select-Payment {
+    background-image: url("imgs/select-Method.svg");
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 30px;
+    background-position: center;
+    margin-left: 10px;
+}
+
+.boxBtn-confirm {
+    background-color: var(--bg-main-color);
+    /* min-height: 40px; */
+    border-radius: 20px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.btn-confirm {
+    box-sizing: border-box;
+    appearance: none;
+    outline: none;
+    align-items: center;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--button-action-color);
+    color: var(--text-main-color);
+    border: none;
+    cursor: pointer;
+    border-radius: 16px;
+    min-height: 45px;
+    width: 100%;
+}
+
+.btn-confirm:hover {
+    background-color: var(--components-buttons-action-bgColorHovered);
+}
+
+.btn-confirm:active {
+    background-color: var(--components-buttons-action-bgColorPressed);
+}

@@ -12,10 +12,9 @@ using Taxi.Core.Models.Export;
 
 namespace Taxi.API.Server.Services
 {
-    public class GenerationFilesService(TaxiBaseContext context)
+    public class GenerationFilesService
     {
         
-        private readonly TaxiBaseContext _context = context;
 
         public async Task<byte[]> GenerateExcel(ExportExcelRequest excelRequest)
         {

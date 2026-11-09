@@ -31,10 +31,14 @@ async function init() {
             location: {
                 center: [37.588144, 55.733842],
                 zoom: 10
-            }
+            },
+            theme: theme
+            
         }
     );
-
+    // map.addChild(new YMapDefaultSchemeLayer({
+    //     theme: 'dark'
+    // }));
     map.addChild(new YMapDefaultSchemeLayer());
     map.addChild(new YMapDefaultFeaturesLayer())
 

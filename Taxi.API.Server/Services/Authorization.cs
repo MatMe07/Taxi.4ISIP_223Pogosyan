@@ -12,18 +12,16 @@ using Taxi.Core.Models.DB;
 
 namespace Taxi.API.Server.Services
 {
-    public class Authorization
+    public class Authorization : BaseService
     {
         private PasswordHasher<User> hasher = new PasswordHasher<User>();
 
         private readonly JwtOptions _jwt;
         private readonly SymmetricSecurityKey _signingKey;
-        private readonly TaxiBaseContext _context;
 
 
-        public Authorization(IOptions<JwtOptions> options, TaxiBaseContext context) {
+        public Authorization(IOptions<JwtOptions> options, TaxiBaseContext context):base(context) {
             _jwt = options.Value;
-            _context = context;
             _signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
         }
 

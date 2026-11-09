@@ -3,12 +3,11 @@ using Taxi.Core.Models.DB;
 
 namespace Taxi.API.Server.Services
 {
-    public class PaymentsService
+    public class PaymentsService : BaseService
     {
-        private readonly TaxiBaseContext _context;
-        public PaymentsService(TaxiBaseContext context)
+        public PaymentsService(TaxiBaseContext context) : base(context)
         {
-            _context = context;
+
         }
 
         public IEnumerable<PaymentMethodDTO> GetPaymentMethods()

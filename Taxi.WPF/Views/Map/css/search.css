@@ -1,0 +1,203 @@
+#boxMain {
+    background: var(--bg-secondary-color);
+    border-radius: 20px;
+    display: inline-block;
+    position: absolute;
+    top: 100px;
+    left: 16px;
+    z-index: 1000;
+    width: 360px;
+    /* max-width: 300px; */
+}
+
+#searchBox {
+    background: var(--bg-main-color);
+    border-radius: 20px;
+    /* box-shadow: 0 4px 20px var(--shadow-search-color); */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+#search.searchDefault {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: var(--text-black-color);
+    background-position: 18px center, bottom;
+    background-size: 24px 24px, 100% 1px;
+    background-repeat: no-repeat;
+    background: var(--bg-main-color);
+    width: 100%;
+}
+
+#search::placeholder {
+    color: var(--text-placeholder-color);
+}
+
+.krug-Red {
+    width: 24px;
+    height: 24px;
+    margin-inline-end: 15px;
+    background-image:
+        url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="7" stroke="%23FF5500" stroke-width="4"/></svg>'),
+        linear-gradient(to right, transparent 52px, var(--border-light-color) 52px, var(--border-light-color) calc(100% - 20px), transparent calc(100% - 20px));
+}
+
+.wrapper-field {
+    display: flex;
+    align-items: center;
+    padding: 18px;
+    position: relative;
+}
+
+.fieldInput {
+    width: 100%;
+    /* padding: 0px 18px; */
+}
+
+.hintSearch2 {
+    z-index: 1;
+    position: absolute;
+    font-size: 16px;
+    transition: font-size .3s;
+    color: var(--text-minor-color);
+    bottom: unset;
+    pointer-events: none;
+}
+
+.hintSearch2.active {
+    top: 5px;
+    bottom: unset;
+    font-size: 12px;
+}
+
+.hintSearch2.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#search2.searchDefault2 {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: var(--text-black-color);
+    background-position: 18px center;
+    background-size: 24px 24px;
+    background-repeat: no-repeat;
+    background: var(--bg-main-color);
+    width: 100%;
+}
+
+#notice {
+    display: none;
+}
+
+.krug {
+    width: 24px;
+    height: 24px;
+    margin-inline-end: 15px;
+    background-image: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="7" stroke="%23000000" stroke-width="4"/></svg>');
+}
+
+.suggest-list {
+    list-style: none;
+    padding: 4px 0;
+    margin: 0;
+    scrollbar-width: none;
+    background: var(--bg-main-color);
+    border-radius: 20px;
+    box-shadow: 0 8px 20px var(--shadow-suggest-color);
+    width: 360px;
+    left: 100px;
+    max-height: 200px;
+    padding: 11px;
+    position: absolute;
+    z-index: 1000;
+    font-family: 'YS Text', 'Helvetica Neue', Arial, sans-serif;
+    color: var(--text-main-color);
+    /* -webkit-font-smoothing: antialiased; */
+    overflow-y: auto;
+}
+
+.suggest-item:before {
+    inset-inline-end: 8px;
+    content: "";
+    border-bottom: .5px solid var(--separator-color);
+    bottom: 0;
+    height: 1px;
+    position: absolute;
+    inset-inline-start: 48px;
+}
+
+.suggest-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.1s ease;
+    padding: 10px 10px;
+    border-radius: 15px;
+    border-bottom: 1px solid transparent;
+}
+
+.suggest-item:hover {
+    background-color: var(--hover-bg-color);
+}
+
+.suggest-item.active {
+    background-color: var(--button-minor-color);
+}
+
+/* Иконка */
+.suggest-icon {
+    margin-left: 5px;
+    flex-shrink: 0;
+    margin-block-start: 5px;
+}
+
+.suggest-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.suggest-title {
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 400;
+    color: var(--link-color);
+    white-space: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
+
+.suggest-subtitle {
+    font-size: 13px;
+    line-height: 15px;
+    color: var(--text-minor-color);
+    white-space: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.suggest-distance {
+    font-size: 13px;
+    color: var(--text-minor-color);
+    margin-left: 12px;
+    flex-shrink: 0;
+    text-align: right;
+}
+
+.suggest-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.suggest-list::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb-color);
+    border-radius: 4px;
+}
