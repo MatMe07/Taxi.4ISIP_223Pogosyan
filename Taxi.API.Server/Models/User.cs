@@ -41,8 +41,6 @@ public partial class User
 
     public virtual ICollection<Maintenance> Maintenances { get; set; } = new List<Maintenance>();
 
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
-
     public virtual ICollection<PoezdkaRating> PoezdkaRatingRatedByUsers { get; set; } = new List<PoezdkaRating>();
 
     public virtual ICollection<PoezdkaRating> PoezdkaRatingRatedUsers { get; set; } = new List<PoezdkaRating>();

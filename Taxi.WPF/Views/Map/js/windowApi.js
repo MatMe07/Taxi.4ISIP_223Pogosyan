@@ -1,24 +1,21 @@
 async function setPoint(which, lat, lon, address) {
     await ymaps3.ready;
-
-    hideNotice('search');
-    hideNotice("search2");
     
     if (which !== 'from' && which !== 'to') {
         console.warn('Неизвестная точка:', which);
         return;
     }
 
-    console.info("which = "+which);
-    console.info("lat = "+lat);
-    console.info("lon = "+ lon);
-    console.info("address = "+ address);
+    // console.info("which = "+which);
+    // console.info("lat = "+lat);
+    // console.info("lon = "+ lon);
+    // console.info("address = "+ address);
     if (which == 'from') {
         addressOtkuda = address;
         addressOtkudaCoord = { lat: lat, lon: lon };
         addressUser = { lat: addressOtkudaCoord.lat, lon: addressOtkudaCoord.lon };
 
-        console.info("Новый адрес: " + JSON.stringify(addressOtkudaCoord));
+        // console.info("Новый адрес: " + JSON.stringify(addressOtkudaCoord));
 
         if (!IsSearchInput1)
             input_seach1.value = address;
@@ -28,20 +25,19 @@ async function setPoint(which, lat, lon, address) {
 
     } else {
         addressKuda = address;
-        console.info(addressKuda);
+        // console.info(addressKuda);
         input_seach2.value = address;
     }
     await applyPoint(which, [lon, lat], address);
 };
 async function setAddressOtkuda(which, lat, lon, address) {
     await ymaps3.ready;
-    hideNotice('search');
     addressOtkuda = address;
     addressOtkudaCoord = { lat: lat, lon: lon };
     addressUser = { lat: lat, lon: lon };
 
     // addressUser = {lat:lat,lon}
-    console.info("Новый адрес: " + JSON.stringify(addressOtkudaCoord));
+    // console.info("Новый адрес: " + JSON.stringify(addressOtkudaCoord));
     input_seach1.value = address;
     placeholderSearch1.classList.add('active');
 
@@ -51,9 +47,6 @@ async function setAddressOtkuda(which, lat, lon, address) {
 
 };
 
-function showNoticeFunc(text) {
-    showNotice(text);
-};
 
 
 function SetAllTariff(tariffs, routeInfo) {
@@ -66,8 +59,6 @@ function SetAllTariff(tariffs, routeInfo) {
 
 
 function SetDefaultSet(paymentMethodsLst, selectPaymentMethod){
-    console.info(paymentMethodsLst);
-    console.info(selectPaymentMethod);
     selectedPaymentMethod = selectPaymentMethod;
     PaymentMethodList = []
     paymentMethodsLst.forEach(element => {
@@ -78,37 +69,69 @@ function SetDefaultSet(paymentMethodsLst, selectPaymentMethod){
 
 }
 
+function changeTheme(themeUs){
+    theme = themeUs;
+    root.setAttribute('data-theme', theme);
+    
+    map.update({ theme: theme });
+    if (routeLine){
+        routeLine.update({
+        style: {
+            stroke: [{
+                color: rootStyles.getPropertyValue('--route-color').trim(),
+                width: 4,
+                opacity: 1.0
+            }]
+        }
+    });
+
+    }
+}
+
+var CurrentOrder = null;
+function goToWaitingDriver(isCreated, orderId){
+ if (isCreated){
+    CurrentOrder = orderId;
+    init_WaitingScreen();
+    order_screen.style.display = 'none';
+    waiting_screen.style.display = 'block';
+ }
+}
+
 window.chrome.webview.addEventListener('message', async event => {
+    console.info("Message from C#");
     const command = event.data; 
     const { type, payload } = command;
+    console.info("payload = ");
+    // console.info(payload);
     switch (type) {
         case 'SetDefaultSet':
             console.info(payload);
-            console.info("--------------------------");
             SetDefaultSet(payload.allPaymentsMethod, payload.selectPaymentMethod);
             break;
         case 'setPoint':
-            console.info('payload_setPoint= ');
-            console.info(payload);
             await setPoint(payload.which, payload.lat, payload.lon, payload.address);
             SetAllTariff(payload.tariffs, payload.routeInfo);
             break;
         case 'setAddressOtkuda':
-            console.info('payload_setPoint= '+ payload);
             await setAddressOtkuda(payload.which, payload.lat, payload.lon, payload.address);
             SetAllTariff(payload.tariffs, payload.routeInfo);
             break;
-        case 'showNotice':
-            console.info(payload);
-            showNoticeFunc(payload.text);
+        case 'changeTheme':{
+            changeTheme(payload.theme);
+            break;
+        }
+        case 'updateTariff':
+            SetAllTariff(payload.tariffs, payload.routeInfo);
             break;
         case 'showRoute':
-            console.info("-------------------------------------------------dsfsdfsdf----sdf");
-            console.info(payload);
-            
             await showRoute(payload.coordinates, payload.startPoint, payload.endPoint);
             SetAllTariff(payload.tariffs, payload.routeInfo);
+            break;
 
+        case 'GoToWaitingDriver':
+            console.info(payload);
+            goToWaitingDriver(payload.isCreated, payload.orderId);
             break;
     }
 

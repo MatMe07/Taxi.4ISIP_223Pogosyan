@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Taxi.Core.Models.DB;
 using Taxi.WPF.Models;
 using Taxi.WPF.Services.Interfaces;
 using Windows.ApplicationModel.VoiceCommands;
@@ -51,6 +52,11 @@ namespace Taxi.WPF.Services
             AppSettings.Instance.Theme = style;
             
             ChangeSettings();
+        }
+
+        public void AddUser(UserDTO user)
+        {
+            AppSettings.Instance.userSession.User = user;
         }
 
         public static void ChangeSettings()

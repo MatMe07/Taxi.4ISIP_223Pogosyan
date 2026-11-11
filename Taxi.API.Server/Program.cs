@@ -69,6 +69,7 @@ builder.Services.AddMemoryCache();
 builder.Services.AddTransient<VehiclesServices>();
 builder.Services.AddTransient<TariffService>();
 builder.Services.AddTransient<PaymentsService>();
+builder.Services.AddTransient<OrderService>();
 
 
 builder.Services.AddTransient<PoesdkaService>();

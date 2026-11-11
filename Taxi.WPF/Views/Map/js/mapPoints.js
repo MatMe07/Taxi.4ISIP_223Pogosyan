@@ -1,12 +1,12 @@
 async function applyPoint(which, coords, address) {
-    console.info(map);
+    // console.info(map);
     // var pm = new YMapDefaultMarker(new YMaps.GeoPoint(coords));
     await ymaps3.ready;
 
 
 
     if (which === 'from') {
-        console.info(markerOtkuda);
+        // console.info(markerOtkuda);
         if (markerOtkuda != null)
             map.removeChild(markerOtkuda);
 
@@ -38,7 +38,7 @@ async function applyPoint(which, coords, address) {
         });
     }
     else {
-        console.info(markerKuda);
+        // console.info(markerKuda);
         if (markerKuda != null)
             map.removeChild(markerKuda);
         const markerElement = document.createElement('div');

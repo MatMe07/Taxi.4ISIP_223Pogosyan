@@ -110,6 +110,8 @@ namespace Taxi.WPF
 
             services.AddTransient<ProfileService>();
 
+            services.AddTransient<OrderService>();
+
 
 
             services.AddTransient<UsersViewModel>();

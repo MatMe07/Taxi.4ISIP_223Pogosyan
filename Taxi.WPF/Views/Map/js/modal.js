@@ -16,7 +16,14 @@ function btnClickConfrim() {
         input_seach2.classList.add('input-error');
         return;
     }
-
+    postToHost({
+            "type": 'createNewOrder', 
+            // "addressKuda":addressKuda,
+            // "addressOtkuda":addressOtkudacreateNewOrder,
+            "selectTariff":selectTariff.id.toString(),
+            "paymentId":selectedPaymentMethod.toString(),
+            "paymentAmount": selectTariff.price.toString()
+        });
 }
 
 function init_RBPaymentMethod() {
@@ -36,7 +43,7 @@ function init_RBPaymentMethod() {
         });
         clickedRadio.classList.add("selected");
         selectedPaymentMethod = clickedRadio.dataset.method;
-        console.info(outputFieldPayMethod);
+        // console.info(outputFieldPayMethod);
         outputFieldPayMethod.textContent = PaymentMethodList.find(p=>p.id==selectedPaymentMethod).name;
         // console.info
         postToHost({type:'changePaymentMethod',selectedPaymentMethodId: selectedPaymentMethod});
@@ -51,9 +58,10 @@ function UpdateRBPaymentMethod() {
     var innerHtml = ``;
     var ClassSelected = "";
     PaymentMethodList.forEach(element => {
+        console.info(element);
+        console.info(selectedPaymentMethod);
         if (selectedPaymentMethod === element.id){
-
-            console.info(selectedPaymentMethod);
+            // console.info(selectedPaymentMethod);
             ClassSelected = "selected";
         }
         else {
@@ -90,4 +98,24 @@ function ShowSnackbar(message) {
     x.innerHTML = `<span>${message}</span>`;
     x.className = "show";
     setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+}
+
+
+function btnModalWaitOpen(){
+    document.querySelector('.ModalWait').classList.add("open");
+}
+
+function btnCloseModalWait() {
+    document.querySelector('.ModalWait').classList.remove("open");
+    // console.info(selectedPaymentMethod);
+}
+
+function closeModalWaiting(){
+    order_screen.style.display = 'block';
+    waiting_screen.style.display = 'none';
+    document.querySelector('.ModalWait').classList.remove("open");
+    clearAnim();
+    showTariffsSkeleton();
+    postToHost({type:'cancelOrder', orderId: CurrentOrder.toString()});
+    postToHost({type:'updateTariffs'});
 }

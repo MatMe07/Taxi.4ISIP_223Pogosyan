@@ -20,19 +20,6 @@ function postToHost(message) {
     }
 }
 
-function showNotice(text) {
-    var notice = document.getElementById('notice');
-    notice.textContent = text;
-    notice.classList.add('visible');
-    document.getElementById('search').classList.add('input_error');
-}
-
-function hideNotice(elementId) {
-    var notice = document.getElementById('notice');
-    notice.textContent = '';
-    notice.classList.remove('visible');
-    document.getElementById(elementId).classList.remove('input_error');
-}
 
 function getUserLocation() {
     // postToHost({type:"getUserLocation"});
@@ -60,7 +47,7 @@ function setupSearchInput(input, placeholder, getAddress, onBlurExtra) {
         if (input.value.trim() !== '') {
             placeholder.classList.add('hidden');
             if (input.id === 'search' && input.value.trim().length > 0){
-                console.info('Уже пишется');
+                // console.info('Уже пишется');
                 IsSearchInput1 = true;
             }
         } else {
@@ -82,7 +69,7 @@ function setupSearchInput(input, placeholder, getAddress, onBlurExtra) {
         } else {
             placeholder.classList.remove('active', 'hidden');
             if (input.id === 'search'){
-                console.info('Вышел из фокуса');
+                // console.info('Вышел из фокуса');
 
                 IsSearchInput1 = false;
             }

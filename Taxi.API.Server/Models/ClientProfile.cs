@@ -9,7 +9,7 @@ public partial class ClientProfile
 {
     public int Id { get; set; }
 
-    public int UserId { get; set; } 
+    public int UserId { get; set; }
 
     public int? DefaultPaymentMethodId { get; set; }
 

@@ -11,11 +11,7 @@ public partial class Order
 
     public int ClientId { get; set; }
 
-    public int DispatcherId { get; set; }
-
     public int StatusId { get; set; }
-
-    public int ClassId { get; set; }
 
     public int TariffId { get; set; }
 
@@ -23,19 +19,11 @@ public partial class Order
 
     public string KudaAddress { get; set; }
 
-    public int PassengersCount { get; set; }
-
-    public string Comment { get; set; }
-
     public int PaymentMethodId { get; set; }
 
     public decimal PaymentAmount { get; set; }
 
-    public DateTime PaidAt { get; set; }
-
-    public bool IsPreliminary { get; set; }
-
-    public DateTime ScheduledAt { get; set; }
+    public DateTime? PaidAt { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -43,13 +31,9 @@ public partial class Order
 
     public string CancelReason { get; set; }
 
-    public virtual VehicleClass Class { get; set; }
-
     public virtual ClientProfile Client { get; set; }
 
     public virtual ICollection<Complaint> Complaints { get; set; } = new List<Complaint>();
-
-    public virtual User Dispatcher { get; set; }
 
     public virtual PaymentMethod PaymentMethod { get; set; }
 

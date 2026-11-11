@@ -53,12 +53,13 @@
     position: relative;
     overflow: hidden;
     background-color: var(--button-action-color);
-    color: var(--text-main-color);
+    color: white;
     border: none;
     cursor: pointer;
     border-radius: 16px;
     min-height: 45px;
     width: 100%;
+    font-size: 16px;
 }
 
 .btn-confirm:hover {

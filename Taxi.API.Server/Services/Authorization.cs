@@ -143,6 +143,54 @@ namespace Taxi.API.Server.Services
         }
 
 
+        public async Task<UserDTO> GetUserAccAsync(int userId)
+        {
+            var account = await _context.Users.Include(u=>u.Role).FirstOrDefaultAsync(u=>u.Id == userId);
+            var userDto = new UserDTO
+            {
+                Id = account.Id,
+                Login = account.Login,
+                LastName = account.LastName,
+                FirstName = account.FirstName,
+                MiddleName = account.MiddleName,
+                Phone = account.Phone,
+                isActive = account.IsActive,
+                RoleId = account.RoleId,
+                RoleName = account.Role?.Name ?? "",
+                CreatedAt = account.CreatedAt
+            };
+            if (userDto.RoleName == "Клиент")
+            {
+                var clientProf = await _context.ClientProfiles.Include(c=>c.DefaultPaymentMethod).FirstOrDefaultAsync(a => a.UserId == userId);
+                if (clientProf == null) return null;
+                userDto.ClientProfile = new ClientProfileDTO
+                {
+                    Id = clientProf.Id,
+                    DefaultPaymentMethodId = clientProf.DefaultPaymentMethodId ?? -1,
+                    DefaultPaymentMethodName = clientProf?.DefaultPaymentMethod?.Name ?? "",
+                    Rating = clientProf.Rating,
+                    CreatedAt = clientProf.CreatedAt
+                };
+            }
+            else if (userDto.RoleName == "Водитель")
+            {
+                var driverProf = await _context.DriverProfiles.FirstOrDefaultAsync(d => d.UserId == userId);
+                if (driverProf == null) return null;
+                userDto.DriverProfile = new DriverProfileDTO
+                {
+                    PassportSeries = driverProf.PassportSeries,
+                    PassportNumber = driverProf.PassportNumber,
+                    LicenseCategories = driverProf.LicenseCategories,
+                    LicenseNumber = driverProf.LicenseNumber,
+                    ExperienceYears = driverProf.ExperienceYears,
+                    DateNaima = driverProf.DateNaima,
+                    IsActive = driverProf.IsActive,
+                    SalaryRate = driverProf.SalaryRate,
+                    Rating = driverProf.Rating,
+                };
+            }
+            return userDto;
+        }
 
 
         private string  CreateToken(User account)

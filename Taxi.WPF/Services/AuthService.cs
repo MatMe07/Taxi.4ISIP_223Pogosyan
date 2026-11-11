@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Taxi.Core.Models.Auth;
+using Taxi.Core.Models.DB;
 using Taxi.WPF.Models;
 using Taxi.WPF.Services.Interfaces;
 
@@ -72,6 +73,13 @@ namespace Taxi.WPF.Services
             var result = await response.Content.ReadFromJsonAsync<RegisterResponse>();
             //if (result == null)
             //    throw new InvalidCastException("RegisterNewUser error");
+            return result;
+        }
+
+        public async Task<UserDTO> GetMe()
+        {
+            var response = await _http.GetAsync("api/auth/me");
+            var result = await response.Content.ReadFromJsonAsync<UserDTO>();
             return result;
         }
 

@@ -1,12 +1,9 @@
 async function showRoute(coords, from, to) {
     await ymaps3.ready;
     console.info('Вызвана функция showRoute');
-    console.log(coords);
+    // console.log(coords);
 
 
-
-    hideNotice("search");
-    hideNotice("search2");
 
     var line = [];
 
@@ -29,6 +26,7 @@ async function showRoute(coords, from, to) {
     if (routeLine) {
         map.removeChild(routeLine);
     }
+    
     routeLine = new ymaps3.YMapFeature({
         id: 'CustomLine',
         geometry: {
@@ -37,7 +35,7 @@ async function showRoute(coords, from, to) {
         },
         style: {
             stroke: [{
-                color: '#0000FF55',
+                color: rootStyles.getPropertyValue('--route-color').trim(),
                 width: 4,
                 opacity: 1.0
             }]
@@ -50,12 +48,12 @@ async function showRoute(coords, from, to) {
     const maxLon = Math.max(...lons);
     const minLat = Math.min(...lats);
     const maxLat = Math.max(...lats);
-
-    map.setLocation({
-        bounds: [
+    lastBounds = [
             [minLon, minLat],
             [maxLon, maxLat]
-        ],
+        ];
+    map.setLocation({
+        bounds: lastBounds,
         duration: 600
     });
 

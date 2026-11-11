@@ -24,6 +24,14 @@ body {
 }
 
 :root {
+    --snackbar-bg-color: #333333;
+
+    --fonts-families-main: 'YS Text', 'Helvetica Neue', Arial, sans-serif;
+}
+
+
+[data-theme="light"] {
+    --route-color: #0000FF55;
     --text-black-color: #1A202C;
     --text-main-color: #1A202C;
     --text-minor-color: #64748B;
@@ -35,7 +43,7 @@ body {
     --hover-bg-color: rgba(0, 0, 0, 0.04);
     --skeleton-bg-color: #E4E6EB;
     --skeleton-shine-color: rgba(255, 255, 255, 0.4);
-    --snackbar-bg-color: #333333;
+    --skeleton-fg-color: #E8EDF2;
 
     --button-minor-color: #EEF2F7;
     --button-minor-hover-color: rgba(0, 0, 0, 0.06);
@@ -54,12 +62,10 @@ body {
     --shadow-color-light: rgba(0, 0, 0, 0.15);
     --shadow-search-color: rgba(0, 0, 0, 0.12);
     --shadow-suggest-color: rgba(117, 115, 111, 0.2);
-
-    --fonts-families-main: 'YS Text', 'Helvetica Neue', Arial, sans-serif;
 }
 
-
 [data-theme="dark"] {
+    --route-color: #D8D8D6;
     --text-black-color: #E8EDF2;
     --text-main-color: #E8EDF2;
     --text-minor-color: #A0AEBD;
@@ -71,10 +77,11 @@ body {
     --hover-bg-color: rgba(255, 255, 255, 0.08);
     --skeleton-bg-color: #2D3742;
     --skeleton-shine-color: rgba(255, 255, 255, 0.08);
-    --snackbar-bg-color: #E8EDF2;
+    --skeleton-fg-color: #1A202C;
+
 
     --button-minor-color: #242C36;
-    --button-minor-hover-color: rgba(255, 255, 255, 0.12);
+    --button-minor-hover-color: #ffffff1f;
     --button-action-color: #1E5AA8;
     --components-buttons-action-bgColorHovered: #164A8C;
     --components-buttons-action-bgColorPressed: #0F3A70;
@@ -91,5 +98,4 @@ body {
     --shadow-search-color: rgba(0, 0, 0, 0.4);
     --shadow-suggest-color: rgba(0, 0, 0, 0.5);
 
-    --fonts-families-main: 'YS Text', 'Helvetica Neue', Arial, sans-serif;
 }

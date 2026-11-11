@@ -1,0 +1,137 @@
+#waiting-screen{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--overlay-color);
+    /* z-index: 9999; */
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    opacity: 1;
+}
+
+.search-waiting {
+    background: var(--bg-main-color);
+    color:var(--text-black-color);
+    border-radius: 20px;
+    padding: 10px 15px;
+    margin-block-end: 5px;
+}
+
+.header-waiting {
+    display: flex;
+    justify-content: space-between;
+}
+
+#searchBox-waiting {
+    background: var(--bg-main-color);
+    border-radius: 20px 20px 0px 0px;
+    /* box-shadow: 0 4px 20px var(--shadow-search-color); */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+.searchTaxiText {
+    font-size: 18px;
+    font-weight: 600;
+
+    background-color: var(--text-black-color);
+    color: white;
+    border-color: transparent;
+    position: relative;
+    overflow: hidden;
+
+    background-image: linear-gradient(
+        45deg,
+        transparent 40%,
+        var(--skeleton-fg-color) 60%,
+        transparent 80%
+    );
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-size: 300% 100%;
+    background-position: 100% 0; 
+    animation: gradientAnimation 1.3s infinite linear;
+}
+
+@keyframes gradientAnimation {
+    0%   { 
+        background-position: 100% 0;
+     }
+    100% { 
+        background-position: 0% 0;
+     }
+}
+
+.Txt--Waiting{
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: var(--text-black-color);
+    background-position: 18px center, bottom;
+    background-size: 24px 24px, 100% 1px;
+    background-repeat: no-repeat;
+    background: var(--bg-main-color);
+    width: 100%;
+}
+
+.input-waiting::after {
+  content: "";
+  display: block;
+  width: 100%;   
+  height: 0.5px;  
+  background-color: #ddd;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.waiting-paymentMethod{
+    background: var(--bg-main-color);
+    padding: 10px 15px;
+    
+}
+.backBtn{
+    display: flex;
+
+}
+
+.btnCloseWait{
+    background: var(--bg-main-color);
+    padding: 10px 15px;
+    border-radius: 0px 0px 20px 20px;
+    width: 100%;
+    border: none;
+    /* display: flex; */
+
+}
+
+.btnCloseWait::before {
+  content: "";
+  display: block;
+  width: 100%;   
+  height: 0.5px;  
+  background-color: #ddd;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+    margin-top: -10px;
+}
+
+.btnCloseWait:hover{
+    background-color: var(--button-minor-hover-color);
+    cursor: pointer;
+}
+.btnCloseWait:active{
+    background-color: var(--button-minor-color);
+    cursor: pointer;
+}
+
+.footer-waiting{
+    display: flex;
+    gap: 10px;
+}
+
+

@@ -1,10 +1,22 @@
 var map = null;
+var rootStyles = null;
+
+
+var waiting_screen = null;
+var order_screen = null;
+
 var suggestView = null;
 var suggestView2 = null;
+
 var routeLine = null;
+var lastBounds = null;
+
 var selectTariff = tariffsList[0] ;
+
 var modelWindow = null;
+
 var points = { from: null, to: null };
+
 var selectedPaymentMethod = -1; 
 // var PaymentMethodListElement = null; 
 var PaymentMethodList = []; 
@@ -33,3 +45,4 @@ var markerKuda = null;
 
 var placeholderSearch1 = null;
 var placeholderSearch2 = null;
+

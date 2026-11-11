@@ -24,7 +24,7 @@ function inti_Traffics() {
         const clickedButton = event.target.closest('.btnTariffs');
         if (!clickedButton) return;
         selectTariff = tariffsList.find(t => t.id == clickedButton.id);
-        console.info(selectTariff);
+        // console.info(selectTariff);
 
         tariffContainer.querySelectorAll('.btnTariffs').forEach(btn => {
             btn.setAttribute('aria-pressed', 'false');
@@ -48,10 +48,10 @@ function inti_Traffics() {
 function UpdateTariff() {
     const tariffContainer = document.querySelector(".tariffWrapper");
     tariffContainer.innerHTML = '';
-    console.info("VIZZOOVVV");
-    console.info(tariffsList);
+    // console.info("VIZZOOVVV");
+    // console.info(tariffsList);
     tariffsList.forEach(tarif => {
-        console.info(tarif);
+        // console.info(tarif);
         if (!tarif.isRoute) {
             const disabledButtonHTML = `
         <button role="radio" aria-pressed="false" aria-checked="false" id="${tarif.id}" class="btnTariffs disabled" disabled style="opacity: 0.6; cursor: not-allowed;">

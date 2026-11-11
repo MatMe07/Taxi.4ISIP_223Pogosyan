@@ -31,10 +31,10 @@
     background: var(--bg-main-color);
     width: 100%;
 }
-
+/* 
 #search::placeholder {
     color: var(--text-placeholder-color);
-}
+} */
 
 .krug-Red {
     width: 24px;
@@ -88,10 +88,6 @@
     background-repeat: no-repeat;
     background: var(--bg-main-color);
     width: 100%;
-}
-
-#notice {
-    display: none;
 }
 
 .krug {

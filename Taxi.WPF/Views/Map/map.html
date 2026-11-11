@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="css/skeleton.css">
     <link rel="stylesheet" href="css/snackbar.css">
 
+    <link rel="stylesheet" href="css/waiting.css">
+
 </head>
 
 <body>
@@ -35,96 +37,101 @@
     <script src="js/route.js"></script>
     <script src="js/windowApi.js"></script>
     <script src="js/suggest.js"></script>
+    <script src="js/waiting.js"></script>
+
     <div id="map"></div>
-    <div id="boxMain">
-        <div id="searchBox">
-            <div class="suggest-container">
-                <div class="wrapper-field">
-                    <div class="krug-Red">
+    <div id="ui-layer">
+        <div id="order-screen" style="display: block;">
+
+            <div id="boxMain">
+                <div id="searchBox">
+                    <div class="suggest-container">
+                        <div class="wrapper-field">
+                            <div class="krug-Red">
+                            </div>
+                            <div class="fieldInput">
+                                <span class="hintSearch2" id="placeholderSearch1">Откуда?</span>
+                                <input id="search" class="searchDefault" autocomplete="off">
+                                <!-- <input id="search2" class="searchDefault2" autocomplete="off"> -->
+
+                            </div>
+                        </div>
+                        <ul id="suggest-list1" class="suggest-list" style="display: none;">
+                        </ul>
 
                     </div>
-                    <div class="fieldInput">
-                        <span class="hintSearch2" id="placeholderSearch1">Откуда?</span>
-                        <input id="search" class="searchDefault" autocomplete="off">
-                        <!-- <input id="search2" class="searchDefault2" autocomplete="off"> -->
+
+                    <!-- <p id="notice"></p> -->
+                    <div class="suggest-container">
+                        <div class="wrapper-field">
+                            <div class="krug">
+
+                            </div>
+                            <div class="fieldInput">
+                                <span class="hintSearch2" id="placeholderSearch2">Куда?</span>
+                                <input id="search2" class="searchDefault2" autocomplete="off">
+
+                            </div>
+
+                        </div>
+                        <ul id="suggest-list2" class="suggest-list" style="display: none;"></ul>
 
                     </div>
                 </div>
-                <ul id="suggest-list1" class="suggest-list" style="display: none;">
-                </ul>
 
-            </div>
 
-            <p id="notice"></p>
-            <div class="suggest-container">
-                <div class="wrapper-field">
-                    <div class="krug">
-
-                    </div>
-                    <div class="fieldInput">
-                        <span class="hintSearch2" id="placeholderSearch2">Куда?</span>
-                        <input id="search2" class="searchDefault2" autocomplete="off">
-
-                    </div>
+                <div>
+                    <fieldset role="radiogroup" aria-busy="false" class="tariffWrapper">
+                    </fieldset>
 
                 </div>
-                <ul id="suggest-list2" class="suggest-list" style="display: none;"></ul>
+                <button class="btnPaymentMethod" onclick="btnModelOpen()" style="display: none;">
+                    <div class="boxPaymentMethod">
+                        <p class="">Способ оплаты</p>
+                        <span id="methodPayment"></span>
+                        <span class="select-Payment"></span>
+                    </div>
 
-            </div>
-        </div>
-
-
-        <div>
-            <fieldset role="radiogroup" aria-busy="false" class="tariffWrapper">
-            </fieldset>
-
-        </div>
-        <button class="btnPaymentMethod" onclick="btnModelOpen()" style="display: none;">
-            <div class="boxPaymentMethod">
-                <p class="">Способ оплаты</p>
-                <span id="methodPayment"></span>
-                <span class="select-Payment"></span>
-            </div>
-
-        </button>
-        <dialog>
-        </dialog>
+                </button>
+                <dialog>
+                </dialog>
 
 
 
-        <div class="boxBtn-confirm">
-            <button class="btn-confirm" onclick="btnClickConfrim()" id="btn-confirm" aria-disabled="false"
-                aria-busy="false" aria-pressed="false" type="button" data-react-aria-pressable="true" tabindex="0">
-                Заказать
-            </button>
-        </div>
-
-
-
-    </div>
-    <div id="snackbar">
-
-    </div>
-
-    <div class="Modal modal-overlay">
-        <div class="modal-container">
-
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title">Способ оплаты</h2>
-                    <button class="modal-close" aria-label="Закрыть" onclick="closeModel()">
-                        <svg class="icon--J9Shg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22ZM7.403 7.403C7.59053 7.21553 7.84484 7.11021 8.11 7.11021C8.37516 7.11021 8.62947 7.21553 8.817 7.403L12 10.586L15.183 7.403C15.2752 7.30749 15.3856 7.23131 15.5076 7.1789C15.6296 7.12649 15.7608 7.0989 15.8936 7.09775C16.0264 7.0966 16.1581 7.1219 16.281 7.17218C16.4039 7.22246 16.5155 7.29671 16.6094 7.3906C16.7033 7.4845 16.7775 7.59615 16.8278 7.71905C16.8781 7.84194 16.9034 7.97362 16.9023 8.1064C16.9011 8.23918 16.8735 8.3704 16.8211 8.4924C16.7687 8.61441 16.6925 8.72475 16.597 8.817L13.414 12L16.597 15.183C16.7792 15.3716 16.88 15.6242 16.8777 15.8864C16.8754 16.1486 16.7702 16.3994 16.5848 16.5848C16.3994 16.7702 16.1486 16.8754 15.8864 16.8777C15.6242 16.88 15.3716 16.7792 15.183 16.597L12 13.414L8.817 16.597C8.6284 16.7792 8.3758 16.88 8.1136 16.8777C7.8514 16.8754 7.60059 16.7702 7.41518 16.5848C7.22977 16.3994 7.1246 16.1486 7.12233 15.8864C7.12005 15.6242 7.22084 15.3716 7.403 15.183L10.586 12L7.403 8.817C7.21553 8.62947 7.11021 8.37516 7.11021 8.11C7.11021 7.84484 7.21553 7.59053 7.403 7.403Z"
-                                fill="currentColor"></path>
-                        </svg>
+                <div class="boxBtn-confirm">
+                    <button class="btn-confirm" onclick="btnClickConfrim()" id="btn-confirm" aria-disabled="false"
+                        aria-busy="false" aria-pressed="false" type="button" data-react-aria-pressable="true"
+                        tabindex="0">
+                        Заказать
                     </button>
                 </div>
 
-                <div class="payment-list">
 
-                    <!-- <div class="payment-row selected" data-method="cash">
+
+            </div>
+            <div id="snackbar">
+
+            </div>
+
+            <div class="Modal modal-overlay">
+                <div class="modal-container">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title">Способ оплаты</h2>
+                            <button class="modal-close" aria-label="Закрыть" onclick="closeModel()">
+                                <svg class="icon--J9Shg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22ZM7.403 7.403C7.59053 7.21553 7.84484 7.11021 8.11 7.11021C8.37516 7.11021 8.62947 7.21553 8.817 7.403L12 10.586L15.183 7.403C15.2752 7.30749 15.3856 7.23131 15.5076 7.1789C15.6296 7.12649 15.7608 7.0989 15.8936 7.09775C16.0264 7.0966 16.1581 7.1219 16.281 7.17218C16.4039 7.22246 16.5155 7.29671 16.6094 7.3906C16.7033 7.4845 16.7775 7.59615 16.8278 7.71905C16.8781 7.84194 16.9034 7.97362 16.9023 8.1064C16.9011 8.23918 16.8735 8.3704 16.8211 8.4924C16.7687 8.61441 16.6925 8.72475 16.597 8.817L13.414 12L16.597 15.183C16.7792 15.3716 16.88 15.6242 16.8777 15.8864C16.8754 16.1486 16.7702 16.3994 16.5848 16.5848C16.3994 16.7702 16.1486 16.8754 15.8864 16.8777C15.6242 16.88 15.3716 16.7792 15.183 16.597L12 13.414L8.817 16.597C8.6284 16.7792 8.3758 16.88 8.1136 16.8777C7.8514 16.8754 7.60059 16.7702 7.41518 16.5848C7.22977 16.3994 7.1246 16.1486 7.12233 15.8864C7.12005 15.6242 7.22084 15.3716 7.403 15.183L10.586 12L7.403 8.817C7.21553 8.62947 7.11021 8.37516 7.11021 8.11C7.11021 7.84484 7.21553 7.59053 7.403 7.403Z"
+                                        fill="currentColor"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="payment-list">
+
+                            <!-- <div class="payment-row selected" data-method="cash">
                         <div class="payment-info">
                             <img src="imgs/paymentMethod/cash.svg" alt="Наличные" class="payment-icon">
                             <span class="payment-name">Наличные</span>
@@ -143,16 +150,120 @@
                     </div> -->
 
 
+                        </div>
+                    </div>
+
+                    <div class="modal-footer modal-close" onclick="closeModel()">
+                        <button class="btn-primary-close">Закрыть</button>
+                    </div>
+
+
                 </div>
             </div>
+        </div>
 
-            <div class="modal-footer modal-close" onclick="closeModel()">
-                <button class="btn-primary-close">Закрыть</button>
+
+
+
+
+
+        <div id="waiting-screen" style="display: none;">
+            <div id="boxMain">
+                <div class="search-waiting">
+                    <div class="header-waiting">
+                        <span class="searchTaxiText">Поиск такси</span>
+                        <div id="clockWaiting">00:00</div>
+                    </div>
+                    <span>
+                        Есть несколько машин поблизости
+                    </span>
+
+                </div>
+                <div class="input-waiting">
+                    <div id="searchBox-waiting">
+                        <div class="suggest-container">
+                            <div class="wrapper-field">
+                                <div class="krug-Red">
+                                </div>
+                                <div class="fieldInput">
+                                    <span class="hintSearch2 active" id="placeholderSearch1">Откуда?</span>
+                                    <input id="search1Waiting" class="searchDefault Txt--Waiting" autocomplete="off" readonly>
+                                    <!-- <input id="search2" class="searchDefault2" autocomplete="off"> -->
+
+                                </div>
+                            </div>
+                            <ul id="suggest-list1" class="suggest-list" style="display: none;">
+                            </ul>
+
+                        </div>
+
+                        <div class="suggest-container">
+                            <div class="wrapper-field">
+                                <div class="krug">
+                                </div>
+                                <div class="fieldInput">
+                                    <span class="hintSearch2 active" id="placeholderSearch2">Куда?</span>
+                                    <input id="search2Waiting" class="searchDefault2 Txt--Waiting" autocomplete="off" readonly>
+                                </div>
+
+                            </div>
+                            <ul id="suggest-list2" class="suggest-list" style="display: none;"></ul>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="waiting-paymentMethod">
+                    <!-- <div class="payment-info">
+                        <img src="imgs/paymentMethod/mir.png" alt="${element.name}" class="payment-icon">
+                        <span class="payment-name">Онлайн СБП</span>
+                    </div> -->
+                </div>
+
+                <button class="btnCloseWait" onclick="btnModalWaitOpen()">
+                    <!-- <div class="btnCloseWait"> -->
+                        <div class="backBtn" style="color: #FF3B30; align-items: center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="15" height="15" style="margin-right: 5px;">
+                                <polygon points="30,10 70,10 90,30 90,70 70,90 30,90 10,70 10,30" fill="none"
+                                    stroke="#FF3B30" stroke-width="8" stroke-linejoin="round" />
+                                <g stroke="#FF3B30" stroke-width="8" stroke-linecap="round">
+                                    <line x1="38" y1="38" x2="62" y2="62" />
+                                    <line x1="62" y1="38" x2="38" y2="62" />
+                                </g>
+                            </svg>
+                            <span>Отменить поездку</span>
+                        </div>
+                    <!-- </div> -->
+
+                </button>
+
+
             </div>
 
+            <div class="ModalWait modal-overlay">
+                <div class="modal-container">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title">Уверены, что хотите отменить заказ?</h2>
+                        </div>
 
+                        <div class="payment-list">
+
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer footer-waiting">
+                        <button class="btn-primary-close" onclick="closeModalWaiting()">Отменить заказ</button>
+                        <button class="btn-confirm" onclick="btnCloseModalWait()">Дождаться</button>
+                    </div>
+
+
+                </div>
+            </div>
         </div>
     </div>
+
 
 
 
@@ -161,23 +272,23 @@
         function successHandler(position) {
             // console.log("Широта: ", position.coords.latitude);
             // console.log("Долгота: ", position.coords.longitude);
-            console.info(addressOtkudaCoord);
+            // console.info(addressOtkudaCoord);
             if (addressOtkudaCoord == null) {
                 addressUser = { lat: position.coords.latitude, lon: position.coords.longitude };
-                console.info(position);
+                // console.info(position);
                 postToHost({ type: 'destinationOtkudaCoord', address_coord: [position.coords.latitude, position.coords.longitude] });
 
-                console.info("posUser: " + JSON.stringify(addressUser));
+                // console.info("posUser: " + JSON.stringify(addressUser));
             }
             else {
                 addressUser = { lat: addressOtkudaCoord.lat, lon: addressOtkudaCoord.lon };
-                console.info("posOtkuda: " + JSON.stringify(addressUser));
+                // console.info("posOtkuda: " + JSON.stringify(addressUser));
 
             }
 
         };
         function errorHandler(error) {
-            console.log(error.message);
+            // console.log(error.message);
             if (addressOtkudaCoord == null)
                 addressUser = { lat: 55.755864, lon: 37.617698 }
             else

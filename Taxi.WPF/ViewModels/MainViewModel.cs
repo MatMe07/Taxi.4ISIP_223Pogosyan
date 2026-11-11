@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Taxi.WPF.Commands;
 using Taxi.WPF.Models;
 using Taxi.WPF.Services;
+using Taxi.WPF.Services.Interfaces;
 using Taxi.WPF.Views;
 
 namespace Taxi.WPF.ViewModels
@@ -45,7 +47,7 @@ namespace Taxi.WPF.ViewModels
                 return _commandOpenProfile ??
                     (_commandOpenProfile = new RelayCommand(obj =>
                     {
-                        if (!CheckUserAuth()) return;
+                        if (!CheckUserAuth().Result) return;
                         RowFrame = 1;
                         frameMain.Navigate(profilePage);
                     }
@@ -71,19 +73,25 @@ namespace Taxi.WPF.ViewModels
         private Page _mainPage;
 
 
-        private bool CheckUserAuth()
+        private async Task<bool> CheckUserAuth()
         {
             if (!AppSettings.Instance.IsAuth)
             {
                 MessageBox.Show("Сначала войдите в систему!!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
+            if ( AppSettings.Instance.userSession.User == null)
+            {
+                _configurationSerivce.AddUser(await authService.GetMe());
+                
+            }
+            
             return true;
         }
 
-        public void LoadNextPageRoleId()
+        public async void LoadNextPageRoleId()
         {
-            if (!CheckUserAuth()) return;
+            if (!await CheckUserAuth()) return;
             switch (AppSettings.Instance.userSession.User.RoleId)
             {
                 case 1:
@@ -120,6 +128,7 @@ namespace Taxi.WPF.ViewModels
         private ProfilePage profilePage;
         private ManagerAutoPage managerAutoPage;
         private AdministratorPage administratorPage;
+        private AuthService authService;
 
 
         private RelayCommand _btnThemsCommand;
@@ -154,13 +163,14 @@ namespace Taxi.WPF.ViewModels
 
         public MainViewModel(MapPage mapPage, ConfigurationService configuration,
             ProfilePage profilePage, ManagerAutoPage managerAutoPage,
-            AdministratorPage administratorPage)
+            AdministratorPage administratorPage, IAuthService authService)
         {
             this.profilePage = profilePage;
             this.mapPage = mapPage;
             _configurationSerivce = configuration;
             this.managerAutoPage = managerAutoPage;
             this.administratorPage = administratorPage;
+            this.authService = authService as AuthService;
         }
 
     }

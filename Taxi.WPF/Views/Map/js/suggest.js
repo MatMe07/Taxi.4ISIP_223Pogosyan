@@ -1,7 +1,7 @@
 function initSuggest(inputId, listId, placeholderType) {
     const input = document.getElementById(inputId);
     const suggestList = document.getElementById(listId);
-    console.log(input);
+    // console.log(input);
 
     if (!input || !suggestList) return;
 
@@ -10,7 +10,7 @@ function initSuggest(inputId, listId, placeholderType) {
         try {
 
             const url = `https://suggest-maps.yandex.ru/v1/suggest?apikey=30756955-06ac-4ef6-8412-dc34183e9b85&text=${text}&print_address=1&attrs=uri&ll=${addressUser.lon},${addressUser.lat}`;
-            console.log("uri - userPoS" + JSON.stringify(addressUser));
+            // console.log("uri - userPoS" + JSON.stringify(addressUser));
             const response = await fetch(url);
             const data = await response.json();
 

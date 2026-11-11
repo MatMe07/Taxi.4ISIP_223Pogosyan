@@ -13,8 +13,6 @@ public partial class VehicleClass
 
     public string Name { get; set; }
 
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
-
     public virtual ICollection<Tariff> Tariffs { get; set; } = new List<Tariff>();
 
     public virtual ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();

@@ -33,9 +33,22 @@ namespace Taxi.API.Server.Controllers
             this.captchaService = captcha;
         }
 
+        [HttpGet("me")]
+        public async Task<IActionResult> GetUserAccAsync()
+        {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (int.TryParse( userIdStr, out int userId)){
+                return Ok(await authorization.GetUserAccAsync(userId));
+
+            }
+            return BadRequest();
+        }
+
+
+
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<IActionResult> AddUserRegister(RegisterRequest request)
+        public async Task<IActionResult> AddUserRegisterAsync(RegisterRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.login))
                 return BadRequest(new RegisterResponse { message = "Логин обязателен" });
@@ -71,7 +84,7 @@ namespace Taxi.API.Server.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<IActionResult> LoginUser(LoginRequest request)
+        public async Task<IActionResult> LoginUserAsync(LoginRequest request)
         {
             string loginKey = $"LoginKey_{request.login}";
 
@@ -166,7 +179,7 @@ namespace Taxi.API.Server.Controllers
 
 
         [HttpPost("changePassword")]
-        public async Task<IActionResult> ChangePassword(ChangePasswordRequst response)
+        public async Task<IActionResult> ChangePasswordAsync(ChangePasswordRequst response)
         {
             if (!string.Equals(response.PasswordNewConfirm, response.PasswordNew))
             {

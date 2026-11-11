@@ -83,7 +83,7 @@ public partial class TaxiBaseContext : DbContext
                 .HasColumnName("created_at");
             entity.Property(e => e.DefaultPaymentMethodId).HasColumnName("default_payment_method_id");
             entity.Property(e => e.Rating)
-                .HasColumnType("decimal(18, 0)")
+                .HasColumnType("decimal(3, 2)")
                 .HasColumnName("rating");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
@@ -350,16 +350,10 @@ public partial class TaxiBaseContext : DbContext
             entity.Property(e => e.CancelledAt)
                 .HasColumnType("datetime")
                 .HasColumnName("cancelled_at");
-            entity.Property(e => e.ClassId).HasColumnName("class_id");
             entity.Property(e => e.ClientId).HasColumnName("client_id");
-            entity.Property(e => e.Comment)
-                .IsRequired()
-                .HasColumnName("comment");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
-            entity.Property(e => e.DispatcherId).HasColumnName("dispatcher_id");
-            entity.Property(e => e.IsPreliminary).HasColumnName("is_preliminary");
             entity.Property(e => e.KudaAddress)
                 .IsRequired()
                 .HasMaxLength(255)
@@ -371,31 +365,17 @@ public partial class TaxiBaseContext : DbContext
             entity.Property(e => e.PaidAt)
                 .HasColumnType("datetime")
                 .HasColumnName("paid_at");
-            entity.Property(e => e.PassengersCount).HasColumnName("passengers_count");
             entity.Property(e => e.PaymentAmount)
                 .HasColumnType("decimal(16, 2)")
                 .HasColumnName("payment_amount");
             entity.Property(e => e.PaymentMethodId).HasColumnName("payment_method_id");
-            entity.Property(e => e.ScheduledAt)
-                .HasColumnType("datetime")
-                .HasColumnName("scheduled_at");
             entity.Property(e => e.StatusId).HasColumnName("status_id");
             entity.Property(e => e.TariffId).HasColumnName("tariff_id");
-
-            entity.HasOne(d => d.Class).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.ClassId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__order__class_id__70DDC3D8");
 
             entity.HasOne(d => d.Client).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.ClientId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__order__client_id__6E01572D");
-
-            entity.HasOne(d => d.Dispatcher).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.DispatcherId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__order__dispatche__6EF57B66");
 
             entity.HasOne(d => d.PaymentMethod).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.PaymentMethodId)
