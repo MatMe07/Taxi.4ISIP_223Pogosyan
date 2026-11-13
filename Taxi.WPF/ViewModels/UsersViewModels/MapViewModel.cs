@@ -34,7 +34,6 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
         private RoutePoint _to;
         private RouteInfo _routeInfeFromTo;
 
-        public WebView2 MyWebView {  get; set; }
         public MapViewModel(GeocodeService _geocodeService, RoutingService _routingService, 
             TariffService _tariffService, PaymentMethodService _paymentMethod, ProfileService _profileSerivce, OrderService orderService)
         {

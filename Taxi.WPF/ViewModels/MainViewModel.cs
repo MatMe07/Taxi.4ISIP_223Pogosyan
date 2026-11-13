@@ -7,6 +7,7 @@ using Taxi.WPF.Models;
 using Taxi.WPF.Services;
 using Taxi.WPF.Services.Interfaces;
 using Taxi.WPF.Views;
+using Taxi.WPF.Views.UserPages;
 
 namespace Taxi.WPF.ViewModels
 {
@@ -89,7 +90,7 @@ namespace Taxi.WPF.ViewModels
             return true;
         }
 
-        public async void LoadNextPageRoleId()
+        public async Task LoadNextPageRoleId()
         {
             if (!await CheckUserAuth()) return;
             switch (AppSettings.Instance.userSession.User.RoleId)
@@ -104,7 +105,7 @@ namespace Taxi.WPF.ViewModels
                     {
                         RowFrame = 0;
                         //frameMain.Navigate(mapPage);
-
+                        _mainPage = driverMapPage;
                         break;
                     }
                 case 3:
@@ -125,6 +126,7 @@ namespace Taxi.WPF.ViewModels
         }
 
         private MapPage mapPage;
+        private DriverMapPage driverMapPage;
         private ProfilePage profilePage;
         private ManagerAutoPage managerAutoPage;
         private AdministratorPage administratorPage;
@@ -163,9 +165,13 @@ namespace Taxi.WPF.ViewModels
 
         public MainViewModel(MapPage mapPage, ConfigurationService configuration,
             ProfilePage profilePage, ManagerAutoPage managerAutoPage,
-            AdministratorPage administratorPage, IAuthService authService)
+            AdministratorPage administratorPage, IAuthService authService,
+            DriverMapPage driverMapPage
+            
+            )
         {
             this.profilePage = profilePage;
+            this.driverMapPage = driverMapPage; 
             this.mapPage = mapPage;
             _configurationSerivce = configuration;
             this.managerAutoPage = managerAutoPage;

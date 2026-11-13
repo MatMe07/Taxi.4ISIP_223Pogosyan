@@ -72,9 +72,12 @@ function initSuggest(inputId, listId, placeholderType) {
         suggestList.style.display = 'block';
     }
 
-    input.addEventListener('input', debounce((e) => {
+    // input.addEventListener('input', debounce((e) => {
+    //     updateSuggests(e.target.value);
+    // }, 100));
+    input.addEventListener('input', (e) => {
         updateSuggests(e.target.value);
-    }, 100));
+    }, 100);
 
     document.addEventListener('click', (e) => {
         if (e.target !== input) {

@@ -28,7 +28,7 @@
 }
 
 .select-Payment {
-    background-image: url("imgs/select-Method.svg");
+    background-image: url("../imgs/select-Method.svg");
     background-repeat: no-repeat;
     width: 15px;
     height: 30px;

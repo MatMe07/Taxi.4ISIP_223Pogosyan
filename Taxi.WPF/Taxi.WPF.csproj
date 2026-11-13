@@ -76,12 +76,11 @@
 	  <None Update=".env">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Views\Map\map.html">
-	    <Generator>MSBuild:Compile</Generator>
-	  </None>
-	  <None Update="Views\Map\map.html">
+	  <None Update="Views\Map\html\map.html">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	    <Generator></Generator>
+	  </None>
+	  <None Update="Views\Map\html\driverMap.html">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
 

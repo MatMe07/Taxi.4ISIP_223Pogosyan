@@ -17,6 +17,7 @@ using Taxi.WPF.Views.AdminPages;
 using Taxi.WPF.Views.Dialogs;
 using Taxi.WPF.Views.ManagerPages;
 using Taxi.WPF.Views.ProfilePages;
+using Taxi.WPF.Views.UserPages;
 
 
 namespace Taxi.WPF
@@ -75,6 +76,10 @@ namespace Taxi.WPF
 
             services.AddTransient<MapViewModel>();
             services.AddTransient<MapPage>();
+
+            services.AddTransient<DriverViewModel>();
+            services.AddTransient<DriverMapPage>();
+
             services.AddTransient<TariffService>();
             services.AddTransient<PaymentMethodService>();
 

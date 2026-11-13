@@ -97,8 +97,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapGet("gets", ()=>"hello world");
 
 
 //app.MapPost("/register", )
 
-app.Run();
+app.Run(); 

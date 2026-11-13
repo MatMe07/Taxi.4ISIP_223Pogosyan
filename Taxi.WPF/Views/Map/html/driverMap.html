@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Водитель</title>
+    <script>
+        const root = document.documentElement;
+        const params = new URLSearchParams(location.search);
+        var theme = params.get('theme');
+        root.setAttribute('data-theme', theme);
+    </script>
+    <script src="https://api-maps.yandex.ru/v3/?apikey=6cedb00d-4db3-4244-a76b-ada1d1945685&lang=ru_RU"></script>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/markers.css">
+</head>
+<body>
+    <div id="map"></div>
+
+    <script src="../js/core/globals.js"></script>
+    <script src="../js/core/map.js"></script>
+    <script src="../js/core/markers.js"></script>
+    <script src="../js/core/route.js"></script>
+    <script src="../js/core/utils.js"></script>
+    <script src="../js/core/messaging.js"></script>
+    <script src="../js/core/theme.js"></script>
+    <script src="../js/driver/globals.js"></script>
+    <script src="../js/driver/handlers.js"></script>
+    <script src="../js/driver/driver.js"></script>
+</body>
+</html>

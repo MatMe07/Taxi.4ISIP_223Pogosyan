@@ -14,30 +14,34 @@
     <script src="https://api-maps.yandex.ru/v3/?apikey=6cedb00d-4db3-4244-a76b-ada1d1945685&lang=ru_RU"></script>
     <!-- <script src="https://static-maps.yandex.ru/v1?apikey=9e7d4450-7a4a-49b2-b0a5-5a8146260770&lang=ru_RU&theme=dark"></script> -->
     <!-- <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=6cedb00d-4db3-4244-a76b-ada1d1945685&suggest_apikey=60445215-6d3a-4f88-87fe-8d52b72e5bc9" type="text/javascript"></script> -->
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/search.css">
-    <link rel="stylesheet" href="css/tariff.css">
-    <link rel="stylesheet" href="css/payment.css">
-    <link rel="stylesheet" href="css/modal.css">
-    <link rel="stylesheet" href="css/markers.css">
-    <link rel="stylesheet" href="css/skeleton.css">
-    <link rel="stylesheet" href="css/snackbar.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/search.css">
+    <link rel="stylesheet" href="../css/tariff.css">
+    <link rel="stylesheet" href="../css/payment.css">
+    <link rel="stylesheet" href="../css/modal.css">
+    <link rel="stylesheet" href="../css/markers.css">
+    <link rel="stylesheet" href="../css/skeleton.css">
+    <link rel="stylesheet" href="../css/snackbar.css">
 
-    <link rel="stylesheet" href="css/waiting.css">
+    <link rel="stylesheet" href="../css/waiting.css">
 
 </head>
 
 <body>
-    <script src="js/tariffs.js"></script>
-    <script src="js/globals.js"></script>
-    <script src="js/init.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/modal.js"></script>
-    <script src="js/mapPoints.js"></script>
-    <script src="js/route.js"></script>
-    <script src="js/windowApi.js"></script>
-    <script src="js/suggest.js"></script>
-    <script src="js/waiting.js"></script>
+    <script src="../js/core/globals.js"></script>
+    <script src="../js/core/map.js"></script>
+    <script src="../js/core/markers.js"></script>
+    <script src="../js/core/route.js"></script>
+    <script src="../js/core/utils.js"></script>
+    <script src="../js/core/messaging.js"></script>
+    <script src="../js/core/theme.js"></script>
+    <script src="../js/client/tariffs.js"></script>
+    <script src="../js/client/globals.js"></script>
+    <script src="../js/client/modal.js"></script>
+    <script src="../js/client/suggest.js"></script>
+    <script src="../js/client/orderScreen.js"></script>
+    <script src="../js/client/waiting.js"></script>
+    <script src="../js/client/handlers.js"></script>
 
     <div id="map"></div>
     <div id="ui-layer">
@@ -298,6 +302,8 @@
         const geolocation = navigator.geolocation;
         const watchID = geolocation.watchPosition(successHandler, errorHandler);
     </script>
+    <script src="../js/client/client.js"></script>
+
 </body>
 
 </html>

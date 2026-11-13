@@ -57,7 +57,7 @@ namespace Taxi.WPF.Views
 
 
             //MyWebView.CoreWebView2.Navigate(new Uri(htmlPath).AbsoluteUri);
-            MyWebView.Source = new Uri($"http://localhost/map.html?theme={AppSettings.Instance.Theme}");
+            MyWebView.Source = new Uri($"http://localhost/html/map.html?theme={AppSettings.Instance.Theme}");
             await MyWebView.EnsureCoreWebView2Async();
         }
 

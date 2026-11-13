@@ -1,25 +1,18 @@
-var map = null;
-var rootStyles = null;
-
-
 var waiting_screen = null;
 var order_screen = null;
 
 var suggestView = null;
 var suggestView2 = null;
 
-var routeLine = null;
-var lastBounds = null;
-
-var selectTariff = tariffsList[0] ;
+var selectTariff = tariffsList[0];
 
 var modelWindow = null;
 
 var points = { from: null, to: null };
 
-var selectedPaymentMethod = -1; 
+var selectedPaymentMethod = -1;
 // var PaymentMethodListElement = null; 
-var PaymentMethodList = []; 
+var PaymentMethodList = [];
 var outputFieldPayMethod = null;
 const paymentNames = {
     cash: 'Наличные',
@@ -34,15 +27,10 @@ var input_seach1 = null;
 var IsSearchInput1 = false;
 var input_seach2 = null;
 
-
-var addressUser = null;
-
 const suggestList1 = document.getElementById('suggest-list1');
 const suggestList2 = document.getElementById('suggest-list2');
-
-var markerOtkuda = null;
-var markerKuda = null;
 
 var placeholderSearch1 = null;
 var placeholderSearch2 = null;
 
+var CurrentOrder = null;
