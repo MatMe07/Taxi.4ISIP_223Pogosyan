@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,11 +12,215 @@
         root.setAttribute('data-theme', theme);
     </script>
     <script src="https://api-maps.yandex.ru/v3/?apikey=6cedb00d-4db3-4244-a76b-ada1d1945685&lang=ru_RU"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/search.css">
+    <link rel="stylesheet" href="../css/payment.css">
     <link rel="stylesheet" href="../css/markers.css">
+    <link rel="stylesheet" href="../css/driver.css">
+    <link rel="stylesheet" href="../css/driverOffer.css">
+    <link rel="stylesheet" href="../css/driverTrip.css">
 </head>
+
 <body>
     <div id="map"></div>
+    <div class="overvlay-map offline"></div>
+
+    <div id="ui-layer" data-state="offline">
+        <section id="balanceCard" class="driver-card balance-card">
+            <div class="Balance">
+                <span class="BalanceText" id="balance-text">154.75 ₽</span>
+                <span class="TotalOrderText" id="orders-text">4 заказа</span>
+            </div>
+            <span class="material-icons UserIcon">account_circle</span>
+        </section>
+
+        <div id="driverColumn">
+            <div id="statusCard" class="driver-status">
+                <!-- <span class="driver-status__dot"></span> -->
+                <span class="driver-status__text" id="driver-status-text">Занят</span>
+            </div>
+
+            <section id="lineCard" class="driver-card line-card" aria-hidden="true">
+                <div class="boxBtn-confirm">
+                    <button id="line-btn" class="btn-confirm offline" type="button" aria-pressed="false">
+                        <span>На линию</span>
+                    </button>
+                </div>
+                <!-- <p class="hold-hint" id="line-hint">Удерживайте, чтобы выйти на линию</p> -->
+            </section>
+
+            <section id="offerCard" class="driver-card offer-card" aria-hidden="false">
+                <div class="offer-head">
+                    <!-- <div> -->
+                        <span class="offer-subtitle">1.2 км · 4 мин</span>
+                    <!-- </div> -->
+                    <span class="offer-price">245 ₽</span>
+                </div>
+
+                <div class="driver-route-box">
+                    <div class="ratingUser-box">
+                        <span class="rating-subtitle">Рейтинг пользователя</span>
+                        <div class="StarRating">
+                            <span class="user-rating">4,95</span>
+                            <div class="material-icons" >star</div>
+                        </div>
+                    </div>
+                    <div class="section"></div>
+                    <div class="wrapper-field">
+                        <div class="fieldInput">
+                            <span class="hintSearch2 active">Откуда:</span>
+                            <span id="search2" class="searchDefault2" >ул. Ленина, 15</span>
+                        </div>
+                    </div>
+                    <div class="section"></div>
+                    <div class="wrapper-field">
+                        <div class="fieldInput">
+                            <span class="hintSearch2 active">Куда:</span>
+                            <span id="search2" class="searchDefault2" >ТЦ «Галерея», Лиговский пр., 30</span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="driver-actions">
+                    <button id="accept-btn" class="btn-confirm1 btn-confirm1--success" type="button">
+                        <span style="font-weight: 500; font-size: 17px;">Принять</span>
+                        <span class="driver-class">Эконом</span>
+                    </button>
+                    <button id="skip-btn" class="driver-link-btn" type="button">Пропустить</button>
+                </div>
+            </section>
+
+            <section id="activeOrderCard" class="driver-card active-order-card" aria-hidden="true">
+                <div class="active-order-head">
+                    <span class="active-order-status" id="order-status-text">В пути к клиенту</span>
+                    <span class="offer-price">245 ₽</span>
+                </div>
+
+                <div class="order-client">
+                    <div class="client-avatar">А</div>
+                    <div class="client-info">
+                        <span class="client-name">Анна</span>
+                    </div>
+                </div>
+
+                <div class="driver-route-box">
+                    <div class="ratingUser-box">
+                        <span class="rating-subtitle">Рейтинг пользователя</span>
+                        <div class="StarRating">
+                            <span class="user-rating">4,95</span>
+                            <div class="material-icons">star</div>
+                        </div>
+                    </div>
+                    <div class="section"></div>
+                    <div class="wrapper-field">
+                        <div class="fieldInput">
+                            <span class="hintSearch2 active">Откуда:</span>
+                            <span class="searchDefault2">ул. Ленина, 15, подъезд 2</span>
+                        </div>
+                    </div>
+                    <div class="section"></div>
+                    <div class="wrapper-field">
+                        <div class="fieldInput">
+                            <span class="hintSearch2 active">Куда:</span>
+                            <span class="searchDefault2">ТЦ «Галерея», Лиговский пр., 30</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-info-card">
+                    <div class="order-payment-row">
+                        <span class="driver-route-label">Способ оплаты</span>
+                        <span class="order-payment-value">Картой</span>
+                    </div>
+                    <div class="section section--fill"></div>
+
+                    <div class="order-round-actions">
+                        <div class="round-action">
+                            <button class="icon-btn icon-btn--circle" type="button" aria-label="Звонок">
+                                <span class="material-icons">phone</span>
+                            </button>
+                            <span class="round-action-label">Звонок</span>
+                        </div>
+                        <div class="round-action">
+                            <button class="icon-btn icon-btn--circle icon-btn--danger" type="button" aria-label="Отмена">
+                                <span class="material-icons">close</span>
+                            </button>
+                            <span class="round-action-label">Отмена</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="driver-actions">
+                    <button id="arrive-btn" class="btn-confirm btn-confirm--action" type="button">
+                        <span>На месте</span>
+                    </button>
+                    <button id="start-btn" class="btn-confirm btn-confirm--success" type="button">
+                        <span>В пути</span>
+                    </button>
+                    <button id="finish-btn" class="btn-confirm btn-confirm--danger" type="button">
+                        <span>Завершить</span>
+                    </button>
+                </div>
+            </section>
+
+            <section id="completedCard" class="driver-card completed-card" aria-hidden="true">
+                <div class="completed-head">
+                    <div class="completed-icon">
+                        <span class="material-icons">check</span>
+                    </div>
+                    <div>
+                        <h2 class="completed-title">Поездка завершена</h2>
+                        <p class="completed-subtitle">Деньги зачислены на баланс</p>
+                    </div>
+                </div>
+
+                <div class="completed-summary">
+                    <div class="summary-item">
+                        <span class="summary-label">Стоимость</span>
+                        <span class="summary-value" id="completed-fare">245.00 ₽</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Оплата</span>
+                        <span class="summary-value">Картой</span>
+                    </div>
+                </div>
+
+                <button id="back-to-line-btn" class="btn-confirm btn-confirm--success" type="button">
+                    <span>Вернуться к заказам</span>
+                </button>
+            </section>
+
+            <section id="canseledCard" class="driver-card canseled-card" aria-hidden="true">
+                <div class="canseled-head">
+                    <div class="canseled-icon">
+                        <span class="material-icons">check</span>
+                    </div>
+                    <div>
+                        <h2 class="canseled-title">Поездка завершена</h2>
+                        <p class="canseled-subtitle">Деньги зачислены на баланс</p>
+                    </div>
+                </div>
+
+                <div class="completed-summary">
+                    <div class="summary-item">
+                        <span class="summary-label">Стоимость</span>
+                        <span class="summary-value" id="completed-fare">245.00 ₽</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Оплата</span>
+                        <span class="summary-value">Картой</span>
+                    </div>
+                </div>
+
+                <button id="back-to-line-btn" class="btn-confirm btn-confirm--success" type="button">
+                    <span>Вернуться к заказам</span>
+                </button>
+            </section>
+        </div>
+    </div>
 
     <script src="../js/core/globals.js"></script>
     <script src="../js/core/map.js"></script>
@@ -25,7 +230,12 @@
     <script src="../js/core/messaging.js"></script>
     <script src="../js/core/theme.js"></script>
     <script src="../js/driver/globals.js"></script>
+    <script src="../js/driver/holdButton.js"></script>
+    <script src="../js/driver/state.js"></script>
+    <script src="../js/driver/orderOffer.js"></script>
+    <script src="../js/driver/activeOrder.js"></script>
     <script src="../js/driver/handlers.js"></script>
     <script src="../js/driver/driver.js"></script>
 </body>
+
 </html>

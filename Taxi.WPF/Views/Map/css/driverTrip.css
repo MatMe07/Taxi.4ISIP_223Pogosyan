@@ -1,0 +1,245 @@
+#ui-layer[data-state="to-client"] #activeOrderCard,
+#ui-layer[data-state="at-client"] #activeOrderCard,
+#ui-layer[data-state="in-trip"] #activeOrderCard {
+    display: block;
+}
+
+#ui-layer[data-state="completed"] #completedCard {
+    display: block;
+}
+
+.active-order-card {
+    padding: 0;
+}
+
+.active-order-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-radius: 20px;
+    background-color: var(--bg-main-color);
+}
+
+.active-order-status {
+    font-weight: 600;
+    color: var(--text-main-color);
+    font-size: 20px;
+}
+
+.order-client {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 10px 16px;
+    border-radius: 20px;
+    background: var(--bg-main-color);
+}
+
+.client-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--button-action-color);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.client-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.client-name {
+    color: var(--text-main-color);
+    font-size: 15px;
+    font-weight: 650;
+}
+
+.client-meta {
+    overflow: hidden;
+    color: var(--text-minor-color);
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex: none;
+    border: none;
+    border-radius: 50%;
+    background: var(--bg-main-color);
+    color: var(--button-action-color);
+    cursor: pointer;
+}
+
+.icon-btn:hover {
+    background: var(--hover-bg-color);
+}
+
+.icon-btn .material-icons {
+    font-size: 19px;
+}
+
+.order-info-card {
+    margin-top: 10px;
+    padding: 12px 16px;
+    border-radius: 20px;
+    background: var(--bg-main-color);
+}
+
+.order-payment-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.order-payment-value {
+    color: var(--text-main-color);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.order-round-actions {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 14px;
+}
+
+.round-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.icon-btn--circle {
+    width: 48px;
+    height: 48px;
+    background: var(--bg-secondary-color);
+}
+
+.icon-btn--circle .material-icons {
+    font-size: 22px;
+}
+
+.icon-btn--danger {
+    color: var(--driver-danger);
+}
+
+.round-action-label {
+    color: var(--text-minor-color);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+#ui-layer[data-state="in-trip"] .order-round-actions {
+    display: none;
+}
+
+#arrive-btn,
+#start-btn,
+#finish-btn {
+    display: none;
+}
+
+#ui-layer[data-state="to-client"] #arrive-btn,
+#ui-layer[data-state="at-client"] #start-btn,
+#ui-layer[data-state="in-trip"] #finish-btn {
+    display: flex;
+}
+
+#arrive-hint {
+    display: none;
+}
+
+#ui-layer[data-state="to-client"] #arrive-hint {
+    display: block;
+}
+
+.completed-card {
+    padding: 18px;
+}
+
+.completed-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.completed-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--driver-success-bg);
+    color: var(--driver-success);
+}
+
+.completed-icon .material-icons {
+    font-size: 28px;
+}
+
+.completed-title {
+    margin: 0;
+    color: var(--text-main-color);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.completed-subtitle {
+    margin: 3px 0 0;
+    color: var(--text-minor-color);
+    font-size: 13px;
+}
+
+.completed-summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 14px;
+    background: var(--bg-secondary-color);
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.summary-label {
+    color: var(--text-minor-color);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.summary-value {
+    color: var(--text-main-color);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.completed-card .btn-confirm {
+    margin-top: 14px;
+}

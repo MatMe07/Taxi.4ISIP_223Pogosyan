@@ -25,10 +25,14 @@ body {
 
 :root {
     --snackbar-bg-color: #333333;
+    --button-press-color: #00613e;
 
     --fonts-families-main: 'YS Text', 'Helvetica Neue', Arial, sans-serif;
 }
 
+span {
+    color: var(--span-color);
+}
 
 [data-theme="light"] {
     --route-color: #0000FF55;
@@ -37,6 +41,7 @@ body {
     --text-minor-color: #64748B;
     --text-placeholder-color: #A0AEC0;
     --link-color: #1E5AA8;
+    --span-color: #282F39;
 
     --bg-main-color: #FFFFFF;
     --bg-secondary-color: #EEF2F7;
@@ -71,6 +76,8 @@ body {
     --text-minor-color: #A0AEBD;
     --text-placeholder-color: #5A6773;
     --link-color: #4A90E2;
+    --span-color: #fff;
+
 
     --bg-main-color: #1A2028;
     --bg-secondary-color: #242C36;

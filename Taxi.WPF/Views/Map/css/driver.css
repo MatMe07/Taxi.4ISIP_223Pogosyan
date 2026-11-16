@@ -1,0 +1,411 @@
+:root {
+    --driver-success: #12A46F;
+    --driver-success-bg: rgba(18, 164, 111, 0.12);
+    --driver-danger: #dd6861;
+    --driver-info-bg: rgba(74, 144, 226, 0.14);
+}
+
+[data-theme="dark"] {
+    --driver-success: #2BC98A;
+    --driver-success-bg: rgba(43, 201, 138, 0.16);
+    --driver-danger: #FF6B5E;
+    --driver-info-bg: rgba(74, 144, 226, 0.22);
+}
+
+body {
+    overflow: hidden;
+}
+
+
+#ui-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+}
+
+#driverColumn {
+    position: absolute;
+    top: 25%;
+    left: 16px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 360px;
+    max-width: calc(100vw - 32px);
+    pointer-events: auto;
+}
+
+.driver-card {
+    border-radius: 20px;
+    background: var(--bg-secondary-color);;
+    box-shadow: 0 4px 20px var(--shadow-search-color);
+    animation: driver-card-in 0.18s ease;
+    top:50%;
+}
+
+@keyframes driver-card-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#offerCard,
+#activeOrderCard,
+#completedCard {
+    display: none;
+}
+
+#balanceCard {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    z-index: 1001;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    /* padding: 5px 0px 5px 15px; */
+    padding-left: 15px;
+    border-radius: 100px;
+    transform: translateX(-50%);
+    pointer-events: auto;
+    animation: balance-card-in 0.18s ease;
+}
+
+@keyframes balance-card-in {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -6px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+#statusCard,
+#lineCard {
+    display: none;
+}
+
+#ui-layer[data-state="offline"] #balanceCard,
+#ui-layer[data-state="waiting"] #balanceCard {
+    display: flex;
+}
+
+#ui-layer[data-state="offline"] #statusCard,
+#ui-layer[data-state="waiting"] #statusCard {
+    display: inline-flex;
+}
+
+#ui-layer[data-state="offline"] #lineCard,
+#ui-layer[data-state="waiting"] #lineCard {
+    display: block;
+}
+
+.Balance {
+    display: flex;
+    flex-direction: column;
+}
+
+.BalanceText {
+    color: var(--span-color);
+    font-size: 22px;
+    font-weight: 650;
+}
+
+.TotalOrderText {
+    color: var(--text-minor-color);
+    font-size: 13px;
+    font-weight: 500;
+    top: -4px;
+    position: relative;
+}
+
+.UserIcon {
+    flex: none;
+    color: var(--text-minor-color);
+    font-size: 50px;
+}
+
+.driver-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: none;
+    align-self: flex-start;
+    padding: 10px 14px;
+    border-radius: 100px;
+    background: var(--bg-main-color);
+    box-shadow: 0 4px 20px var(--shadow-search-color);
+    color: var(--text-main-color);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    animation: driver-card-in 0.18s ease;
+}
+
+.driver-status__text {
+    color: inherit;
+}
+
+
+#ui-layer[data-state="waiting"] .driver-status__dot {
+    background: var(--driver-success);
+    box-shadow: 0 0 0 4px var(--driver-success-bg);
+}
+
+.line-card {
+    padding: 10px 10px 12px;
+}
+
+.line-card .boxBtn-confirm {
+    margin: 0;
+    padding: 0;
+    border-radius: 16px;
+    background: transparent;
+}
+
+/* .hold-hint {
+    margin: 8px 0 0;
+    color: var(--text-minor-color);
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+} */
+
+.btn-confirm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.btn-confirm span {
+    position: relative;
+    z-index: 2;
+    color: inherit;
+}
+
+.btn-confirm.offline {
+    background-color: var(--button-action-color);
+    color: #fff;
+}
+
+.btn-confirm.offline:hover {
+    background-color: var(--components-buttons-action-bgColorHovered);
+}
+.btn-confirm.online::before {
+    background-color: #E8DEC8;
+}
+
+.btn-confirm.online {
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-secondary-color);
+    color: var(--driver-danger);
+}
+
+.btn-confirm.online:hover {
+    background-color: var(--button-minor-hover-color);
+}
+
+.btn-confirm.btn-confirm--action {
+    background-color: var(--button-action-color);
+    color: #fff;
+}
+
+.btn-confirm.btn-confirm--action:hover {
+    background-color: var(--components-buttons-action-bgColorHovered);
+}
+
+.btn-confirm1.btn-confirm1--success span {
+ color: white;
+}
+.btn-confirm1.btn-confirm1--success {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+
+
+  color: transparent;
+  font-size: 16px;
+  /* color: #ffffff; */
+  background-color: #1f1d1e; 
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.btn-confirm1.btn-confirm1--success::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%; 
+  height: 100%;
+  background-color:var(--button-press-color); 
+  z-index: -1;
+  animation: fillLeftToRight 5s ease-in-out forwards;
+}
+
+@keyframes fillLeftToRight {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+
+.driver-class{
+    font-size: 15px;
+    font-weight: 400;
+    top: -2px;
+}
+/* .btn-confirm.btn-confirm--success:hover {
+    background-color: var(--driver-success);
+    filter: brightness(1.04);
+} */
+
+.btn-confirm.btn-confirm--danger {
+    background-color: var(--driver-danger);
+    color: #fff;
+}
+
+.btn-confirm.btn-confirm--danger:hover {
+    background-color: var(--driver-danger);
+    filter: brightness(1.04);
+}
+
+.btn-confirm::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    transform: scaleX(0);
+    transform-origin: left;
+    background-color: rgba(0, 0, 0, 0.16);
+}
+
+.btn-confirm.holding::before {
+    transform: scaleX(1);
+    transition: transform var(--hold-duration, 1.5s) linear;
+}
+
+.driver-route-box {
+    margin-top: 10px;
+    border-radius: 20px;
+    padding: 10px 16px;
+    background-color: var(--bg-main-color);
+}
+.section {
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 5px;
+}
+.section--fill{
+    margin-left: -10px;
+    margin-right: -10px;
+}
+.driver-route-box .wrapper-field {
+    padding: 10px 0px;
+}
+
+.driver-route-box .fieldInput {
+    display: flex;
+    flex-direction: column;
+    /* gap: 2px; */
+}
+
+.driver-route-label {
+    color: var(--text-minor-color);
+    font-size: 14px;
+    /* font-weight: 500; */
+}
+
+.driver-route-value {
+    color: var(--text-main-color);
+    font-size: 15px;
+    font-weight: 500;
+    /* line-height: 1.3; */
+    /* word-break: break-word; */
+    
+}
+.hintSearch2.active {
+    top: -1px;
+    bottom: unset;
+    font-size: 12px;
+}
+
+[data-theme="dark"] .driver-route-box .krug {
+    background-image: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="7" stroke="%23E8EDF2" stroke-width="4"/></svg>');
+}
+
+.overvlay-map {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    background-color: var(--overlay-color);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.overvlay-map.offline {
+    opacity: 1;
+    visibility: visible;
+}
+
+.overvlay-map.online {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@media (max-width: 900px) {
+    #ui-layer[data-state="offline"] #driverColumn,
+    #ui-layer[data-state="waiting"] #driverColumn {
+        top: 82px;
+    }
+}
+
+@media (max-width: 480px) {
+    #driverColumn {
+        top: 12px;
+        left: 12px;
+        width: calc(100vw - 24px);
+    }
+
+    #ui-layer[data-state="offline"] #driverColumn,
+    #ui-layer[data-state="waiting"] #driverColumn {
+        top: 78px;
+    }
+
+    #balanceCard {
+        top: 12px;
+    padding-left: 15px;
+        
+    }
+
+    .BalanceText {
+        font-size: 19px;
+    }
+
+    .driver-status {
+        padding: 8px 11px;
+        font-size: 11px;
+    }
+}

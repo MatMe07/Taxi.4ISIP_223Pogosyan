@@ -1,0 +1,94 @@
+#ui-layer[data-state="offer"] #offerCard {
+    display: block;
+}
+
+.offer-card {
+    /* padding: 16px;
+    padding-top: 0px; */
+}
+
+.ratingUser-box{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    align-items: center;    
+    /* gap: 12px; */
+    /* padding: 10px 16px ; */
+    margin-bottom: 7px;
+    background-color: var(--bg-main-color);;
+}
+/* Чтобы цифра 4,95 и иконка звезды тоже стояли ровно в ряд */
+.StarRating {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    gap: 4px;
+}
+
+.offer-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    /* gap: 12px; */
+    padding: 10px 16px ;
+    border-radius: 20px ;
+    background-color: var(--bg-main-color);;
+    
+}
+
+.offer-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 100px;
+    background: var(--driver-success-bg);
+    color: var(--driver-success);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.offer-subtitle {
+    /* margin: 6px 0 0; */
+
+    font-weight: 600;
+    color: var(--text-main-color);
+    font-size: 23px;
+}
+
+.offer-price {
+    /* flex: none; */
+    color: var(--text-main-color);
+    font-size: 24px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.driver-actions {
+    background-color: var(--bg-main-color);
+    padding: 10px 16px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.driver-link-btn {
+    padding: 10px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--text-minor-color);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.driver-link-btn:hover {
+    background: var(--hover-bg-color);
+    color: var(--text-main-color);
+}
