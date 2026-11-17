@@ -58,7 +58,8 @@ body {
 
 #offerCard,
 #activeOrderCard,
-#completedCard {
+#completedCard,
+#canceledCard {
     display: none;
 }
 
@@ -77,6 +78,7 @@ body {
     transform: translateX(-50%);
     pointer-events: auto;
     animation: balance-card-in 0.18s ease;
+    background: var(--bg-main-color);
 }
 
 @keyframes balance-card-in {
@@ -93,6 +95,7 @@ body {
 #statusCard,
 #lineCard {
     display: none;
+    background: var(--bg-main-color);
 }
 
 #ui-layer[data-state="offline"] #balanceCard,

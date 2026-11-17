@@ -26,7 +26,7 @@ async function showRoute(coords, from, to) {
     if (routeLine) {
         map.removeChild(routeLine);
     }
-    
+
     routeLine = new ymaps3.YMapFeature({
         id: 'CustomLine',
         geometry: {
@@ -48,10 +48,28 @@ async function showRoute(coords, from, to) {
     const maxLon = Math.max(...lons);
     const minLat = Math.min(...lats);
     const maxLat = Math.max(...lats);
+    const lonPad = Math.max((maxLon - minLon) * 0.15, 0.01);
+    const latPad = Math.max((maxLat - minLat) * 0.15, 0.002);
+    console.info(lonPad, latPad);
+    const zoomProiz = 1.5;
+
     lastBounds = [
-            [minLon, minLat],
-            [maxLon, maxLat]
-        ];
+        [minLon - zoomProiz * lonPad, minLat - zoomProiz * latPad],
+        [maxLon + lonPad, maxLat + latPad]
+    ];
+    /*
+    [
+    [
+        37.314787,
+        55.943246
+    ],
+    [
+        37.318962,
+        55.94495
+    ]
+]
+    */
+    console.info(lastBounds);
     map.setLocation({
         bounds: lastBounds,
         duration: 600

@@ -30,6 +30,7 @@ async function drawDriverRoute(stage) {
     const from = isTrip ? DEMO_ORDER.pickup : DEMO_ORDER.driver;
     const to = isTrip ? DEMO_ORDER.dropoff : DEMO_ORDER.pickup;
     const coordinates = isTrip ? DEMO_ORDER.tripRoute : DEMO_ORDER.toClientRoute;
+    console.info(isTrip);
 
     removeDriverRoute();
 
@@ -53,10 +54,10 @@ async function drawDriverRoute(stage) {
 
 function updateRouteForState(nextState) {
     if (nextState === DRIVER_STATE.OFFER ||
-        nextState === DRIVER_STATE.TO_CLIENT ||
-        nextState === DRIVER_STATE.AT_CLIENT) {
+        nextState === DRIVER_STATE.TO_CLIENT ) {
         drawDriverRoute('to-client');
-    } else if (nextState === DRIVER_STATE.IN_TRIP) {
+    } else if (nextState === DRIVER_STATE.IN_TRIP||
+        nextState === DRIVER_STATE.AT_CLIENT) {
         drawDriverRoute('in-trip');
     } else if (nextState === DRIVER_STATE.WAITING ||
                nextState === DRIVER_STATE.OFFLINE) {
@@ -74,8 +75,9 @@ function completeTrip() {
     setDriverState(DRIVER_STATE.COMPLETED);
 }
 
-function TimeoutCancel(){
-    
+function cancelTrip(){
+    clearDriverRoute();
+    btnModalCancelOpen();
 }
 
 
@@ -105,6 +107,19 @@ function initActiveOrderControls() {
     driverElements.backBtn.addEventListener('click', () => {
         if (driverState === DRIVER_STATE.COMPLETED) {
             setDriverState(DRIVER_STATE.WAITING);
+        }
+    });
+
+    driverElements.cancelBackBtn.addEventListener('click', () => {
+        if (driverState === DRIVER_STATE.CANCELED) {
+            setDriverState(DRIVER_STATE.WAITING);
+        }
+    });
+
+    driverElements.cancelBtn.addEventListener('click', () => {
+        if (driverState === DRIVER_STATE.TO_CLIENT ||
+            driverState === DRIVER_STATE.AT_CLIENT) {
+            cancelTrip();
         }
     });
 }

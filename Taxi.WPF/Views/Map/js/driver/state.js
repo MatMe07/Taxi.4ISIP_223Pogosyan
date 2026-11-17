@@ -13,6 +13,8 @@ function cacheDriverElements() {
     driverElements.startBtn = document.getElementById('start-btn');
     driverElements.finishBtn = document.getElementById('finish-btn');
     driverElements.backBtn = document.getElementById('back-to-line-btn');
+    driverElements.cancelBackBtn = document.getElementById('cancel-back-btn');
+    driverElements.cancelBtn = document.getElementById('cancel-to-line-btn');
     driverElements.orderStatusText = document.getElementById('order-status-text');
     driverElements.completedFare = document.getElementById('completed-fare');
 }
@@ -66,9 +68,6 @@ function setDriverState(nextState) {
     driverElements.lineBtn.classList.toggle('online', isWaiting);
     driverElements.lineBtn.setAttribute('aria-pressed', String(isWaiting));
     driverElements.lineBtnText.textContent = isOffline ? 'На линию' : 'Завершить';
-    // driverElements.lineHint.textContent = isOffline
-    //     ? 'Удерживайте, чтобы выйти на линию'
-    //     : 'Удерживайте, чтобы завершить смену';
 
     driverElements.overlay.classList.toggle('offline', isOffline);
     driverElements.overlay.classList.toggle('online', !isOffline);
@@ -76,11 +75,11 @@ function setDriverState(nextState) {
     driverElements.statusText.textContent = isOffline
         ? 'Занят'
         : isWaiting
-            ? 'На линии · ожидание заказов'
+            ? 'На линии'
             : '';
 
     updateOrderStatusText(nextState);
-    // updateRouteForState(nextState);
+    updateRouteForState(nextState);
 
     if (isWaiting) {
         scheduleOffer();

@@ -16,10 +16,12 @@
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/search.css">
     <link rel="stylesheet" href="../css/payment.css">
+    <!-- <link rel="stylesheet" href="../css/modal.css"> -->
     <link rel="stylesheet" href="../css/markers.css">
     <link rel="stylesheet" href="../css/driver.css">
     <link rel="stylesheet" href="../css/driverOffer.css">
     <link rel="stylesheet" href="../css/driverTrip.css">
+
 </head>
 
 <body>
@@ -53,7 +55,7 @@
             <section id="offerCard" class="driver-card offer-card" aria-hidden="false">
                 <div class="offer-head">
                     <!-- <div> -->
-                        <span class="offer-subtitle">1.2 км · 4 мин</span>
+                    <span class="offer-subtitle">1.2 км · 4 мин</span>
                     <!-- </div> -->
                     <span class="offer-price">245 ₽</span>
                 </div>
@@ -63,21 +65,21 @@
                         <span class="rating-subtitle">Рейтинг пользователя</span>
                         <div class="StarRating">
                             <span class="user-rating">4,95</span>
-                            <div class="material-icons" >star</div>
+                            <div class="material-icons">star</div>
                         </div>
                     </div>
                     <div class="section"></div>
                     <div class="wrapper-field">
                         <div class="fieldInput">
                             <span class="hintSearch2 active">Откуда:</span>
-                            <span id="search2" class="searchDefault2" >ул. Ленина, 15</span>
+                            <span id="search2" class="searchDefault2">ул. Ленина, 15</span>
                         </div>
                     </div>
                     <div class="section"></div>
                     <div class="wrapper-field">
                         <div class="fieldInput">
                             <span class="hintSearch2 active">Куда:</span>
-                            <span id="search2" class="searchDefault2" >ТЦ «Галерея», Лиговский пр., 30</span>
+                            <span id="search2" class="searchDefault2">ТЦ «Галерея», Лиговский пр., 30</span>
                         </div>
                     </div>
 
@@ -145,7 +147,8 @@
                             <span class="round-action-label">Звонок</span>
                         </div>
                         <div class="round-action">
-                            <button class="icon-btn icon-btn--circle icon-btn--danger" type="button" aria-label="Отмена">
+                            <button class="icon-btn icon-btn--circle icon-btn--danger" id="cancel-to-line-btn"
+                                type="button" aria-label="Отмена">
                                 <span class="material-icons">close</span>
                             </button>
                             <span class="round-action-label">Отмена</span>
@@ -193,36 +196,42 @@
                 </button>
             </section>
 
-            <section id="canseledCard" class="driver-card canseled-card" aria-hidden="true">
-                <div class="canseled-head">
-                    <div class="canseled-icon">
-                        <span class="material-icons">check</span>
+            <section id="canceledCard" class="driver-card canceled-card" aria-hidden="true">
+                <div class="canceled-head">
+                    <div class="canceled-icon">
+                        <span class="material-icons">close</span>
                     </div>
                     <div>
-                        <h2 class="canseled-title">Поездка завершена</h2>
-                        <p class="canseled-subtitle">Деньги зачислены на баланс</p>
+                        <h2 class="canceled-title">Поездка отменена</h2>
                     </div>
                 </div>
 
-                <div class="completed-summary">
-                    <div class="summary-item">
-                        <span class="summary-label">Стоимость</span>
-                        <span class="summary-value" id="completed-fare">245.00 ₽</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Оплата</span>
-                        <span class="summary-value">Картой</span>
-                    </div>
-                </div>
-
-                <button id="back-to-line-btn" class="btn-confirm btn-confirm--success" type="button">
+                <button id="cancel-back-btn" class="btn-confirm btn-confirm--success" type="button">
                     <span>Вернуться к заказам</span>
                 </button>
             </section>
         </div>
-    </div>
 
+    </div>
+    
+    <div class="ModalCancel modal-overlay">
+        <div class="modal-container">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Уверены, что хотите отменить заказ?</h2>
+                </div>
+            </div>
+
+            <div class="modal-footer footer-waiting">
+                <button class="btn-primary-close" onclick="closeModalCancel()">Отменить заказ</button>
+                <button class="btn-confirm" onclick="btnCloseModalCancel()">Дождаться</button>
+            </div>
+
+
+        </div>
+    </div>
     <script src="../js/core/globals.js"></script>
+    <script src="../js/driver/modal.js"></script>
     <script src="../js/core/map.js"></script>
     <script src="../js/core/markers.js"></script>
     <script src="../js/core/route.js"></script>
