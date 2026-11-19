@@ -3,7 +3,6 @@
     min-width: 250px;
     margin-left: -125px;
     background-color: var(--snackbar-bg-color);
-    color: white;
     text-align: center;
     border-radius: 20px;
     padding: 16px;
@@ -13,8 +12,12 @@
     bottom: 30px;
     font-size: 17px;
 }
+#snackbar span{
+    
+    color: white;
+}
 
-#snackbar.show {
+#snackbar.show {    
     visibility: visible;
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }

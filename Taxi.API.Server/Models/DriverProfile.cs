@@ -35,7 +35,7 @@ public partial class DriverProfile
 
     public virtual ICollection<Poezdka> Poezdkas { get; set; } = new List<Poezdka>();
 
-    public virtual ICollection<Shift> Shifts { get; set; } = new List<Shift>();
-
     public virtual User User { get; set; }
+
+    public virtual ICollection<Waybill> Waybills { get; set; } = new List<Waybill>();
 }

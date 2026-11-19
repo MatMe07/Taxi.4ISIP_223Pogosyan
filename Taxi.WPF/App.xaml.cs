@@ -2,9 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using OfficeOpenXml;
 using System.Windows;
-using Taxi.Core.Models.Auth;
-using Taxi.src.Services;
 using Taxi.WPF.Services;
+using Taxi.WPF.Services.HubServices;
 using Taxi.WPF.Services.Interfaces;
 using Taxi.WPF.ViewModels;
 using Taxi.WPF.ViewModels.AdminViewModels;
@@ -46,11 +45,12 @@ namespace Taxi.WPF
             services.AddSingleton<ITokenStore, TokenStore>();
             services.AddSingleton<IUserSessionService, UserSessionService>();
 
+            var baseAddress = Environment.GetEnvironmentVariable("BaseAddress");
             services.ConfigureHttpClientDefaults(opt =>
             {
                 opt.ConfigureHttpClient(client =>
                 {
-                    client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("BaseAddress"));
+                    client.BaseAddress = new Uri(baseAddress);
                 });
 
                 opt.AddHttpMessageHandler<MyDelegatingHandler>();
@@ -61,6 +61,13 @@ namespace Taxi.WPF
             services.AddHttpClient<GeocodeService>();
             services.AddHttpClient<RoutingService>();
 
+            //services.HubClient();
+            //services.ad
+            //services.serviceCollection();
+            services.AddSingleton(p => new HubConnect(baseAddress));
+            //services.addho
+
+
             services.AddSingleton<ConfigurationService>();
             services.AddSingleton<IConfigurationService>(sp=>sp.GetRequiredService<ConfigurationService>());
 
@@ -69,6 +76,7 @@ namespace Taxi.WPF
             services.AddTransient<PoezdkaService>();
             services.AddTransient<GenerationFilesService>();
             services.AddTransient<UsersServices>();
+            services.AddTransient<RideService>();
 
 
             services.AddTransient<AuthorizationViewModel>();

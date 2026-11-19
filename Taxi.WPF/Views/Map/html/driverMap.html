@@ -15,6 +15,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/search.css">
+    <link rel="stylesheet" href="../css/snackbar.css">
     <link rel="stylesheet" href="../css/payment.css">
     <!-- <link rel="stylesheet" href="../css/modal.css"> -->
     <link rel="stylesheet" href="../css/markers.css">
@@ -29,6 +30,10 @@
     <div class="overvlay-map offline"></div>
 
     <div id="ui-layer" data-state="offline">
+        <div id="snackbar">
+
+        </div>
+
         <section id="balanceCard" class="driver-card balance-card">
             <div class="Balance">
                 <span class="BalanceText" id="balance-text">154.75 ₽</span>
@@ -230,6 +235,7 @@
 
         </div>
     </div>
+    
     <script src="../js/core/globals.js"></script>
     <script src="../js/driver/modal.js"></script>
     <script src="../js/core/map.js"></script>

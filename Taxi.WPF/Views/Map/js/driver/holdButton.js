@@ -16,6 +16,13 @@ function setupHold(button, onComplete, duration = 1500) {
     };
 
     const start = event => {
+        if (!driverIsAllowed) {
+            console.info("msdfjsldkfjsldfk");
+            ShowSnackbar(messageIsAllowed);
+            // driverElements.lineBtn.classList.remove('holding');
+            return;
+        }
+
         if (event.type === 'pointerdown' && event.button !== 0) return;
 
         cancelAllHolds();

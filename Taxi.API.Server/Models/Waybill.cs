@@ -9,13 +9,13 @@ public partial class Waybill
 {
     public int Id { get; set; }
 
-    public int ShiftId { get; set; }
+    public int DriverId { get; set; }
+
+    public int VehicleId { get; set; }
 
     public string Number { get; set; }
 
-    public DateOnly StartedAt { get; set; }
-
-    public DateTime? DepartureTime { get; set; }
+    public DateTime StartedAt { get; set; }
 
     public DateTime? ReturnTime { get; set; }
 
@@ -29,5 +29,9 @@ public partial class Waybill
 
     public string MedcheckComment { get; set; }
 
-    public virtual Shift Shift { get; set; }
+    public virtual DriverProfile Driver { get; set; }
+
+    public virtual ICollection<Shift> Shifts { get; set; } = new List<Shift>();
+
+    public virtual Vehicle Vehicle { get; set; }
 }

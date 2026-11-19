@@ -59,6 +59,10 @@ let driverState = DRIVER_STATE.OFFLINE;
 let driverBalance = 154.75;
 let driverOrdersCount = 4;
 let offerTimer = null;
+let driverStatusOnline = false;
+
+let driverIsAllowed = null;
+let messageIsAllowed = null;
 
 const holdCleanups = [];
 const driverElements = {};

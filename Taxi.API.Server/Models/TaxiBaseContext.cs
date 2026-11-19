@@ -513,24 +513,18 @@ public partial class TaxiBaseContext : DbContext
             entity.Property(e => e.ClosedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("closed_at");
-            entity.Property(e => e.DriverId).HasColumnName("driver_id");
             entity.Property(e => e.FuelEndLiters).HasColumnName("fuel_end_liters");
             entity.Property(e => e.FuelStartLiters).HasColumnName("fuel_start_liters");
             entity.Property(e => e.OpenedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("opened_at");
             entity.Property(e => e.OrdersCount).HasColumnName("orders_count");
-            entity.Property(e => e.VehicleId).HasColumnName("vehicle_id");
+            entity.Property(e => e.WaybillId).HasColumnName("waybill_id");
 
-            entity.HasOne(d => d.Driver).WithMany(p => p.Shifts)
-                .HasForeignKey(d => d.DriverId)
+            entity.HasOne(d => d.Waybill).WithMany(p => p.Shifts)
+                .HasForeignKey(d => d.WaybillId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__shift__driver_id__797309D9");
-
-            entity.HasOne(d => d.Vehicle).WithMany(p => p.Shifts)
-                .HasForeignKey(d => d.VehicleId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__shift__vehicle_i__7A672E12");
+                .HasConstraintName("FK_shift_waybill");
         });
 
         modelBuilder.Entity<Tariff>(entity =>
@@ -705,9 +699,7 @@ public partial class TaxiBaseContext : DbContext
             entity.ToTable("waybill");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.DepartureTime)
-                .HasColumnType("datetime")
-                .HasColumnName("departure_time");
+            entity.Property(e => e.DriverId).HasColumnName("driver_id");
             entity.Property(e => e.MedcheckAt)
                 .HasColumnType("datetime")
                 .HasColumnName("medcheck_at");
@@ -726,18 +718,25 @@ public partial class TaxiBaseContext : DbContext
             entity.Property(e => e.ReturnTime)
                 .HasColumnType("datetime")
                 .HasColumnName("return_time");
-            entity.Property(e => e.ShiftId).HasColumnName("shift_id");
-            entity.Property(e => e.StartedAt).HasColumnName("started_at");
+            entity.Property(e => e.StartedAt)
+                .HasColumnType("datetime")
+                .HasColumnName("started_at");
             entity.Property(e => e.TechComment)
                 .IsRequired()
                 .HasMaxLength(255)
                 .HasColumnName("tech_comment");
             entity.Property(e => e.TechStateOk).HasColumnName("tech_state_ok");
+            entity.Property(e => e.VehicleId).HasColumnName("vehicle_id");
 
-            entity.HasOne(d => d.Shift).WithMany(p => p.Waybills)
-                .HasForeignKey(d => d.ShiftId)
+            entity.HasOne(d => d.Driver).WithMany(p => p.Waybills)
+                .HasForeignKey(d => d.DriverId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__waybill__shift_i__7B5B524B");
+                .HasConstraintName("FK_waybill_driver_profile");
+
+            entity.HasOne(d => d.Vehicle).WithMany(p => p.Waybills)
+                .HasForeignKey(d => d.VehicleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_waybill_vehicle");
         });
 
         OnModelCreatingPartial(modelBuilder);

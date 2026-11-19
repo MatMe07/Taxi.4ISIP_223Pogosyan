@@ -7,7 +7,9 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Taxi.Core.Models;
 using Taxi.Core.Models.DB;
+using static System.Net.WebRequestMethods;
 
 namespace Taxi.WPF.Services
 {
@@ -28,6 +30,11 @@ namespace Taxi.WPF.Services
             var response = await _httpClient.GetFromJsonAsync<List<PoezdkaDTO>>("api/poezdka/getAllPoezdka");
             //Debug.WriteLine(response.Content.ReadFromJsonAsync<VehicleDTO>());
             return response ?? [];
+        }
+        public async Task<RideResponse> TryToConnectAsync()
+        {
+            var response = await _httpClient.GetFromJsonAsync<RideResponse>("api/poezdka/tryToConnect");
+            return response ?? new RideResponse { message = "Error", isAllowed = false };
         }
     }
 }

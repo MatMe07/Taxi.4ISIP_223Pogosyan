@@ -9,9 +9,7 @@ public partial class Shift
 {
     public int Id { get; set; }
 
-    public int DriverId { get; set; }
-
-    public int VehicleId { get; set; }
+    public int WaybillId { get; set; }
 
     public DateTime OpenedAt { get; set; }
 
@@ -23,9 +21,5 @@ public partial class Shift
 
     public int? FuelEndLiters { get; set; }
 
-    public virtual DriverProfile Driver { get; set; }
-
-    public virtual Vehicle Vehicle { get; set; }
-
-    public virtual ICollection<Waybill> Waybills { get; set; } = new List<Waybill>();
+    public virtual Waybill Waybill { get; set; }
 }

@@ -7,6 +7,7 @@ using QuestPDF.Infrastructure;
 using System.Text;
 using Taxi;
 using Taxi.API.Server;
+using Taxi.API.Server.Hubs;
 using Taxi.API.Server.Models;
 using Taxi.API.Server.Services;
 
@@ -49,6 +50,8 @@ builder.Services
         options.TokenValidationParameters = validation;
     });
 
+builder.Services.AddSignalR();
+
 
 builder.Services.AddAuthorization();
 
@@ -86,6 +89,8 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
 //var httpClient = new HttpClient();
@@ -98,6 +103,9 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapGet("gets", ()=>"hello world");
+
+app.MapHub<RideHub>("/hubs/ride");
+//app.mapsi
 
 
 //app.MapPost("/register", )

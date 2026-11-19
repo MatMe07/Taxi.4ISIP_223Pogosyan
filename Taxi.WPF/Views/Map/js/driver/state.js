@@ -65,12 +65,22 @@ function setDriverState(nextState) {
     const isWaiting = nextState === DRIVER_STATE.WAITING;
 
     driverElements.lineBtn.classList.toggle('offline', isOffline);
-    driverElements.lineBtn.classList.toggle('online', isWaiting);
+    // if (driverIsAllowed){
+        
+    // }
+        driverElements.lineBtn.classList.toggle('online', isWaiting);
+
     driverElements.lineBtn.setAttribute('aria-pressed', String(isWaiting));
     driverElements.lineBtnText.textContent = isOffline ? 'На линию' : 'Завершить';
 
     driverElements.overlay.classList.toggle('offline', isOffline);
-    driverElements.overlay.classList.toggle('online', !isOffline);
+    // if (driverIsAllowed)
+        driverElements.overlay.classList.toggle('online', !isOffline);
+    console.info(isOffline);
+    if (driverStatusOnline !== !isOffline){
+        driverStatusOnline = !isOffline;
+        postToHost({type:"driverToOnline", status:driverStatusOnline.toString()})
+    }
 
     driverElements.statusText.textContent = isOffline
         ? 'Занят'
@@ -91,6 +101,14 @@ function initDriverState() {
     updateDriverBalance();
     setDriverState(DRIVER_STATE.OFFLINE);
 
+    // if (!driverIsAllowed) {
+    //     driverElements.lineBtn.addEventListener('pointerdown', ()=>{
+    //         console.info(driverElements.lineBtn.classList);
+    //         driverElements.lineBtn.classList.remove('holding');
+    //     });
+    //     driverElements.lineBtn.classList.add('hidden');
+    //     console.info("msdfjsldkfjsldfk");
+    // }
     setupHold(driverElements.lineBtn, () => {
         if (driverState === DRIVER_STATE.OFFLINE) {
             setDriverState(DRIVER_STATE.WAITING);
@@ -98,6 +116,7 @@ function initDriverState() {
             setDriverState(DRIVER_STATE.OFFLINE);
         }
     });
+
 
     window.addEventListener('pointerup', cancelAllHolds);
     window.addEventListener('blur', cancelAllHolds);

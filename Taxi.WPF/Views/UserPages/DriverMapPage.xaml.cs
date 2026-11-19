@@ -60,6 +60,7 @@ namespace Taxi.WPF.Views.UserPages
 
         private void SendToWeb(string commandType, object data)
         {
+            if (MyWebView.CoreWebView2 == null) return;
             MyWebView.CoreWebView2.PostWebMessageAsJson(WebMessages.SendToWeb(commandType, data));
         }
 

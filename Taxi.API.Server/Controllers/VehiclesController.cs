@@ -6,6 +6,7 @@ using Taxi.Core.Models.DB;
 namespace Taxi.API.Server.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/vehicle")]
     public class VehiclesController : ControllerBase
     {
@@ -18,7 +19,6 @@ namespace Taxi.API.Server.Controllers
 
 
         [HttpGet("getAllVehicles")]
-        [Authorize]
         public async Task<IActionResult> GetAllVehiclesAsync()
         {
             List<VehicleDTO> lst = await services.GetAllVehiclesAsync();
@@ -26,7 +26,6 @@ namespace Taxi.API.Server.Controllers
         }
 
         [HttpGet("getAllClasses")]
-        [Authorize]
         public async Task<IActionResult> GetAllVehicleClassesAsync()
         {
             var lst = await services.GetAllVehicleClassesAsync();
@@ -34,7 +33,6 @@ namespace Taxi.API.Server.Controllers
         }
 
         [HttpPatch("updateVehicle")]
-        [Authorize]
         public async Task<IActionResult> UpdateVehicle(VehicleDTO vehicle)
         {
             var (message, isUpdate) = await services.UpdateVehicleAsync(vehicle);
@@ -55,7 +53,6 @@ namespace Taxi.API.Server.Controllers
 
 
         [HttpPost("addVehicle")]
-        [Authorize]
         public async Task<IActionResult> AddVehicleAsync(VehicleDTO vehicle)
         {
             var (message, isAdd) = await services.AddVehicleAsync(vehicle);
@@ -76,7 +73,6 @@ namespace Taxi.API.Server.Controllers
 
 
         [HttpDelete("deleteVehicle/{id}")]
-        [Authorize]
         public async Task<IActionResult> DeleteVehicleAsync(int id)
         {
             var (message, isDelete) = await services.DeleteVehicleAsync(id);
