@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Taxi.Core.Models.DB
+namespace Taxi.Core.Models.Vehicle
 {
-    public class VehicleUpdateResponse
+    public class VehicleAddResponse
     {
         public string message { get; set; }
 
-        public bool IsUpdateded { get; set; }
+        public bool IsAdded { get; set; }
 
 
     }

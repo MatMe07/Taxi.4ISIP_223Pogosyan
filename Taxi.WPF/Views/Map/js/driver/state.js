@@ -17,6 +17,9 @@ function cacheDriverElements() {
     driverElements.cancelBtn = document.getElementById('cancel-to-line-btn');
     driverElements.orderStatusText = document.getElementById('order-status-text');
     driverElements.completedFare = document.getElementById('completed-fare');
+    
+    driverElements.offerCard = document.getElementById('offerCard');
+    driverElements.activeCard = document.getElementById('activeOrderCard');
 }
 
 function formatMoney(value) {
@@ -88,11 +91,12 @@ function setDriverState(nextState) {
             ? 'На линии'
             : '';
 
+    updateORderState(nextState);
     updateOrderStatusText(nextState);
     updateRouteForState(nextState);
 
     if (isWaiting) {
-        scheduleOffer();
+        // scheduleOffer();
     }
 }
 

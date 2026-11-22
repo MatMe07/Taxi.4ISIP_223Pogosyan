@@ -22,13 +22,7 @@ namespace Taxi.API.Server.Controllers
         public async Task<IActionResult> PostCreateNewOrderAsync(OrderRequest orderRequest)
         {
             var (isCreated, orderId) = await _orderService.CreateNewOrderAsync(
-                orderRequest.ClientId,
-                orderRequest.TariffId,
-                orderRequest.AddressOtkuda,
-                orderRequest.AddressKuda,
-                orderRequest.PaymentMethodId,
-                orderRequest.PaymentAmount
-                );
+                orderRequest);
             return Ok(new OrderResponse
             {
                 isCreated = isCreated,

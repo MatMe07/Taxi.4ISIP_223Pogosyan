@@ -9,8 +9,9 @@ const DRIVER_STATE = Object.freeze({
     CANCELED: 'canceled'
 });
 
-const OFFER_DELAY = 5000;
+const OFFER_DELAY = 500;
 
+let order = new Order();
 const DEMO_ORDER = Object.freeze({
     fare: 245,
     pickup: {
@@ -60,8 +61,13 @@ let driverBalance = 154.75;
 let driverOrdersCount = 4;
 let offerTimer = null;
 let driverStatusOnline = false;
+let driverAddress = new Address();
+let IsDriverNotBusy = true;
 
-let driverIsAllowed = null;
+let toClientRoute = new RouteInfo();
+
+
+let driverIsAllowed = true;
 let messageIsAllowed = null;
 
 const holdCleanups = [];

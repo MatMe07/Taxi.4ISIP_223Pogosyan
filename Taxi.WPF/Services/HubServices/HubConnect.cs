@@ -15,6 +15,7 @@ namespace Taxi.WPF.Services.HubServices
         private HubConnection _hubConnection;
         public IRideContract rideContract { get;  }
         public event Action<string>? OnMessageReceived;
+        
 
         public HubConnect(string hubUrl)
         {

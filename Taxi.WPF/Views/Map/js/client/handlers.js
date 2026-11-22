@@ -1,4 +1,4 @@
-async function setPoint(which, lat, lon, address) {
+async function setPoint(which, lat, lon, address) { 
     await ymaps3.ready;
 
     if (which !== 'from' && which !== 'to') {

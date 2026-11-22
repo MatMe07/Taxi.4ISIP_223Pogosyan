@@ -11,13 +11,15 @@ using System.Windows;
 using System.Windows.Media;
 using Taxi.Core.Models.DB;
 using Taxi.Core.Models.Map;
+using Taxi.Core.SharedHub;
 using Taxi.src.Taxi.Map.Helpers;
 using Taxi.WPF.Models;
 using Taxi.WPF.Services;
+using Taxi.WPF.Services.HubServices;
 
 namespace Taxi.WPF.ViewModels.UsersViewModels
 {
-    public class MapViewModel : ViewModelBase
+    public class MapViewModel : ViewModelBase, IClientContract
     {
 
         private readonly GeocodeService geocodeService;
@@ -26,6 +28,8 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
         private readonly PaymentMethodService paymentMethodService;
         private readonly ProfileService profileService;
         private readonly OrderService orderService;
+        private readonly RideHubService rideHubService;
+
         private string TypeRoute;
 
         public Action<string, object> CallJsAsync {  get; set; }
@@ -33,9 +37,10 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
         private RoutePoint _from;
         private RoutePoint _to;
         private RouteInfo _routeInfeFromTo;
+        //private RouteData _routeData;
 
         public MapViewModel(GeocodeService _geocodeService, RoutingService _routingService, 
-            TariffService _tariffService, PaymentMethodService _paymentMethod, ProfileService _profileSerivce, OrderService orderService)
+            TariffService _tariffService, PaymentMethodService _paymentMethod, ProfileService _profileSerivce, OrderService orderService, RideHubService hubService)
         {
             //MyWebView = webView;
             var baseAddress = Environment.GetEnvironmentVariable("BaseAddress");
@@ -45,11 +50,14 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
             paymentMethodService = _paymentMethod;
             profileService = _profileSerivce;
             this.orderService = orderService;
-            TypeRoute = Environment.GetEnvironmentVariable("TypeRoute");
+            rideHubService = hubService;
+            TypeRoute = Environment.GetEnvironmentVariable("TypeRoute");    
             _from = new RoutePoint();
             _to = new RoutePoint();
             _routeInfeFromTo = new();
-            AppSettings.Instance.PropertyChanged += OnAppSettingsChanged; ;
+            AppSettings.Instance.PropertyChanged += OnAppSettingsChanged;
+
+            rideHubService.BindingAllMethodsInInterface<IClientContract>(this);
         }
 
         private void OnAppSettingsChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -203,11 +211,13 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
             var (isCreated, orderId) = await orderService.CreateNewOrderAsync(
                 AppSettings.Instance.userSession.User.ClientProfile.Id,
                 tariffId,
-                _from.Address,
-                _to.Address,
+                _from,
+                _to,
                 paymentId,
-                paymentAmount
+                paymentAmount,
+                _routeInfeFromTo
                 );
+
             if ( isCreated )
             {
                 var messageData = new
@@ -256,16 +266,14 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
             }
 
             var tariffs_ = await GetTariffDTOs();
-            var routeData = new
+            var routeData = new 
             {
-                _routeInfeFromTo.Coordinates,     
+                _routeInfeFromTo.Coordinates,   
                 StartPoint = new[] { _from.Lat, _from.Lon },
                 EndPoint = new[] { _to.Lat, _to.Lon } ,
                 tariffs = tariffs_.ToList(),
                 routeInfo = _routeInfeFromTo
             };
-
-
 
             CallJsAsync("showRoute", routeData);
             //Debug.WriteLine($"showRoute = {routeData}");
@@ -316,10 +324,6 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
                 Debug.WriteLine("Ошибка геокодера: " + ex);
             }
         }
-
-
-
-
 
     }
 

@@ -7,10 +7,14 @@ using Taxi.Core.Models.DB;
 
 namespace Taxi.Core.SharedHub
 {
-    public interface IRideContract
+    public interface IRideContract : IDriverContract, IClientContract
     {
         Task ReceiveMessage(string user, string message);
         Task DriverAssigned(int driverId);
+
+        //Task New
+
+        //Task NewOrder(int orderID);
         //Task RideCompleted(RideDto summary);
     }
 }

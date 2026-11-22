@@ -65,6 +65,8 @@ namespace Taxi.WPF
             //services.ad
             //services.serviceCollection();
             services.AddSingleton(p => new HubConnect(baseAddress));
+            
+            services.AddSingleton(p => new RideHubService(baseAddress));
             //services.addho
 
 

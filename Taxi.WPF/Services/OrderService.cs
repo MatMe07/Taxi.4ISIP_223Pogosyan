@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using Taxi.Core.Models.Map;
 using Taxi.Core.Models.Order;
 using Taxi.WPF.Models;
 
@@ -19,7 +20,7 @@ namespace Taxi.WPF.Services
         }
 
 
-        public async Task<(bool, int?)> CreateNewOrderAsync(int clientId,int tariffId, string AddressOtkuda, string AddressKuda, int PaymentMethodId, decimal PaymentAmount)
+        public async Task<(bool, int?)> CreateNewOrderAsync(int clientId,int tariffId, RoutePoint AddressOtkuda, RoutePoint AddressKuda, int PaymentMethodId, decimal PaymentAmount, RouteInfo routeInfo)
         {
             var orderReq = new OrderRequest
             {
@@ -28,7 +29,8 @@ namespace Taxi.WPF.Services
                 AddressOtkuda=AddressOtkuda,
                 AddressKuda=AddressKuda,
                 PaymentMethodId=PaymentMethodId,
-                PaymentAmount=PaymentAmount
+                PaymentAmount=PaymentAmount,
+                RouteInfo = routeInfo
             };
             var response = await _http.PostAsJsonAsync("api/order/createNewOrder", orderReq);
             var result = await response.Content.ReadFromJsonAsync<OrderResponse>();

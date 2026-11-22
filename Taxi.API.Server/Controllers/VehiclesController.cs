@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Taxi.API.Server.Services;
 using Taxi.Core.Models.DB;
+using Taxi.Core.Models.Vehicle;
 
 namespace Taxi.API.Server.Controllers
 {

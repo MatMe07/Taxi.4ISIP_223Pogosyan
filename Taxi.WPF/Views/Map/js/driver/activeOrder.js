@@ -7,10 +7,10 @@ function removeDriverRoute() {
         map.removeChild(routeLine);
         routeLine = null;
     }
-    if (markerOtkuda) {
-        map.removeChild(markerOtkuda);
-        markerOtkuda = null;
-    }
+    // if (markerOtkuda) {
+    //     map.removeChild(markerOtkuda);
+    //     markerOtkuda = null;
+    // }
     if (markerKuda) {
         map.removeChild(markerKuda);
         markerKuda = null;
@@ -27,29 +27,46 @@ async function drawDriverRoute(stage) {
 
     const token = ++routeRenderToken;
     const isTrip = stage === 'in-trip';
-    const from = isTrip ? DEMO_ORDER.pickup : DEMO_ORDER.driver;
-    const to = isTrip ? DEMO_ORDER.dropoff : DEMO_ORDER.pickup;
-    const coordinates = isTrip ? DEMO_ORDER.tripRoute : DEMO_ORDER.toClientRoute;
-    console.info(isTrip);
+    let from = null
+    let to = null
+    let coordinates = null
+    if (isTrip){
+        from = order.request.addressOtkuda;
+        to = order.request.addressKuda;
+        coordinates = order.request.routeInfo.coordinates;
+    }
+    else{
+        from = driverAddress;
+        to = toClientRoute.addressKuda;
+        coordinates = toClientRoute.coordinates;
+    }
+    // from = isTrip ? DEMO_ORDER.pickup : DEMO_ORDER.driver;
+    // to = isTrip ? DEMO_ORDER.dropoff : DEMO_ORDER.pickup;
+    // coordinates = isTrip ? DEMO_ORDER.tripRoute : DEMO_ORDER.toClientRoute;
+    console.info("trip = " + isTrip);
+    console.info("from = ");
+    console.info(from);
+    console.info("to = ");
+    console.info(to);
 
     removeDriverRoute();
 
-    await applyPoint('from', [from.lon, from.lat], from.address);
-    if (token !== routeRenderToken) {
-        removeDriverRoute();
-        return;
-    }
+    // await applyPoint('from', [from.lon, from.lat], from.address);
+    // if (token !== routeRenderToken) {
+    //     removeDriverRoute();
+    //     return;
+    // }
 
     await applyPoint('to', [to.lon, to.lat], to.address);
-    if (token !== routeRenderToken) {
-        removeDriverRoute();
-        return;
-    }
+    // if (token !== routeRenderToken) {
+    //     removeDriverRoute();
+    //     return;
+    // }
 
     await showRoute(coordinates, [from.lon, from.lat], [to.lon, to.lat]);
-    if (token !== routeRenderToken) {
-        removeDriverRoute();
-    }
+    // if (token !== routeRenderToken) {
+    //     removeDriverRoute();
+    // }
 }
 
 function updateRouteForState(nextState) {
@@ -63,6 +80,38 @@ function updateRouteForState(nextState) {
                nextState === DRIVER_STATE.OFFLINE) {
         clearDriverRoute();
     }
+}
+
+
+function updateORderState(nextState){
+    if (nextState === DRIVER_STATE.OFFER){
+        renderOfferCard(order);
+    }
+    else if(nextState === DRIVER_STATE.TO_CLIENT){
+        renderActiveCard(order);
+    }
+}
+
+function renderOfferCard(order) {
+    console.info("renderOffer");
+    console.info(order);
+    driverElements.offerCard.querySelector('.offer-subtitle').textContent = `${toClientRoute.distanceMeters} · ${toClientRoute.durationMinutes}`;
+    driverElements.offerCard.querySelector('.offer-price').textContent = `${order.request.paymentAmount} ₽`;
+    driverElements.offerCard.querySelector('.user-rating').textContent = order.rating;
+    driverElements.offerCard.querySelector('#from-address').textContent = order.request.addressOtkuda.address;
+    driverElements.offerCard.querySelector('#to-address').textContent = order.request.addressKuda.address;
+    driverElements.offerCard.querySelector('.driver-class').textContent = order.tariffName;
+}
+
+function renderActiveCard(order) {
+    driverElements.activeCard.querySelector('#order-status-text').textContent = 'В пути к клиенту';
+    driverElements.activeCard.querySelector('.offer-price').textContent = `${order.request.paymentAmount} ₽`;
+    driverElements.activeCard.querySelector('.client-avatar').textContent = order.clientName[0].toUpperCase();
+    driverElements.activeCard.querySelector('.client-name').textContent = order.clientName;
+    driverElements.activeCard.querySelector('.user-rating').textContent = order.rating;
+    driverElements.activeCard.querySelector('#active-from-address').textContent = order.request.addressOtkuda.address;
+    driverElements.activeCard.querySelector('#active-to-address').textContent = order.request.addressKuda.address;
+    driverElements.activeCard.querySelector('.order-payment-value').textContent = order.paymentMethodName;
 }
 
 function completeTrip() {

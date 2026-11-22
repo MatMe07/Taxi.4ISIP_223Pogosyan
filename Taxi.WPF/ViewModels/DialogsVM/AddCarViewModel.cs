@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Taxi.Core.Models.DB;
+using Taxi.Core.Models.Vehicle;
 using Taxi.WPF.Commands;
 using Taxi.WPF.Services;
 

@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Taxi.Core.Models.DB;
+using Taxi.Core.Models.Vehicle;
 
 namespace Taxi.WPF.Services
 {

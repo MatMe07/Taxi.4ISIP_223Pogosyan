@@ -1,4 +1,4 @@
-async function applyPoint(which, coords, address) {
+async function applyPoint(which, coords, address, isZoom = true) {
     // console.info(map);
     // var pm = new YMapDefaultMarker(new YMaps.GeoPoint(coords));
     await ymaps3.ready;
@@ -31,11 +31,14 @@ async function applyPoint(which, coords, address) {
         );
 
         map.addChild(markerOtkuda);
-        map.setLocation({
-            center: coords,
-            zoom: 16,
-            duration: 800
-        });
+        if (isZoom ){
+            map.setLocation({
+                center: coords,
+                zoom: 16,
+                duration: 800
+            });
+
+        }
     }
     else {
         // console.info(markerKuda);

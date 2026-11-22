@@ -31,6 +31,7 @@ namespace Taxi.WPF.Services
             //Debug.WriteLine(response.Content.ReadFromJsonAsync<VehicleDTO>());
             return response ?? [];
         }
+
         public async Task<RideResponse> TryToConnectAsync()
         {
             var response = await _httpClient.GetFromJsonAsync<RideResponse>("api/poezdka/tryToConnect");
