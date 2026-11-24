@@ -2,10 +2,10 @@
     display: block;
 }
 
-.offer-card {
-    /* padding: 16px;
-    padding-top: 0px; */
-}
+/* .offer-card {
+    padding: 16px;
+    padding-top: 0px; 
+} */
 
 .ratingUser-box{
     display: flex;
@@ -17,7 +17,6 @@
     margin-bottom: 7px;
     background-color: var(--bg-main-color);;
 }
-/* Чтобы цифра 4,95 и иконка звезды тоже стояли ровно в ряд */
 .StarRating {
     display: flex;
     align-items: center;

@@ -14,11 +14,16 @@
     <script src="https://api-maps.yandex.ru/v3/?apikey=6cedb00d-4db3-4244-a76b-ada1d1945685&lang=ru_RU"></script>
     <!-- <script src="https://static-maps.yandex.ru/v1?apikey=9e7d4450-7a4a-49b2-b0a5-5a8146260770&lang=ru_RU&theme=dark"></script> -->
     <!-- <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=6cedb00d-4db3-4244-a76b-ada1d1945685&suggest_apikey=60445215-6d3a-4f88-87fe-8d52b72e5bc9" type="text/javascript"></script> -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/search.css">
     <link rel="stylesheet" href="../css/tariff.css">
     <link rel="stylesheet" href="../css/payment.css">
+    <link rel="stylesheet" href="../css/driver-coming.css">
+    <link rel="stylesheet" href="../css/trip-screens.css">
     <link rel="stylesheet" href="../css/modal.css">
+    <!-- <link rel="stylesheet" href="../css/driver.css"> -->
     <link rel="stylesheet" href="../css/markers.css">
     <link rel="stylesheet" href="../css/skeleton.css">
     <link rel="stylesheet" href="../css/snackbar.css">
@@ -45,7 +50,7 @@
 
     <div id="map"></div>
     <div id="ui-layer">
-        <div id="order-screen" style="display: block;">
+        <section id="order-screen" style="display: none;">
 
             <div id="boxMain">
                 <div id="searchBox">
@@ -114,7 +119,6 @@
 
             </div>
             <div id="snackbar">
-
             </div>
 
             <div class="Modal modal-overlay">
@@ -134,26 +138,6 @@
                         </div>
 
                         <div class="payment-list">
-
-                            <!-- <div class="payment-row selected" data-method="cash">
-                        <div class="payment-info">
-                            <img src="imgs/paymentMethod/cash.svg" alt="Наличные" class="payment-icon">
-                            <span class="payment-name">Наличные</span>
-                        </div>
-                        <div class="custom-radio"></div>
-                    </div>
-
-                    <div class="payment-row" data-method="sbp">
-                        <div class="payment-info">
-                            <img src="imgs/paymentMethod/mir.png" alt="Онлайн (СБП)" class="payment-icon">
-                            <div class="payment-text-wrapper">
-                                <span class="payment-name">Онлайн (СБП)</span>
-                            </div>
-                        </div>
-                        <div class="custom-radio"></div>
-                    </div> -->
-
-
                         </div>
                     </div>
 
@@ -164,14 +148,9 @@
 
                 </div>
             </div>
-        </div>
+        </section>
 
-
-
-
-
-
-        <div id="waiting-screen" style="display: none;">
+        <section id="waiting-screen" style="display: none;">
             <div id="boxMain">
                 <div class="search-waiting">
                     <div class="header-waiting">
@@ -191,7 +170,8 @@
                                 </div>
                                 <div class="fieldInput">
                                     <span class="hintSearch2 active" id="placeholderSearch1">Откуда?</span>
-                                    <input id="search1Waiting" class="searchDefault Txt--Waiting" autocomplete="off" readonly>
+                                    <input id="search1Waiting" class="searchDefault Txt--Waiting" autocomplete="off"
+                                        readonly>
                                     <!-- <input id="search2" class="searchDefault2" autocomplete="off"> -->
 
                                 </div>
@@ -207,7 +187,8 @@
                                 </div>
                                 <div class="fieldInput">
                                     <span class="hintSearch2 active" id="placeholderSearch2">Куда?</span>
-                                    <input id="search2Waiting" class="searchDefault2 Txt--Waiting" autocomplete="off" readonly>
+                                    <input id="search2Waiting" class="searchDefault2 Txt--Waiting" autocomplete="off"
+                                        readonly>
                                 </div>
 
                             </div>
@@ -226,17 +207,18 @@
 
                 <button class="btnCloseWait" onclick="btnModalWaitOpen()">
                     <!-- <div class="btnCloseWait"> -->
-                        <div class="backBtn" style="color: #FF3B30; align-items: center;">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="15" height="15" style="margin-right: 5px;">
-                                <polygon points="30,10 70,10 90,30 90,70 70,90 30,90 10,70 10,30" fill="none"
-                                    stroke="#FF3B30" stroke-width="8" stroke-linejoin="round" />
-                                <g stroke="#FF3B30" stroke-width="8" stroke-linecap="round">
-                                    <line x1="38" y1="38" x2="62" y2="62" />
-                                    <line x1="62" y1="38" x2="38" y2="62" />
-                                </g>
-                            </svg>
-                            <span>Отменить поездку</span>
-                        </div>
+                    <div class="backBtn" style="color: #FF3B30; align-items: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="15" height="15"
+                            style="margin-right: 5px;">
+                            <polygon points="30,10 70,10 90,30 90,70 70,90 30,90 10,70 10,30" fill="none"
+                                stroke="#FF3B30" stroke-width="8" stroke-linejoin="round" />
+                            <g stroke="#FF3B30" stroke-width="8" stroke-linecap="round">
+                                <line x1="38" y1="38" x2="62" y2="62" />
+                                <line x1="62" y1="38" x2="38" y2="62" />
+                            </g>
+                        </svg>
+                        <span>Отменить поездку</span>
+                    </div>
                     <!-- </div> -->
 
                 </button>
@@ -244,26 +226,244 @@
 
             </div>
 
-            <div class="ModalWait modal-overlay">
-                <div class="modal-container">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 class="modal-title">Уверены, что хотите отменить заказ?</h2>
+
+        </section>
+
+        <section id="driver-coming-screen" style="display: none;">
+            <div id="boxMain">
+                <div class="search-waiting">
+                    <div class="driverWayInfo">
+                        <div class="driverAfterTime">
+                            <span class="timeToBe">Через ~7 мин приедет</span>
+                            <span class="vehicleInfo">белый Hyundai Solaris</span>
                         </div>
-
-                        <div class="payment-list">
-
-
+                        <div class="vehicleNumberClass">
+                            <div class="vehicleNumber">H 641 OC</div>
+                            <div class="vehicleClassImg">
+                                <img src="../imgs/classTariff/ekonomClass.png" width="65px">
+                            </div>
                         </div>
                     </div>
+                    <div class="section"></div>
+                    <div class="driverInfo">
+                        <div class="driverAvatarInfo">
+                            <div class="driver-avatar">Ф</div>
+                            <div class="driver-rating-name">
+                                <span class="driver-name">Франц</span>
+                                <div class="driver-rating-poezdki">
+                                    <div class="StarRating">
+                                        <div class="material-icons">star</div>
+                                        <span class="driver-rating">4,95</span>
+                                    </div>
+                                    <span class="totalPoezdki"> · 245 поездок</span>
 
-                    <div class="modal-footer footer-waiting">
-                        <button class="btn-primary-close" onclick="closeModalWaiting()">Отменить заказ</button>
-                        <button class="btn-confirm" onclick="btnCloseModalWait()">Дождаться</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="round-action">
+                            <button class="icon-btn icon-btn--circle" type="button" aria-label="Звонок">
+                                <span class="material-icons">phone</span>
+                            </button>
+                        </div>
                     </div>
+                </div>
+                <div class="input-waiting">
+                    <div id="searchBox-waiting">
+                        <div class="suggest-container">
+                            <div class="wrapper-field">
+                                <div class="krug-Red">
+                                </div>
+                                <div class="fieldInput">
+                                    <span class="hintSearch2 active" id="placeholderSearch1">Откуда?</span>
+                                    <input id="search1Waiting" class="searchDefault Txt--Waiting" autocomplete="off"
+                                        readonly>
+                                </div>
+                            </div>
 
+                        </div>
+
+                        <div class="suggest-container">
+                            <div class="wrapper-field">
+                                <div class="krug">
+                                </div>
+                                <div class="fieldInput">
+                                    <span class="hintSearch2 active" id="placeholderSearch2">Куда?</span>
+                                    <input id="search2Waiting" class="searchDefault2 Txt--Waiting" autocomplete="off"
+                                        readonly>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
+                <div class="coming-paymentMthod-price">
+                    <div class="coming-paymentMethod">
+                        <!-- <div class="payment-info">
+                            <img src="imgs/paymentMethod/mir.png" alt="${element.name}" class="payment-icon">
+                            <span class="payment-name">Онлайн СБП</span>
+                        </div> -->
+                        
+                    </div>
+                    <span class="offer-price">245 ₽</span>
+
+                </div>
+
+                <button class="btnCloseWait" onclick="btnModalWaitOpen()">
+                    <!-- <div class="btnCloseWait"> -->
+                    <div class="backBtn" style="color: #FF3B30; align-items: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="15" height="15"
+                            style="margin-right: 5px;">
+                            <polygon points="30,10 70,10 90,30 90,70 70,90 30,90 10,70 10,30" fill="none"
+                                stroke="#FF3B30" stroke-width="8" stroke-linejoin="round" />
+                            <g stroke="#FF3B30" stroke-width="8" stroke-linecap="round">
+                                <line x1="38" y1="38" x2="62" y2="62" />
+                                <line x1="62" y1="38" x2="38" y2="62" />
+                            </g>
+                        </svg>
+                        <span>Отменить поездку</span>
+                    </div>
+                    <!-- </div> -->
+
+                </button>
+
+
+            </div>
+        </section>
+
+        <section id="in-trip-screen" style="display: none;">
+            <div id="boxMain">
+                <div class="search-waiting">
+                    <div class="driverWayInfo">
+                        <div class="driverAfterTime">
+                            <span class="timeToBe">Осталось ехать ~7 мин</span>
+                            <span class="vehicleInfo">белый Hyundai Solaris</span>
+                        </div>
+                        <div class="vehicleNumberClass">
+                            <div class="vehicleNumber">H 641 OC</div>
+                            <div class="vehicleClassImg">
+                                <img src="../imgs/classTariff/ekonomClass.png" width="65px">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section"></div>
+                    <div class="driverInfo">
+                        <div class="driverAvatarInfo">
+                            <div class="driver-avatar">Ф</div>
+                            <div class="driver-rating-name">
+                                <span class="driver-name">Франц</span>
+                                <div class="driver-rating-poezdki">
+                                    <div class="StarRating">
+                                        <div class="material-icons">star</div>
+                                        <span class="driver-rating">4,95</span>
+                                    </div>
+                                    <span class="totalPoezdki"> · 245 поездок</span>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="round-action">
+                            <button class="icon-btn icon-btn--circle" type="button" aria-label="Звонок">
+                                <span class="material-icons">phone</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-waiting">
+                    <div id="searchBox-waiting">
+                        <div class="suggest-container">
+                            <div class="wrapper-field">
+                                <div class="krug">
+                                </div>
+                                <div class="fieldInput">
+                                    <span class="hintSearch2 active" id="placeholderSearch2">Куда?</span>
+                                    <input id="search2Waiting" class="searchDefault2 Txt--Waiting" autocomplete="off"
+                                        readonly>
+                                </div>
+
+                            </div>
+                        </div>
+                         <div class="suggest-container">
+                            <div class="wrapper-field">
+                                <div class="krug-Red">
+                                </div>
+                                <div class="fieldInput">
+                                    <span class="hintSearch2 active" id="placeholderSearch1">Откуда?</span>
+                                    <input id="search1Waiting" class="searchDefault Txt--Waiting" autocomplete="off"
+                                        readonly>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="coming-paymentMthod-price">
+                    <div class="coming-paymentMethod">
+                        <!-- <div class="payment-info">
+                            <img src="imgs/paymentMethod/mir.png" alt="${element.name}" class="payment-icon">
+                            <span class="payment-name">Онлайн СБП</span>
+                        </div> -->
+                        
+                    </div>
+                    <span class="offer-price">245 ₽</span>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="arrived-screen" style="display: none;">
+            <div id="boxMain">
+                <div class="search-waiting">
+                    <div class="arrival-head">
+                        <div class="arrival-icon">
+                            <span class="material-icons">check</span>
+                        </div>
+                        <div>
+                            <h2 class="arrival-title">Вы прибыли</h2>
+                            <p class="arrival-subtitle">Поездка завершена</p>
+                        </div>
+                    </div>
+                    <div class="section"></div>
+                    <div class="arrival-rating">
+                        <span class="arrival-rating-label">Оцените поездку</span>
+                        <div class="arrival-stars" role="group" aria-label="Оценка поездки">
+                            <button class="arrival-star is-selected" type="button" aria-label="1 звезда"><span class="material-icons">star</span></button>
+                            <button class="arrival-star is-selected" type="button" aria-label="2 звезды"><span class="material-icons">star</span></button>
+                            <button class="arrival-star is-selected" type="button" aria-label="3 звезды"><span class="material-icons">star</span></button>
+                            <button class="arrival-star is-selected" type="button" aria-label="4 звезды"><span class="material-icons">star</span></button>
+                            <button class="arrival-star is-selected" type="button" aria-label="5 звёзд"><span class="material-icons">star</span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxBtn-confirm">
+                    <button class="btn-confirm" type="button">Готово</button>
+                </div>
+            </div>
+        </section>
+        
+        <div class="ModalWait modal-overlay">
+            <div class="modal-container">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Уверены, что хотите отменить заказ?</h2>
+                    </div>
+
+                    <div class="payment-list">
+
+
+                    </div>
+                </div>
+
+                <div class="modal-footer footer-waiting">
+                    <button class="btn-primary-close" onclick="closeModalWaiting()">Отменить заказ</button>
+                    <button class="btn-confirm" onclick="btnCloseModalWait()">Дождаться</button>
+                </div>
+
+
             </div>
         </div>
     </div>

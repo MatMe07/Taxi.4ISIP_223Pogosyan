@@ -28,6 +28,10 @@ body {
     --button-press-color: #00613e;
 
     --fonts-families-main: 'YS Text', 'Helvetica Neue', Arial, sans-serif;
+        --driver-success: #12A46F;
+    --driver-success-bg: rgba(18, 164, 111, 0.12);
+    --driver-danger: #dd6861;
+    --driver-info-bg: rgba(74, 144, 226, 0.14);
 }
 
 span {
@@ -44,7 +48,7 @@ span {
     --span-color: #282F39;
 
     --bg-main-color: #FFFFFF;
-    --bg-secondary-color: #EEF2F7;
+    --bg-secondary-color: #eeeeee;
     --hover-bg-color: rgba(0, 0, 0, 0.04);
     --skeleton-bg-color: #E4E6EB;
     --skeleton-shine-color: rgba(255, 255, 255, 0.4);
@@ -67,6 +71,10 @@ span {
     --shadow-color-light: rgba(0, 0, 0, 0.15);
     --shadow-search-color: rgba(0, 0, 0, 0.12);
     --shadow-suggest-color: rgba(117, 115, 111, 0.2);
+        --driver-success: #12A46F;
+    --driver-success-bg: rgba(18, 164, 111, 0.12);
+    --driver-danger: #dd6861;
+    --driver-info-bg: rgba(74, 144, 226, 0.14);
 }
 
 [data-theme="dark"] {
@@ -104,5 +112,18 @@ span {
     --shadow-color-light: rgba(0, 0, 0, 0.4);
     --shadow-search-color: rgba(0, 0, 0, 0.4);
     --shadow-suggest-color: rgba(0, 0, 0, 0.5);
+    
+    --driver-success: #2BC98A;
+    --driver-success-bg: rgba(43, 201, 138, 0.16);
+    --driver-danger: #FF6B5E;
+    --driver-info-bg: rgba(74, 144, 226, 0.22);
+}
 
+.section {
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 5px;
+}
+.section--fill{
+    margin-left: -10px;
+    margin-right: -10px;
 }

@@ -1,16 +1,3 @@
-:root {
-    --driver-success: #12A46F;
-    --driver-success-bg: rgba(18, 164, 111, 0.12);
-    --driver-danger: #dd6861;
-    --driver-info-bg: rgba(74, 144, 226, 0.14);
-}
-
-[data-theme="dark"] {
-    --driver-success: #2BC98A;
-    --driver-success-bg: rgba(43, 201, 138, 0.16);
-    --driver-danger: #FF6B5E;
-    --driver-info-bg: rgba(74, 144, 226, 0.22);
-}
 
 body {
     overflow: hidden;
@@ -315,14 +302,7 @@ body {
     padding: 10px 16px;
     background-color: var(--bg-main-color);
 }
-.section {
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 5px;
-}
-.section--fill{
-    margin-left: -10px;
-    margin-right: -10px;
-}
+
 .driver-route-box .wrapper-field {
     padding: 10px 0px;
 }

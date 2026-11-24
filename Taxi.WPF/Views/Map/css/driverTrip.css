@@ -51,8 +51,7 @@
     border-radius: 50%;
     background: var(--button-action-color);
     color: #fff;
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 20px;
 }
 
 .client-info {

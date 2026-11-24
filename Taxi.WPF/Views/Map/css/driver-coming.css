@@ -1,0 +1,145 @@
+.driverAfterTime{
+    display: flex;
+    flex-direction: column;
+}
+.driverWayInfo{
+    display: flex;
+    justify-content: space-between;
+}
+
+.driverAvatarInfo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.driver-rating-poezdki{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+}
+.driver-name{
+    font-size: 18px;
+}
+.StarRating .material-icons{
+    font-size: 20px;
+}
+
+.totalPoezdki{
+    color: var(--text-minor-color);
+}
+
+.driver-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--button-action-color);
+    color: #fff;
+    font-size: 32px;
+}
+.StarRating {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    gap: 4px;
+}
+
+.driverInfo{
+    display:flex;
+    justify-content: space-between;
+}
+.vehicleClassImg{
+    position: relative;
+    left: 27px; 
+    bottom: 7px;
+}
+
+.vehicleNumber{
+    background-color: var(--bg-secondary-color);
+    padding: 3px 6px;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 500;
+}
+.timeToBe{
+    font-weight: 500;
+    font-size: large;
+}
+
+
+.round-action {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex: none;
+    border: none;
+    border-radius: 50%;
+    background: var(--bg-main-color);
+    color: var(--button-action-color);
+    cursor: pointer;
+}
+
+.icon-btn:hover {
+    background: var(--hover-bg-color);
+}
+
+.icon-btn .material-icons {
+    font-size: 19px;
+}
+
+.icon-btn--circle {
+    width: 48px;
+    height: 48px;
+    background: var(--bg-secondary-color);
+}
+
+.icon-btn--circle .material-icons {
+    font-size: 22px;
+}
+.round-action-label {
+    color: var(--text-minor-color);
+    font-size: 15px;
+    font-weight: 500;
+}
+.search-waiting.section{
+    margin-top:3px;
+}
+.section{
+    margin: 10px -15px;
+}
+
+
+/* .coming-paymentMethod{
+    background: var(--bg-main-color); 
+     padding: 10px 15px;
+} */
+.coming-paymentMthod-price{
+    background: var(--bg-main-color);
+    padding: 10px 15px;
+    display:flex;
+    justify-content: space-between;
+}
+
+.offer-price {
+    /* flex: none; */
+    color: var(--text-main-color);
+    font-size: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+#in-trip-screen #boxMain .coming-paymentMthod-price{
+    border-radius: 0px 0px 20px 20px;
+}

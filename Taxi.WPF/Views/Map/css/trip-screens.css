@@ -1,0 +1,101 @@
+#in-trip-screen #placeholderSearch2.trip-destination-label {
+    top: 3px;
+    color: var(--text-black-color);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+#in-trip-screen #search2Waiting.trip-destination-input {
+    padding-top: 20px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.arrival-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.arrival-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--driver-success-bg);
+}
+
+.arrival-icon .material-icons {
+    font-size: 28px;
+    color: var(--text-main-color);
+}
+
+.arrival-title {
+    margin: 0;
+    color: var(--text-main-color);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.arrival-subtitle {
+    margin: 3px 0 0;
+    color: var(--text-minor-color);
+    font-size: 13px;
+}
+
+.arrival-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.arrival-rating-label {
+    color: var(--text-minor-color);
+    font-size: 16px;
+    /* font-weight: 500; */
+}
+
+.arrival-stars {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.arrival-star {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex: none;
+    padding: 0;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--border-color);
+    cursor: pointer;
+    transition: color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+}
+
+.arrival-star .material-icons {
+    font-size: 28px;
+}
+
+.arrival-star:hover,
+.arrival-star:focus-visible {
+    background: var(--hover-bg-color);
+    color: var(--button-action-color);
+}
+
+.arrival-star:active {
+    transform: scale(0.92);
+}
+
+.arrival-star.is-selected {
+    color: var(--button-action-color);
+}
