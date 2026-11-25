@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Taxi.Core.SharedHub
 {
-    public interface IClientContract
+    public interface IClientContract : IGeneralContract
     {
         //void ResponseNewOrder(bool isCreated, int orderId);
     }

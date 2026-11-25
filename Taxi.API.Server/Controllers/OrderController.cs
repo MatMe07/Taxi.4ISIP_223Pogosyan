@@ -37,5 +37,12 @@ namespace Taxi.API.Server.Controllers
             await _orderService.CancelOrderAsync(orderId);
             return Ok();
         }
+
+        [HttpPost("takeOrder")]
+        public async Task<IActionResult> TakeOrderAsync([FromQuery] int orderId, [FromQuery] int driverId)
+        {
+            await _orderService.TakeOrderAsync(orderId, driverId);
+            return Ok();
+        }
     }
 }

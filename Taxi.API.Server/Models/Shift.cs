@@ -17,9 +17,5 @@ public partial class Shift
 
     public int? OrdersCount { get; set; }
 
-    public int FuelStartLiters { get; set; }
-
-    public int? FuelEndLiters { get; set; }
-
     public virtual Waybill Waybill { get; set; }
 }

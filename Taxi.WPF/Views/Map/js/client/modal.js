@@ -111,8 +111,7 @@ function btnCloseModalWait() {
 }
 
 function closeModalWaiting(){
-    clientElements.orderScreen.style.display = 'block';
-    clientElements.waitingScreen.style.display = 'none';
+    setClientState(CLIENT_STATE.ORDER);
     clientElements.modalWait.classList.remove("open");
     clearAnim();
     showTariffsSkeleton();

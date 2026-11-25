@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Taxi.Core.SharedHub;
+using Taxi.WPF.Models;
 
 namespace Taxi.WPF.Services.HubServices
 {
@@ -20,25 +21,13 @@ namespace Taxi.WPF.Services.HubServices
         {
             var hubUrl = $"{baseAddress.TrimEnd('/')}/hubs/ride";
 
-            _hubConnection = new HubConnectionBuilder().WithUrl(hubUrl).WithStatefulReconnect().Build();
+            _hubConnection = new HubConnectionBuilder().WithUrl(hubUrl, options =>
+            {
+                options.AccessTokenProvider = () => Task.FromResult(AppSettings.Instance.userSession.access_token.AccesToken);
+            })
+                .WithStatefulReconnect().Build();
             //BindingAllMethodsInInterface<IRideContract>(this);
         }
-
-        //public void AddNewFunc<T>(Func<T, Task> func)
-        //{
-        //    var funcName = func.Method.Name; 
-        //    if (_subscriptions.TryGetValue(funcName, out var Sub))
-        //    {
-        //        Sub.Dispose();
-        //    }
-
-        //    var subscription = _hubConnection.On<T>(funcName, async (data) =>
-        //    {
-        //        await func(data);
-        //    });
-
-        //    _subscriptions.Add(funcName, subscription);
-        //}
 
 
         public async Task GetDriver(int orderId)
@@ -46,7 +35,10 @@ namespace Taxi.WPF.Services.HubServices
             await _hubConnection.InvokeAsync("GetDriver",  orderId);
         }
 
-
+        public async Task AddToGroup(int orderId)
+        {
+            await _hubConnection.InvokeAsync("AddToGroup", $"order:{orderId}");
+        }
 
 
         public void BindingAllMethodsInInterface<TInterface>(TInterface realize) 

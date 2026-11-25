@@ -60,8 +60,7 @@ function goToWaitingDriver(isCreated, orderId) {
     if (isCreated) {
         CurrentOrder = orderId;
         init_WaitingScreen();
-        clientElements.orderScreen.style.display = 'none';
-        clientElements.waitingScreen.style.display = 'block';
+        setClientState(CLIENT_STATE.WAITING);
     }
 }
 
@@ -92,4 +91,9 @@ onHostMessage('showRoute', async payload => {
 onHostMessage('GoToWaitingDriver', payload => {
     console.info(payload);
     goToWaitingDriver(payload.isCreated, payload.orderId);
+});
+
+onHostMessage('setClientState', payload => {
+    const nextState = typeof payload === 'string' ? payload : payload?.state;
+    setClientState(nextState);
 });

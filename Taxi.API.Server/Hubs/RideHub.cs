@@ -4,32 +4,53 @@ using Taxi.API.Server.Models;
 using Taxi.Core.SharedHub;
 using Taxi.Core.Models.DB;
 using Taxi.API.Server.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Taxi.API.Server.Hubs
 {
+    [Authorize]
     public class RideHub : Hub<IRideContract> 
     {
         private readonly TaxiBaseContext _context;
+        private readonly ILogger<RideHub> _logger;
 
-        public RideHub(TaxiBaseContext context) 
+        public RideHub(TaxiBaseContext context, ILogger<RideHub> logger) 
         {
             _context = context;
+            _logger = logger;
         }
         
-        public async Task ReceiveMessage(string message) {
-            Console.WriteLine($"[Сервер получил]: {message}");
-            await this.Clients.All.ReceiveMessage("ReceiveMessage", $"Привет от сервера! Вы прислали: '{message}'");
-        }
-
         public override async Task OnConnectedAsync()
         {
-            Console.WriteLine($"Клиент подключился: {Context.ConnectionId}");
+            var userIdentifier = Context.UserIdentifier;
+            var connectionId = Context.ConnectionId;
+            var isAuthenticated = Context.User?.Identity?.IsAuthenticated ?? false;
+
+            // 2. Все клеймы из токена/куки (поможет, если UserIdentifier оказался пустым)
+            var claims = Context.User?.Claims
+                .Select(c => $"{c.Type} = {c.Value}")
+                .ToList() ?? new List<string>();
+
+            _logger.LogInformation(
+                "SignalR Connect | ConnectionId: {ConnectionId} | IsAuth: {IsAuth} | UserIdentifier: '{UserId}' | Claims: [{Claims}]",
+                connectionId,
+                isAuthenticated,
+                userIdentifier ?? "NULL",
+                string.Join(", ", claims)
+            );
+
             await base.OnConnectedAsync();
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            Console.WriteLine($"Клиент отключился: {Context.ConnectionId}");
+            _logger.LogInformation(
+                "SignalR Disconnect | ConnectionId: {ConnectionId} | UserIdentifier: '{UserId}' | Error: {Error}",
+                Context.ConnectionId,
+                Context.UserIdentifier ?? "NULL",
+                exception?.Message ?? "None"
+            );
+
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -66,6 +87,19 @@ namespace Taxi.API.Server.Hubs
             //    CancelledAt = order.CancelledAt,
             //    CancelReason   = order.CancelReason,
             //});
+        }
+
+
+
+        public async Task AddToGroup(string groupName)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+
+        }
+        public async Task RemoveFromGroup(string groupName)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+
         }
     }
 }

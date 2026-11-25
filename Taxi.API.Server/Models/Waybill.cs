@@ -29,6 +29,10 @@ public partial class Waybill
 
     public string MedcheckComment { get; set; }
 
+    public int FuelStartLiters { get; set; }
+
+    public int? FuelEndLiters { get; set; }
+
     public virtual DriverProfile Driver { get; set; }
 
     public virtual ICollection<Shift> Shifts { get; set; } = new List<Shift>();

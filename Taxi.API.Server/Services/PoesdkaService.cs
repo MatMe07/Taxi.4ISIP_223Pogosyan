@@ -61,10 +61,10 @@ namespace Taxi.API.Server.Services
         public async Task<List<PoezdkaDTO>> GetAllPoezdkasAsync()
         {
             var lstClasses =
-                _context.Poezdkas.Select(vc => new PoezdkaDTO
+                _context.Poezdkas.Include(o=>o.Order).Select(vc => new PoezdkaDTO
                 {
                     OrderId = vc.OrderId,
-                    DriverId = vc.DriverId,
+                    //DriverId = vc.Order.DriverId,
                     VehicleId = vc.VehicleId,
                     VehicleGosNumber = vc.Vehicle.GovNumber,
                     StartedAt = vc.StartedAt,

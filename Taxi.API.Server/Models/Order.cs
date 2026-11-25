@@ -9,6 +9,8 @@ public partial class Order
 {
     public int Id { get; set; }
 
+    public int? DriverId { get; set; }
+
     public int ClientId { get; set; }
 
     public int StatusId { get; set; }
@@ -34,6 +36,8 @@ public partial class Order
     public virtual ClientProfile Client { get; set; }
 
     public virtual ICollection<Complaint> Complaints { get; set; } = new List<Complaint>();
+
+    public virtual DriverProfile Driver { get; set; }
 
     public virtual PaymentMethod PaymentMethod { get; set; }
 

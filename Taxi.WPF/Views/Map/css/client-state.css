@@ -1,0 +1,12 @@
+#ui-layer[data-state] > section {
+    display: none;
+}
+
+#ui-layer[data-state="order"] #order-screen,
+#ui-layer[data-state="waiting"] #waiting-screen,
+#ui-layer[data-state="driver-coming"] #driver-coming-screen,
+#ui-layer[data-state="in-trip"] #in-trip-screen,
+#ui-layer[data-state="arrived"] #arrived-screen,
+#ui-layer[data-state="canceled"] #canceled-screen {
+    display: block;
+}

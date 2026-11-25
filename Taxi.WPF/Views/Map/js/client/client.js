@@ -1,9 +1,11 @@
 function cacheClientElements() {
+    clientElements.layer = document.getElementById('ui-layer');
     clientElements.orderScreen = document.getElementById('order-screen');
     clientElements.waitingScreen = document.getElementById('waiting-screen');
     clientElements.driverComingScreen = document.getElementById('driver-coming-screen');
     clientElements.inTripScreen = document.getElementById('in-trip-screen');
     clientElements.arrivedScreen = document.getElementById('arrived-screen');
+    clientElements.canceledScreen = document.getElementById('canceled-screen');
 
     clientElements.searchInput = document.getElementById('search');
     clientElements.searchInput2 = document.getElementById('search2');
@@ -32,6 +34,7 @@ function cacheClientElements() {
     driver_coming_screen = clientElements.driverComingScreen;
     in_trip_screen = clientElements.inTripScreen;
     arrived_screen = clientElements.arrivedScreen;
+    canceled_screen = clientElements.canceledScreen;
 
     input_seach1 = clientElements.searchInput;
     input_seach2 = clientElements.searchInput2;
@@ -43,8 +46,15 @@ function cacheClientElements() {
     outputFieldPayMethod = clientElements.methodPayment;
 }
 
+function setClientState(nextState) {
+
+    clientState = nextState;
+    clientElements.layer.dataset.state = nextState;
+}
+
 async function initClient() {
     cacheClientElements();
+    setClientState(CLIENT_STATE.ORDER);
 
     await initMap();
 

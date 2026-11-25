@@ -8,7 +8,7 @@ using Taxi.Core.Models.Order;
 
 namespace Taxi.Core.SharedHub
 {
-    public interface IDriverContract
+    public interface IDriverContract : IGeneralContract
     {
         Task NewOrder(GetDriverRequest driverRequest);
         

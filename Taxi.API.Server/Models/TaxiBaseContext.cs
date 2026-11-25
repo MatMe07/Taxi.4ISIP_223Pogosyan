@@ -354,6 +354,7 @@ public partial class TaxiBaseContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
+            entity.Property(e => e.DriverId).HasColumnName("driver_id");
             entity.Property(e => e.KudaAddress)
                 .IsRequired()
                 .HasMaxLength(255)
@@ -376,6 +377,10 @@ public partial class TaxiBaseContext : DbContext
                 .HasForeignKey(d => d.ClientId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__order__client_id__6E01572D");
+
+            entity.HasOne(d => d.Driver).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.DriverId)
+                .HasConstraintName("FK_order_driver_profile");
 
             entity.HasOne(d => d.PaymentMethod).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.PaymentMethodId)
@@ -430,7 +435,6 @@ public partial class TaxiBaseContext : DbContext
             entity.Property(e => e.DriverEarning)
                 .HasColumnType("decimal(16, 2)")
                 .HasColumnName("driver_earning");
-            entity.Property(e => e.DriverId).HasColumnName("driver_id");
             entity.Property(e => e.FinishedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("finished_at");
@@ -439,11 +443,6 @@ public partial class TaxiBaseContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("started_at");
             entity.Property(e => e.VehicleId).HasColumnName("vehicle_id");
-
-            entity.HasOne(d => d.Driver).WithMany(p => p.Poezdkas)
-                .HasForeignKey(d => d.DriverId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__poezdka__driver___74AE54BC");
 
             entity.HasOne(d => d.Order).WithMany(p => p.Poezdkas)
                 .HasForeignKey(d => d.OrderId)
@@ -513,8 +512,6 @@ public partial class TaxiBaseContext : DbContext
             entity.Property(e => e.ClosedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("closed_at");
-            entity.Property(e => e.FuelEndLiters).HasColumnName("fuel_end_liters");
-            entity.Property(e => e.FuelStartLiters).HasColumnName("fuel_start_liters");
             entity.Property(e => e.OpenedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("opened_at");
@@ -700,6 +697,8 @@ public partial class TaxiBaseContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DriverId).HasColumnName("driver_id");
+            entity.Property(e => e.FuelEndLiters).HasColumnName("fuel_end_liters");
+            entity.Property(e => e.FuelStartLiters).HasColumnName("fuel_start_liters");
             entity.Property(e => e.MedcheckAt)
                 .HasColumnType("datetime")
                 .HasColumnName("medcheck_at");

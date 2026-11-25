@@ -101,6 +101,11 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
                         }
                         break;
                     }
+                case "takeOrder":
+                    {
+
+                        break;
+                    }
             }
         }
 
@@ -180,5 +185,9 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
             }
         }
 
+        public Task JoinOrderGroup(string orderId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

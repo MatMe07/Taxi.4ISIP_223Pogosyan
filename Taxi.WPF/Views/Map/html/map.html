@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="../css/payment.css">
     <link rel="stylesheet" href="../css/driver-coming.css">
     <link rel="stylesheet" href="../css/trip-screens.css">
+    <link rel="stylesheet" href="../css/client-state.css">
     <link rel="stylesheet" href="../css/modal.css">
     <!-- <link rel="stylesheet" href="../css/driver.css"> -->
     <link rel="stylesheet" href="../css/markers.css">
@@ -47,10 +48,11 @@
     <script src="../js/client/orderScreen.js"></script>
     <script src="../js/client/waiting.js"></script>
     <script src="../js/client/handlers.js"></script>
+    <script src="../js/client/activeOrder.js"></script>
 
     <div id="map"></div>
-    <div id="ui-layer">
-        <section id="order-screen" style="display: block;">
+    <div id="ui-layer" data-state="order">
+        <section id="order-screen">
 
             <div id="boxMain">
                 <div id="searchBox">
@@ -150,7 +152,7 @@
             </div>
         </section>
 
-        <section id="waiting-screen" style="display: none;">
+        <section id="waiting-screen">
             <div id="boxMain">
                 <div class="search-waiting">
                     <div class="header-waiting">
@@ -229,7 +231,7 @@
 
         </section>
 
-        <section id="driver-coming-screen" style="display: none;">
+        <section id="driver-coming-screen">
             <div id="boxMain">
                 <div class="search-waiting">
                     <div class="driverWayInfo">
@@ -333,7 +335,7 @@
             </div>
         </section>
 
-        <section id="in-trip-screen" style="display: none;">
+        <section id="in-trip-screen">
             <div id="boxMain">
                 <div class="search-waiting">
                     <div class="driverWayInfo">
@@ -415,7 +417,7 @@
             </div>
         </section>
 
-        <section id="arrived-screen" style="display: none;">
+        <section id="arrived-screen">
             <div id="boxMain">
                 <div class="search-waiting">
                     <div class="arrival-head">
@@ -445,7 +447,7 @@
             </div>
         </section>
 
-        <section id="canceled-screen" style="display: none;">
+        <section id="canceled-screen">
             <div id="boxMain">
                 <div class="search-waiting">
                     <div class="canceled-head">

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Taxi.API.Server.Hubs;
 using Taxi.API.Server.Models;
 using Taxi.Core.Models.Order;
@@ -10,9 +11,32 @@ namespace Taxi.API.Server.Services
     public class OrderService : BaseService
     {
         private readonly IHubContext<RideHub, IRideContract> _hubContext;
-        public OrderService(TaxiBaseContext context, IHubContext<RideHub, IRideContract> hubContext) : base(context)
+        private readonly IMemoryCache _cache;
+        public OrderService(TaxiBaseContext context, IHubContext<RideHub, IRideContract> hubContext, IMemoryCache cache) : base(context)
         {
             _hubContext = hubContext;
+            _cache = cache;
+        }
+
+        public int GetFreeDriver(int orderId)
+        {
+            //var driverIds =  _context.DriverProfiles.Where(dr=>dr.Orders.Select(o=>o.Poezdkas.Where(p=>p.FinishedAt != null)).Count() == 0).OrderBy(dr=>dr.Rating).Select(dr=>dr.Id).ToList();
+            var driverIds = _context.DriverProfiles.Where(
+                dr => dr.IsActive 
+                && dr.Waybills.Any(w=>w.ReturnTime == null && w.StartedAt.AddHours(24)> DateTime.UtcNow)
+                && !dr.Orders.Any(o => o.Poezdkas.Any(p=>p.FinishedAt==null) || o.StatusId == 2 || o.StatusId == 3)
+            ).OrderByDescending(dr=>dr.Rating).Select(dr=>dr.Id);
+
+            _cache.TryGetValue($"CancelingDrivers:{orderId}", out List<int> cancelingDrivers);
+
+            var driverIdWithoutCanceling= driverIds.Union(cancelingDrivers ?? []);
+            if (driverIdWithoutCanceling.Any())
+            {
+                return driverIdWithoutCanceling.First();
+            }
+            if (driverIds.Any()) 
+                return driverIds.First();
+            else return 0;
         }
 
         public async Task SendDriversNewOrder(OrderRequest orderRequest, int orderId, string clientName, string paymentMethodName, decimal rating, string tariffName)
@@ -26,8 +50,11 @@ namespace Taxi.API.Server.Services
                 TariffName = tariffName,
                 orderRequest = orderRequest
             };
-            await _hubContext.Clients.All.NewOrder(driverRequest);
-
+            _cache.Set($"order:{orderId}", driverRequest);
+            int driverId = GetFreeDriver(orderId);
+            var userId = await _context.Users.FirstOrDefaultAsync(u=>u.DriverProfile.Id == driverId);
+            await _hubContext.Clients.User(userId.Id.ToString()).NewOrder(driverRequest);
+            //await _hubContext.Groups.AddToGroupAsync()
         }
 
         public async Task<(bool, int?)> CreateNewOrderAsync(OrderRequest orderRequest)
@@ -70,6 +97,16 @@ namespace Taxi.API.Server.Services
                 order.CancelledAt = DateTime.Now;
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task TakeOrderAsync(int orderId, int driverId)
+        {
+
+            var order = await _context.Orders.FirstOrDefaultAsync(o=>o.Id == orderId);
+            order.DriverId = driverId;
+            await _context.SaveChangesAsync();
+            _cache.TryGetValue($"order:{order.Id}", out var orderRequest);
+            //await _hubContext.Clients.Client
         }
     }
 }

@@ -42,5 +42,10 @@ namespace Taxi.WPF.Services
             _ = await _http.PatchAsync($"api/order/closeOrder?orderId={orderId}", null);
 
         }
+
+        public async Task TakeOrder(int orderId, int idDriver)
+        {
+
+        }
     }
 }

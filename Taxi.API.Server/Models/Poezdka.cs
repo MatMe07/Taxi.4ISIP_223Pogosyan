@@ -11,8 +11,6 @@ public partial class Poezdka
 
     public int OrderId { get; set; }
 
-    public int DriverId { get; set; }
-
     public int VehicleId { get; set; }
 
     public DateTime StartedAt { get; set; }
@@ -20,8 +18,6 @@ public partial class Poezdka
     public DateTime? FinishedAt { get; set; }
 
     public decimal DriverEarning { get; set; }
-
-    public virtual DriverProfile Driver { get; set; }
 
     public virtual Order Order { get; set; }
 

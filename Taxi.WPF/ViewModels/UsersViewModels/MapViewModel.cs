@@ -124,6 +124,7 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
             {
                 case "ready":
                     //await viewModel.SetDefaultFromAsync();
+                    await rideHubService.StartAsync();
                     await SentDefaultSettings();
                     break;
 
@@ -204,7 +205,9 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
                     isCreated,
                     orderId
                 };
+
                 CallJsAsync("GoToWaitingDriver", messageData);
+                await rideHubService.AddToGroup((int)orderId);
             }
 
         }
@@ -304,6 +307,10 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
             }
         }
 
+        public Task JoinOrderGroup(string orderId)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

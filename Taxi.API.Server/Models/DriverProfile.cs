@@ -33,7 +33,7 @@ public partial class DriverProfile
 
     public virtual ICollection<DriverPayout> DriverPayouts { get; set; } = new List<DriverPayout>();
 
-    public virtual ICollection<Poezdka> Poezdkas { get; set; } = new List<Poezdka>();
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     public virtual User User { get; set; }
 

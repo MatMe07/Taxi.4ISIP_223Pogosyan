@@ -9,8 +9,7 @@ namespace Taxi.Core.SharedHub
 {
     public interface IRideContract : IDriverContract, IClientContract
     {
-        Task ReceiveMessage(string user, string message);
-        Task DriverAssigned(int driverId);
+        //Task DriverAssigned(int driverId);
 
         //Task New
 

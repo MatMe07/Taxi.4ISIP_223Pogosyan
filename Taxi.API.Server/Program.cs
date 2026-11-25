@@ -51,7 +51,7 @@ builder.Services
     });
 
 builder.Services.AddSignalR();
-
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthorization();
 
@@ -104,7 +104,7 @@ app.MapControllers();
 
 app.MapGet("gets", ()=>"hello world");
 
-app.MapHub<RideHub>("/hubs/ride");
+app.MapHub< RideHub>("/hubs/ride");
 //app.mapsi
 
 
