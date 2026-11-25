@@ -18,7 +18,7 @@ var tariffsList = [
 
 
 function inti_Traffics() {
-    const tariffContainer = document.querySelector(".tariffWrapper");
+    const tariffContainer = clientElements.tariffWrapper;
     showTariffsSkeleton();
     tariffContainer.addEventListener('click', (event) => {
         const clickedButton = event.target.closest('.btnTariffs');
@@ -46,7 +46,7 @@ function inti_Traffics() {
 }
 
 function UpdateTariff() {
-    const tariffContainer = document.querySelector(".tariffWrapper");
+    const tariffContainer = clientElements.tariffWrapper;
     tariffContainer.innerHTML = '';
     // console.info("VIZZOOVVV");
     // console.info(tariffsList);
@@ -93,7 +93,7 @@ function UpdateTariff() {
 
 
 function showTariffsSkeleton() {
-    const tariffContainer = document.querySelector(".tariffWrapper");
+    const tariffContainer = clientElements.tariffWrapper;
     
     tariffContainer.innerHTML = '';
     

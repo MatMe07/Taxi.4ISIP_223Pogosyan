@@ -10,7 +10,7 @@ function updateClock(){
     seconds = seconds < 10 ? '0' + seconds : seconds;
 
     const timeString = `${minutes}:${seconds}`;
-    document.getElementById('clockWaiting').textContent = timeString;
+    clientElements.clockWaiting.textContent = timeString;
 }
 
 var zoomStart = 19.00;

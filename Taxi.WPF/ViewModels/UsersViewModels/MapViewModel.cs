@@ -180,27 +180,6 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
         }
 
 
-
-        //public async Task SetDefaultFromAsync()
-        //{
-        //    await SetDefaultPointAsync("from", DefaultFromAddress);
-        //    await SetDefaultPointAsync("to", DefaultToAddress);
-
-        //    await UpdateRouteAsync();
-        //}
-
-        //public async Task SetDefaultPointAsync(string which, string address)
-        //{
-        //RoutePoint point = await geocodeService.GeocodeAsync(address);
-        //    if (point == null)
-        //    {
-        //        Debug.WriteLine("Точка по умолчанию не найдена: " + address);
-        //        return;
-        //    }
-
-        //    await SetPointAsync(which, point, ref _from, ref _to);
-
-        //}
         private async Task CancelOrderAsync(int orderId)
         {
             await orderService.CancelOrderAsync(orderId);

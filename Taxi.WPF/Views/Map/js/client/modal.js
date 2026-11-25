@@ -12,8 +12,8 @@ function btnClickConfrim() {
     console.info(selectTariff)
     if (addressKuda === null) {
         ShowSnackbar("Укажите, куда вы едете");
-        input_seach2.focus();
-        input_seach2.classList.add('input-error');
+        clientElements.searchInput2.focus();
+        clientElements.searchInput2.classList.add('input-error');
         return;
     }
     postToHost({
@@ -27,7 +27,7 @@ function btnClickConfrim() {
 }
 
 function init_RBPaymentMethod() {
-    const PaymentMethodListElement = document.querySelector(".payment-list");
+    const PaymentMethodListElement = clientElements.paymentList;
     // console.info(PaymentMethodList);    
 
     // PaymentMethodList.childNodes.forEach(method=>{   
@@ -44,7 +44,7 @@ function init_RBPaymentMethod() {
         clickedRadio.classList.add("selected");
         selectedPaymentMethod = clickedRadio.dataset.method;
         // console.info(outputFieldPayMethod);
-        outputFieldPayMethod.textContent = PaymentMethodList.find(p=>p.id==selectedPaymentMethod).name;
+        clientElements.methodPayment.textContent = PaymentMethodList.find(p=>p.id==selectedPaymentMethod).name;
         // console.info
         postToHost({type:'changePaymentMethod',selectedPaymentMethodId: selectedPaymentMethod});
         closeModel();
@@ -52,9 +52,9 @@ function init_RBPaymentMethod() {
 }
 
 function UpdateRBPaymentMethod() {
-    const btnPaymentMethod = document.querySelector(".btnPaymentMethod");
+    const btnPaymentMethod = clientElements.btnPaymentMethod;
     btnPaymentMethod.style.display = "block";
-    const PaymentMethodListElement = document.querySelector(".payment-list");
+    const PaymentMethodListElement = clientElements.paymentList;
     var innerHtml = ``;
     var ClassSelected = "";
     PaymentMethodList.forEach(element => {
@@ -76,7 +76,7 @@ function UpdateRBPaymentMethod() {
                         <div class="custom-radio"></div>
                     </div>
         `;
-        outputFieldPayMethod.textContent = PaymentMethodList.find(p=>p.id==selectedPaymentMethod).name;
+        clientElements.methodPayment.textContent = PaymentMethodList.find(p=>p.id==selectedPaymentMethod).name;
 
         // console.info(innerHtml);
     });
@@ -85,16 +85,16 @@ function UpdateRBPaymentMethod() {
 
 
 function btnModelOpen() {
-    modelWindow.classList.add("open");
+    clientElements.modal.classList.add("open");
 }
 
 function closeModel() {
-    modelWindow.classList.remove("open");
+    clientElements.modal.classList.remove("open");
     console.info(selectedPaymentMethod);
 }
 
 function ShowSnackbar(message) {
-    var x = document.getElementById("snackbar");
+    var x = clientElements.snackbar;
     x.innerHTML = `<span>${message}</span>`;
     x.className = "show";
     setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
@@ -102,18 +102,18 @@ function ShowSnackbar(message) {
 
 
 function btnModalWaitOpen(){
-    document.querySelector('.ModalWait').classList.add("open");
+    clientElements.modalWait.classList.add("open");
 }
 
 function btnCloseModalWait() {
-    document.querySelector('.ModalWait').classList.remove("open");
+    clientElements.modalWait.classList.remove("open");
     // console.info(selectedPaymentMethod);
 }
 
 function closeModalWaiting(){
-    order_screen.style.display = 'block';
-    waiting_screen.style.display = 'none';
-    document.querySelector('.ModalWait').classList.remove("open");
+    clientElements.orderScreen.style.display = 'block';
+    clientElements.waitingScreen.style.display = 'none';
+    clientElements.modalWait.classList.remove("open");
     clearAnim();
     showTariffsSkeleton();
     postToHost({type:'cancelOrder', orderId: CurrentOrder.toString()});

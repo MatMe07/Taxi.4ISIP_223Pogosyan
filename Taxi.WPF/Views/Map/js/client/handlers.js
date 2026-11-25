@@ -12,14 +12,14 @@ async function setPoint(which, lat, lon, address) {
         addressUser = { lat: addressOtkudaCoord.lat, lon: addressOtkudaCoord.lon };
 
         if (!IsSearchInput1)
-            input_seach1.value = address;
+            clientElements.searchInput.value = address;
 
-        placeholderSearch1.classList.add('active');
+        clientElements.placeholderSearch1.classList.add('active');
 
 
     } else {
         addressKuda = address;
-        input_seach2.value = address;
+        clientElements.searchInput2.value = address;
     }
     await applyPoint(which, [lon, lat], address);
 };
@@ -30,8 +30,8 @@ async function setAddressOtkuda(which, lat, lon, address) {
     addressOtkudaCoord = { lat: lat, lon: lon };
     addressUser = { lat: lat, lon: lon };
 
-    input_seach1.value = address;
-    placeholderSearch1.classList.add('active');
+    clientElements.searchInput.value = address;
+    clientElements.placeholderSearch1.classList.add('active');
 
 
     await applyPoint(which, [lon, lat], address);
@@ -60,8 +60,8 @@ function goToWaitingDriver(isCreated, orderId) {
     if (isCreated) {
         CurrentOrder = orderId;
         init_WaitingScreen();
-        order_screen.style.display = 'none';
-        waiting_screen.style.display = 'block';
+        clientElements.orderScreen.style.display = 'none';
+        clientElements.waitingScreen.style.display = 'block';
     }
 }
 

@@ -50,7 +50,7 @@
 
     <div id="map"></div>
     <div id="ui-layer">
-        <section id="order-screen" style="display: none;">
+        <section id="order-screen" style="display: block;">
 
             <div id="boxMain">
                 <div id="searchBox">
@@ -436,6 +436,25 @@
                             <button class="arrival-star is-selected" type="button" aria-label="3 звезды"><span class="material-icons">star</span></button>
                             <button class="arrival-star is-selected" type="button" aria-label="4 звезды"><span class="material-icons">star</span></button>
                             <button class="arrival-star is-selected" type="button" aria-label="5 звёзд"><span class="material-icons">star</span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxBtn-confirm">
+                    <button class="btn-confirm" type="button">Готово</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="canceled-screen" style="display: none;">
+            <div id="boxMain">
+                <div class="search-waiting">
+                    <div class="canceled-head">
+                        <div class="canceled-icon">
+                            <span class="material-icons">close</span>
+                        </div>
+                        <div>
+                            <h2 class="canceled-title">Поездка отменена</h2>
+                            <p class="canceled-subtitle">Заказ отменён</p>
                         </div>
                     </div>
                 </div>

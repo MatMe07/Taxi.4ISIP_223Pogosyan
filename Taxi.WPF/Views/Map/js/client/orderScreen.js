@@ -1,13 +1,13 @@
 function init_OrderScreen() {
 
-    outputFieldPayMethod = document.getElementById("methodPayment");
+    outputFieldPayMethod = clientElements.methodPayment;
     initSuggest('search', 'suggest-list1', 'from');
     initSuggest('search2', 'suggest-list2', 'to');
 
-    input_seach1 = document.getElementById("search");
-    input_seach2 = document.getElementById("search2");
-    placeholderSearch1 = document.getElementById('placeholderSearch1');
-    placeholderSearch2 = document.getElementById('placeholderSearch2');
+    input_seach1 = clientElements.searchInput;
+    input_seach2 = clientElements.searchInput2;
+    placeholderSearch1 = clientElements.placeholderSearch1;
+    placeholderSearch2 = clientElements.placeholderSearch2;
     setupSearchInput(
         input_seach1,
         placeholderSearch1,
@@ -28,11 +28,11 @@ function init_OrderScreen() {
 
     postToHost({ type: 'ready' });
 
-    modelWindow = document.querySelector(".Modal");
+    modelWindow = clientElements.modal;
 
-    document.getElementsByClassName("btnPaymentMethod").onclick = btnModelOpen;
-    document.getElementById("btn-confirm").onclick = btnClickConfrim;
-    document.getElementsByClassName("modal-close").onclick = closeModel;
+    clientElements.btnPaymentMethod.onclick = btnModelOpen;
+    clientElements.btnConfirm.onclick = btnClickConfrim;
+    clientElements.modalClose.onclick = closeModel;
 
     init_RBPaymentMethod();
 }
@@ -44,7 +44,7 @@ function init_WaitingScreen() {
     updateClock();
     secondsInterval = setInterval(updateClock, 1000);
 
-    const payMethondBlock = document.querySelector('.waiting-paymentMethod');
+    const payMethondBlock = clientElements.waitingPaymentMethod;
     const classPayment = PaymentMethodList.find(p => p.id == selectedPaymentMethod);
     payMethondBlock.innerHTML = `
                     <div class="payment-info">
@@ -54,8 +54,8 @@ function init_WaitingScreen() {
     `;
 
 
-    document.getElementById('search1Waiting').value = addressOtkuda;
-    document.getElementById('search2Waiting').value = addressKuda;
+    clientElements.waitingSearchInput1.value = addressOtkuda;
+    clientElements.waitingSearchInput2.value = addressKuda;
     console.info([addressUser.lon, addressUser.lat]);
     map.setLocation({
         center: [addressUser.lon, addressUser.lat],
@@ -73,12 +73,12 @@ function getUserLocation() {
 }
 
 function setOtkudaInput() {
-    if (!input_seach1.value.trim()) {
-        input_seach1.value = addressOtkuda;
+    if (!clientElements.searchInput.value.trim()) {
+        clientElements.searchInput.value = addressOtkuda;
     }
     else {
-        if (input_seach1.value !== addressOtkuda) {
-            input_seach1.value = addressOtkuda;
+        if (clientElements.searchInput.value !== addressOtkuda) {
+            clientElements.searchInput.value = addressOtkuda;
         }
     }
 }

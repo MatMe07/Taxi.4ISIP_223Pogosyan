@@ -99,3 +99,38 @@
 .arrival-star.is-selected {
     color: var(--button-action-color);
 }
+
+.canceled-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.canceled-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--driver-danger);
+}
+
+.canceled-icon .material-icons {
+    color: var(--bg-main-color);
+    font-size: 28px;
+}
+
+.canceled-title {
+    margin: 0;
+    color: var(--text-main-color);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.canceled-subtitle {
+    margin: 3px 0 0;
+    color: var(--text-minor-color);
+    font-size: 13px;
+}

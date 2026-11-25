@@ -1,6 +1,8 @@
 function initSuggest(inputId, listId, placeholderType) {
-    const input = document.getElementById(inputId);
-    const suggestList = document.getElementById(listId);
+    const inputs = { search: clientElements.searchInput, search2: clientElements.searchInput2 };
+    const suggestLists = { 'suggest-list1': clientElements.suggestList1, 'suggest-list2': clientElements.suggestList2 };
+    const input = inputs[inputId];
+    const suggestList = suggestLists[listId];
     // console.log(input);
 
     if (!input || !suggestList) return;
