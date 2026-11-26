@@ -53,6 +53,7 @@ namespace Taxi.API.Server.Services
             _cache.Set($"order:{orderId}", driverRequest);
             int driverId = GetFreeDriver(orderId);
             var userId = await _context.Users.FirstOrDefaultAsync(u=>u.DriverProfile.Id == driverId);
+
             await _hubContext.Clients.User(userId.Id.ToString()).NewOrder(driverRequest);
             //await _hubContext.Groups.AddToGroupAsync()
         }
@@ -89,6 +90,7 @@ namespace Taxi.API.Server.Services
             return (true, order.Id);
         }
 
+
         public async Task CancelOrderAsync(int orderId)
         {
             var order = await _context.Orders.FirstOrDefaultAsync(o=>o.Id == orderId);
@@ -101,7 +103,6 @@ namespace Taxi.API.Server.Services
 
         public async Task TakeOrderAsync(int orderId, int driverId)
         {
-
             var order = await _context.Orders.FirstOrDefaultAsync(o=>o.Id == orderId);
             order.DriverId = driverId;
             await _context.SaveChangesAsync();

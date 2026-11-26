@@ -17,6 +17,7 @@ function initOrderOfferControls() {
 
     driverElements.acceptBtn.addEventListener('click', () => {
         if (driverState === DRIVER_STATE.OFFER) {
+            postToHost({type:'takeOrder', orderId:order.id.toString()})
             setDriverState(DRIVER_STATE.TO_CLIENT);
         }
     });

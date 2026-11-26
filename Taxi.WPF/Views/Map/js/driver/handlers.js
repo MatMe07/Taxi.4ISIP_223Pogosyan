@@ -7,7 +7,7 @@ onHostMessage('setPoint', async payload => {
     console.info("setPoint");
     console.info(driverAddress);
     toClientRoute.addressOtkuda = driverAddress;
-    await setPoint(driverAddress );
+    await setPoint(driverAddress , 'from');
 
 });
 

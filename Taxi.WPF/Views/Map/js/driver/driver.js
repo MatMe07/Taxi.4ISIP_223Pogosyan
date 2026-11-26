@@ -19,10 +19,13 @@ async function initDriver() {
 initDriver();
 
 
-async function setPoint(address) {
+async function setPoint(address, which) {
     // if (driverBusy) return;
     await ymaps3.ready;
-    await applyPoint("from", address.coords, address.address, IsDriverNotBusy);
+
+    let markerType = which === 'from' ? MarkerType.DRIVER : MarkerType.CLIENT_WAITING;
+    
+    await applyPoint(markerType, address.coords, IsDriverNotBusy);
 }
 
 function successHandler(position) {

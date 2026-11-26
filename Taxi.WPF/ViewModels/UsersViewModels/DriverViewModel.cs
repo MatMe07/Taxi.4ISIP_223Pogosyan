@@ -104,6 +104,7 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
                 case "takeOrder":
                     {
 
+                        await hubConnect.takeOrder(_request.OrderId);
                         break;
                     }
             }
@@ -143,6 +144,7 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
                 request,
                 routeDriverToClent = _routeInfoDriverToClent
             };
+
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {

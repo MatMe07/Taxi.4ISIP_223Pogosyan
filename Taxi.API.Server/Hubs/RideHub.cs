@@ -5,6 +5,8 @@ using Taxi.Core.SharedHub;
 using Taxi.Core.Models.DB;
 using Taxi.API.Server.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 namespace Taxi.API.Server.Hubs
 {
@@ -13,11 +15,13 @@ namespace Taxi.API.Server.Hubs
     {
         private readonly TaxiBaseContext _context;
         private readonly ILogger<RideHub> _logger;
+        private readonly IMemoryCache _cache;
 
-        public RideHub(TaxiBaseContext context, ILogger<RideHub> logger) 
+        public RideHub(TaxiBaseContext context, ILogger<RideHub> logger, IMemoryCache cache) 
         {
             _context = context;
             _logger = logger;
+            _cache = cache;
         }
         
         public override async Task OnConnectedAsync()
@@ -40,6 +44,35 @@ namespace Taxi.API.Server.Hubs
             );
 
             await base.OnConnectedAsync();
+        }
+
+        public async Task takeOrder(int orderId)
+        {
+            var order = await _context.Orders.FirstOrDefaultAsync(o=>o.Id == orderId);
+            if (order?.DriverId == null)
+            {
+                if (int.TryParse(Context.UserIdentifier, out int driverId))
+                {
+                    order.DriverId = driverId;
+                    var groupName = $"order:{orderId}";
+
+                    await AddToGroup(groupName);
+                    await SendClientAcceptOrder(orderId);
+                }
+            }
+        }
+
+        public async Task SendClientAcceptOrder(int orderId)
+        {
+            var groupName = $"order:{orderId}";
+
+            _cache.TryGetValue(groupName, out var request);
+
+
+
+
+            await Clients.OthersInGroup(groupName).AcceptOrder();
+
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
@@ -93,6 +126,11 @@ namespace Taxi.API.Server.Hubs
 
         public async Task AddToGroup(string groupName)
         {
+            _logger.LogInformation(
+                "SignalR AddToGroup | GroupName: {groupName} | UserIdentifier: '{UserId}' ",
+                groupName,
+                Context.UserIdentifier
+                );
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
 
         }

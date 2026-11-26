@@ -1,4 +1,4 @@
-async function setPoint(which, lat, lon, address) { 
+async function setPoint(who, which, lat, lon, address) { 
     await ymaps3.ready;
 
     if (which !== 'from' && which !== 'to') {
@@ -21,11 +21,19 @@ async function setPoint(which, lat, lon, address) {
         addressKuda = address;
         clientElements.searchInput2.value = address;
     }
-    await applyPoint(which, [lon, lat], address);
+    let markerType;
+    if (who === 'client'){
+        markerType = which === 'from' ? MarkerType.CLIENT_DEFAULT : MarkerType.DESTINATION;
+    }
+    else{
+        markerType = which === 'from' ? MarkerType.DRIVER_TO_CLIENT : MarkerType.CLIENT_WAITING;
+    }
+    await applyPoint(markerType, [lon, lat]);
 };
 
 async function setAddressOtkuda(which, lat, lon, address) {
     await ymaps3.ready;
+    console.info("setAddressOtkuda");
     addressOtkuda = address;
     addressOtkudaCoord = { lat: lat, lon: lon };
     addressUser = { lat: lat, lon: lon };
@@ -34,7 +42,8 @@ async function setAddressOtkuda(which, lat, lon, address) {
     clientElements.placeholderSearch1.classList.add('active');
 
 
-    await applyPoint(which, [lon, lat], address);
+    const markerType = which === 'from' ? MarkerType.CLIENT_DEFAULT : MarkerType.DESTINATION;
+    await applyPoint(markerType, [lon, lat]);
 };
 
 function SetAllTariff(tariffs, routeInfo) {
@@ -64,13 +73,18 @@ function goToWaitingDriver(isCreated, orderId) {
     }
 }
 
+
+function acceptOrder(){
+
+}
+
 onHostMessage('SetDefaultSet', payload => {
     console.info(payload);
     SetDefaultSet(payload.allPaymentsMethod, payload.selectPaymentMethod);
 });
 
 onHostMessage('setPoint', async payload => {
-    await setPoint(payload.which, payload.lat, payload.lon, payload.address);
+    await setPoint(payload.who, payload.which, payload.lat, payload.lon, payload.address);
     SetAllTariff(payload.tariffs, payload.routeInfo);
 });
 
@@ -84,8 +98,10 @@ onHostMessage('updateTariff', payload => {
 });
 
 onHostMessage('showRoute', async payload => {
-    await showRoute(payload.coordinates, payload.startPoint, payload.endPoint);
+    // await showRoute(payload.coordinates, payload.startPoint, payload.endPoint);
+    await showRoute(payload.coordinates);
     SetAllTariff(payload.tariffs, payload.routeInfo);
+     
 });
 
 onHostMessage('GoToWaitingDriver', payload => {
@@ -96,4 +112,8 @@ onHostMessage('GoToWaitingDriver', payload => {
 onHostMessage('setClientState', payload => {
     const nextState = typeof payload === 'string' ? payload : payload?.state;
     setClientState(nextState);
+});
+
+onHostMessage('acceptOrder', payload=>{
+    
 });

@@ -7,14 +7,7 @@ function removeDriverRoute() {
         map.removeChild(routeLine);
         routeLine = null;
     }
-    // if (markerOtkuda) {
-    //     map.removeChild(markerOtkuda);
-    //     markerOtkuda = null;
-    // }
-    if (markerKuda) {
-        map.removeChild(markerKuda);
-        markerKuda = null;
-    }
+    removeMarker(MarkerType.DESTINATION);
 }
 
 function clearDriverRoute() {
@@ -51,13 +44,13 @@ async function drawDriverRoute(stage) {
 
     removeDriverRoute();
 
-    // await applyPoint('from', [from.lon, from.lat], from.address);
+    // await applyPoint(MarkerType.CLIENT_DEFAULT, [from.lon, from.lat]);
     // if (token !== routeRenderToken) {
     //     removeDriverRoute();
     //     return;
     // }
 
-    await applyPoint('to', [to.lon, to.lat], to.address);
+    await applyPoint(MarkerType.DESTINATION, [to.lon, to.lat]);
     // if (token !== routeRenderToken) {
     //     removeDriverRoute();
     //     return;

@@ -35,6 +35,8 @@ function init_OrderScreen() {
     clientElements.modalClose.onclick = closeModel;
 
     init_RBPaymentMethod();
+
+    
 }
 
 var zoomInterval;

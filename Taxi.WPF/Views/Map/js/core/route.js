@@ -1,4 +1,4 @@
-async function showRoute(coords, from, to) {
+async function showRoute(coords) {
     await ymaps3.ready;
     console.info('Вызвана функция showRoute');
     // console.log(coords);
@@ -41,6 +41,7 @@ async function showRoute(coords, from, to) {
             }]
         }
     });
+
     const lons = line.map(p => p[0]);
     const lats = line.map(p => p[1]);
 

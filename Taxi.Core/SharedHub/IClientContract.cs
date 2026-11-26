@@ -9,5 +9,6 @@ namespace Taxi.Core.SharedHub
     public interface IClientContract : IGeneralContract
     {
         //void ResponseNewOrder(bool isCreated, int orderId);
+        Task AcceptOrder();
     }
 }

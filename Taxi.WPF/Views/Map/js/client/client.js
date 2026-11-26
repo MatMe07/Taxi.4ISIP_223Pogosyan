@@ -59,6 +59,8 @@ async function initClient() {
     await initMap();
 
     init_OrderScreen();
+    // console.info(addressUser);
+    // await applyPoint(MarkerType.DRIVER_TO_CLIENT, [ 37.31929192527213, 55.94347902069923], true);
 }
 
 initClient();

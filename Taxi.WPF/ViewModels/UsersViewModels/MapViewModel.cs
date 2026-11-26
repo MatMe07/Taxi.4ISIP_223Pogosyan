@@ -91,7 +91,7 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
 
         }
 
-        public async Task SetPointAsync(string which, RoutePoint point, bool addressName = false)
+        public async Task SetPointAsync(string which, RoutePoint point, string who = "client")
         {
 
 
@@ -101,9 +101,10 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
                 _to = point;
 
             var tariffs_ = await GetTariffDTOs();
-            
+
             var messageData = new
             {
+                who,
                 Which = which,
                 Lat = point.Lat,
                 Lon = point.Lon,
@@ -295,7 +296,7 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
                     return;
                 }
 
-                await SetPointAsync(napravlenie, point, IsCoord);
+                await SetPointAsync(napravlenie, point);
 
                 //await 
 
@@ -308,6 +309,11 @@ namespace Taxi.WPF.ViewModels.UsersViewModels
         }
 
         public Task JoinOrderGroup(string orderId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AcceptOrder()
         {
             throw new NotImplementedException();
         }

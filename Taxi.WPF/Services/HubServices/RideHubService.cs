@@ -40,6 +40,11 @@ namespace Taxi.WPF.Services.HubServices
             await _hubConnection.InvokeAsync("AddToGroup", $"order:{orderId}");
         }
 
+        public async Task takeOrder(int orderId)
+        {
+            await _hubConnection.InvokeAsync("takeOrder", orderId);
+
+        }
 
         public void BindingAllMethodsInInterface<TInterface>(TInterface realize) 
         {
